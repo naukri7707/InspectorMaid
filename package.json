@@ -1,0 +1,8 @@
+{
+    "name": "com.naukri.inspector-maid",
+    "displayName": "Inspector Maid",
+    "version": "0.1.0",
+    "unity": "2022.1",
+    "description": "",
+    "dependencies": {}
+}
