@@ -1,8 +1,8 @@
 {
     "name": "Naukri.InspectorMaid.Editor",
-    "rootNamespace": "",
+    "rootNamespace": "Naukri.InspectorMaid.Editor",
     "references": [
-        "Undefined.InspectorMaid"
+        "Naukri.InspectorMaid"
     ],
     "includePlatforms": [
         "Editor"

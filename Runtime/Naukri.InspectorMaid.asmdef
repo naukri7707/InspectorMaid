@@ -1,6 +1,6 @@
 {
     "name": "Naukri.InspectorMaid",
-    "rootNamespace": "",
+    "rootNamespace": "Naukri.InspectorMaid",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
