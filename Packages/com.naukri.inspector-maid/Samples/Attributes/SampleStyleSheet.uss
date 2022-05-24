@@ -1,0 +1,7 @@
+﻿.width-50-percent {
+	width: 50%;
+}
+
+.height-50-px {
+	height: 50px;
+}

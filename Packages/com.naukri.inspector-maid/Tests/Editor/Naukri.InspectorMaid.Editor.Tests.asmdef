@@ -1,6 +1,6 @@
 {
     "name": "Naukri.InspectorMaid.Editor.Tests",
-    "rootNamespace": "",
+    "rootNamespace": "Naukri.InspectorMaid.Editor.Tests",
     "references": [
         "Naukri.InspectorMaid.Editor",
         "Naukri.InspectorMaid",
