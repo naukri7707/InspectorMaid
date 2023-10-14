@@ -11,12 +11,18 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     public class PropertyBuilder
     {
-        public PropertyBuilder(UObject target, PropertyInfo info)
+        public PropertyBuilder(UObject target, PropertyInfo info, string label)
         {
             this.target = target;
             this.info = info;
             propertyType = info.PropertyType;
+            args = new Args()
+            {
+                Label = label
+            };
         }
+
+        public readonly Args args;
 
         private static Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>> _builderDict = null;
 
@@ -39,8 +45,6 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        public string Label { get; set; }
-
         public static void AddBuilder<T>(Func<string, UObject, PropertyInfo, BaseField<T>> factory)
         {
             BuilderDict.Add(typeof(T), factory);
@@ -56,17 +60,20 @@ namespace Naukri.InspectorMaid.Editor.Core
             BuilderDict.Add(typeof(T), (label, target, info) => factory(label).WithBind(target, info));
         }
 
-        public BindableElement Build()
+        internal BindableElement Build()
         {
             if (propertyType.IsEnum)
             {
                 var isFlags = info.GetCustomAttribute<FlagsAttribute>() != null;
                 return isFlags
-                    ? new EnumFlagsField(Label).WithBind(target, info)
-                    : new EnumField(Label).WithBind(target, info);
+                    ? new EnumFlagsField(args.Label).WithBind(target, info)
+                    : new EnumField(args.Label).WithBind(target, info);
             }
 
-            return BuilderDict[propertyType].Invoke(Label, target, info);
+            var element = BuilderDict[propertyType].Invoke(args.Label, target, info);
+            element.SetEnabled(args.Enable);
+
+            return element;
         }
 
         private static void InitDict()
@@ -115,6 +122,13 @@ namespace Naukri.InspectorMaid.Editor.Core
             // AddWithBinding<Mask, int>(label => new MaskField(label));
             AddBuilderWithBinding<UObject>(label => new ObjectField(label));
             // AddWithBinding<Tag, string>(label => new TagField(label));
+        }
+
+        public class Args
+        {
+            public bool Enable { get; set; }
+
+            public string Label { get; set; }
         }
     }
 }

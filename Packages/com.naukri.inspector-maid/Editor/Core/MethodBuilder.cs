@@ -6,28 +6,32 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     public class MethodBuilder
     {
-        public MethodBuilder(object target, MethodInfo info)
+        public MethodBuilder(object target, MethodInfo info, string label)
         {
             this.target = target;
             this.info = info;
+            args = new Args()
+            {
+                Label = label
+            };
         }
+
+        public readonly Args args;
 
         private readonly MethodInfo info;
 
         private readonly object target;
 
-        public string Label { get; set; }
-
-        public VisualElement Build()
+        internal VisualElement Build()
         {
             // Todo: Add support for parameters
             var container = new VisualElement();
             container.AddToClassList(BaseField<object>.ussClassName);
             container.style.flexDirection = FlexDirection.Row;
 
-            var label = new Label(Label);
+            var label = new Label(args.Label);
             label.AddToClassList(BaseField<object>.labelUssClassName);
-            if (Label == null)
+            if (args.Label == null)
             {
                 container.AddToClassList(BaseField<object>.noLabelVariantUssClassName);
             }
@@ -48,6 +52,13 @@ namespace Naukri.InspectorMaid.Editor.Core
             container.Add(button);
 
             return container;
+        }
+
+        public class Args
+        {
+            public bool Enable { get; set; }
+
+            public string Label { get; set; }
         }
     }
 }

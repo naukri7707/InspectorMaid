@@ -22,10 +22,7 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             var sortedAttrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).OrderByDescending(it => it.order);
 
-            var builder = new PropertyBuilder(target, info)
-            {
-                Label = info.Name
-            };
+            var builder = new PropertyBuilder(target, info, info.Name);
 
             var args = new PropertyDrawerArgs(target, info);
 
