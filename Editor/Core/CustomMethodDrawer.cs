@@ -22,10 +22,8 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             var sortedAttrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).OrderByDescending(it => it.order);
 
-            var builder = new MethodBuilder(target, info)
-            {
-                Label = info.Name
-            };
+            var builder = new MethodBuilder(target, info, info.Name);
+
             var args = new MethodDrawerArgs(target, info);
 
             foreach (var attr in sortedAttrs)
