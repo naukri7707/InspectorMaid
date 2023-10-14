@@ -8,7 +8,7 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         internal abstract Type AttributeType { get; }
 
-        public virtual VisualElement OnDrawDecorator(VisualElement child, object attribute, DrawerArgs args) => null;
+        internal virtual VisualElement OnDrawDecorator(VisualElement child, object attribute, DrawerArgs args) => null;
 
         internal protected abstract void OnDrawField(PropertyField field, object attribute, FieldDrawerArgs args);
 

@@ -5,7 +5,7 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class HideDrawer : CustomDrawerOf<HideAttribute>
     {
-        public override VisualElement OnDrawDecorator(VisualElement child, object attribute, DrawerArgs args)
+        public override VisualElement OnDrawDecorator(VisualElement child, HideAttribute attribute, DrawerArgs args)
         {
             return new VisualElement();
         }

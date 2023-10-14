@@ -5,7 +5,7 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class EnableDrawer : CustomDrawerOf<EnableAttribute>
     {
-        public override VisualElement OnDrawDecorator(VisualElement child, object attribute, DrawerArgs args)
+        public override VisualElement OnDrawDecorator(VisualElement child, EnableAttribute attribute, DrawerArgs args)
         {
             var container = new VisualElement();
             container.SetEnabled(true);
