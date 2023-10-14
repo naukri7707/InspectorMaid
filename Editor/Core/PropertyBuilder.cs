@@ -126,7 +126,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         public class Args
         {
-            public bool Enable { get; set; }
+            public bool Enable { get; set; } = true;
 
             public string Label { get; set; }
         }
