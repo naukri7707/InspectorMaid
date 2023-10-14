@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public sealed class ShowDrawer : CustomDrawerOf<ShowAttribute>
+    public class ShowDrawer : CustomDrawerOf<ShowAttribute>
     {
     }
 }
