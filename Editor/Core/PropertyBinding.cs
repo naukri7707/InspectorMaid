@@ -46,7 +46,8 @@ namespace Naukri.InspectorMaid.Editor.Core
             EditorUtility.SetDirty(target);
         }
 
-        public void PreUpdate() { }
+        public void PreUpdate()
+        { }
 
         public void Release()
         {

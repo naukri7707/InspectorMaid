@@ -12,26 +12,35 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            var sortedAttrs = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true).OrderByDescending(it => it.order);
-
             var field = new PropertyField(property);
+            var target = property.serializedObject.targetObject;
 
-            var args = new FieldDrawerArgs(property.serializedObject.targetObject, fieldInfo, property);
+            var drawers = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
+                .OrderByDescending(it => it.order)
+                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo))
+                .ToList();
 
-            VisualElement ve = field;
-
-            foreach (var attr in sortedAttrs)
+            // Style the field
+            foreach (var drawer in drawers)
             {
-                var drawer = DrawerMapper.Get(attr.GetType());
+                drawer.OnDrawField(field);
+            }
 
-                drawer.OnDrawField(field, attr, args);
-                var decorator = drawer.OnDrawDecorator(ve, attr, args);
-                if (decorator != null)
+            // Decorate the field
+            var decorator = new DecoratorElement("Field Decorator");
+            decorator.Add(field);
+
+            foreach (var drawer in drawers)
+            {
+                decorator = drawer.OnDrawDecorator(decorator);
+
+                if (decorator == null)
                 {
-                    ve = decorator;
+                    throw new System.Exception($"Decorator is null. {drawer.GetType().Name} is not allowed to return null.");
                 }
             }
-            return ve;
+
+            return decorator;
         }
     }
 }

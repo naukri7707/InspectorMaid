@@ -1,7 +1,7 @@
-﻿using Naukri.InspectorMaid.UIElements;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Naukri.InspectorMaid.UIElements;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -86,14 +86,22 @@ namespace Naukri.InspectorMaid.Editor.Core
             AddBuilderWithBinding<decimal>(label => throw new NotImplementedException());
             AddBuilderWithBinding<double>(label => new DoubleField(label));
             AddBuilderWithBinding<float>(label => new FloatField(label));
+
             AddBuilderWithBinding<int>(label => new IntegerField(label));
-            // Todo: use UnsignedIntegerField / UnsignedLongField  in newer unity version
-            AddBuilderWithBinding<uint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
             AddBuilderWithBinding<nint, int>(label => new IntegerField(label));
-            AddBuilderWithBinding<nuint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
             AddBuilderWithBinding<long>(label => new LongField(label));
-            AddBuilderWithBinding<ulong, long>(label => throw new NotImplementedException());
             AddBuilderWithBinding<short, int>(label => new RangedIntegerField(label, short.MinValue, short.MaxValue));
+
+#if UNITY_2022_3_OR_NEWER
+            AddBuilderWithBinding<uint>(label => new UnsignedIntegerField(label));
+            AddBuilderWithBinding<nuint, uint>(label => new UnsignedIntegerField(label));
+            AddBuilderWithBinding<ulong>(label => new UnsignedLongField(label));
+#else
+            AddBuilderWithBinding<uint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
+            AddBuilderWithBinding<nuint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
+            AddBuilderWithBinding<ulong, long>(label => throw new NotImplementedException());
+#endif
+
             AddBuilderWithBinding<ushort, int>(label => new RangedIntegerField(label, ushort.MinValue, ushort.MaxValue));
 
             // C# built-in reference types

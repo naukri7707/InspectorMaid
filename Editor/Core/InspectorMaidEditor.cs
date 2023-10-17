@@ -1,5 +1,6 @@
-﻿using Naukri.InspectorMaid.Core;
+﻿using System.Collections.Generic;
 using System.Reflection;
+using Naukri.InspectorMaid.Core;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -10,9 +11,13 @@ namespace Naukri.InspectorMaid.Editor.Core
     [CustomEditor(typeof(Object), true, isFallback = true)]
     internal class InspectorMaidEditor : UnityEditor.Editor
     {
+        private VisualElement componentContainer;
+
+        private bool isStarted;
+
         public override VisualElement CreateInspectorGUI()
         {
-            var componentContainer = new VisualElement() { name = "component" };
+            componentContainer = new VisualElement() { name = "component" };
 
             // fields
             var fieldsContainer = new VisualElement() { name = "fields" };
@@ -37,7 +42,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             // properties
             var propertiesContainer = new VisualElement() { name = "properties" };
-            var propertyInfos = type.GetProperties();
+            var propertyInfos = type.GetProperties(Utility.AllAccessFlags);
 
             foreach (var propertyInfo in propertyInfos)
             {
@@ -51,7 +56,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             // methods
             var methodsContainer = new VisualElement() { name = "methods" };
-            var methodInfos = type.GetMethods();
+            var methodInfos = type.GetMethods(Utility.AllAccessFlags);
 
             foreach (var methodInfo in methodInfos)
             {
@@ -68,6 +73,51 @@ namespace Naukri.InspectorMaid.Editor.Core
             componentContainer.Add(methodsContainer);
 
             return componentContainer;
+        }
+
+        protected void OnDestroy()
+        {
+            if (TryGetDecoratorElements(out var decorators))
+            {
+                foreach (var decorator in decorators)
+                {
+                    DecoratorElement.InvokeOnDestroy(decorator);
+                }
+            }
+        }
+
+        protected void OnSceneGUI()
+        {
+            if (TryGetDecoratorElements(out var decorators))
+            {
+                if (!isStarted)
+                {
+                    foreach (var decorator in decorators)
+                    {
+                        DecoratorElement.InvokeOnStart(decorator);
+                    }
+                    isStarted = true;
+                }
+
+                foreach (var decorator in decorators)
+                {
+                    DecoratorElement.InvokeOnSceneGUI(decorator);
+                }
+            }
+        }
+
+        private bool TryGetDecoratorElements(out IEnumerable<DecoratorElement> decorators)
+        {
+            if (componentContainer == null)
+            {
+                decorators = null;
+                return false;
+            }
+            else
+            {
+                decorators = componentContainer.Query<DecoratorElement>().ToList();
+                return true;
+            }
         }
     }
 }
