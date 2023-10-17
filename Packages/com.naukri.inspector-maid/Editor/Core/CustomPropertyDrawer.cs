@@ -1,6 +1,7 @@
-﻿using Naukri.InspectorMaid.Core;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using Naukri.InspectorMaid.Core;
+using UnityEditor;
 using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
 
@@ -8,42 +9,49 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     internal class CustomPropertyDrawer
     {
-        internal CustomPropertyDrawer(UObject target, PropertyInfo info)
+        internal CustomPropertyDrawer(UObject target, PropertyInfo propertyInfo)
         {
             this.target = target;
-            this.info = info;
+            this.propertyInfo = propertyInfo;
         }
 
-        public readonly PropertyInfo info;
+        public readonly PropertyInfo propertyInfo;
 
         public readonly UObject target;
 
         public VisualElement CreatePropertyGUI()
         {
-            var sortedAttrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).OrderByDescending(it => it.order);
+            var name = ObjectNames.NicifyVariableName(propertyInfo.Name);
+            var builder = new PropertyBuilder(target, propertyInfo, name);
 
-            var builder = new PropertyBuilder(target, info, info.Name);
+            var drawers = propertyInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
+                .OrderByDescending(it => it.order)
+                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, propertyInfo))
+                .ToList();
 
-            var args = new PropertyDrawerArgs(target, info);
-
-            foreach (var attr in sortedAttrs)
+            // Style the property
+            foreach (var drawer in drawers)
             {
-                var drawer = DrawerMapper.Get(attr.GetType());
-                drawer.OnDrawProperty(builder, attr, args);
+                drawer.OnDrawProperty(builder);
             }
 
-            VisualElement ve = builder.Build();
+            var property = builder.Build();
 
-            foreach (var attr in sortedAttrs)
+            // Decorate the property
+            var decorator = new DecoratorElement("Property Decorator");
+            decorator.Add(property);
+
+            foreach (var drawer in drawers)
             {
-                var drawer = DrawerMapper.Get(attr.GetType());
-                var decorator = drawer.OnDrawDecorator(ve, attr, args);
-                if (decorator != null)
+                decorator = drawer.OnDrawDecorator(decorator);
+
+                if (decorator == null)
                 {
-                    ve = decorator;
+                    throw new System.Exception($"Decorator is null. {drawer.GetType().Name} is not allowed to return null.");
                 }
             }
-            return ve;
+
+            return decorator;
         }
     }
 }

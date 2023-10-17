@@ -1,6 +1,8 @@
-﻿using Naukri.InspectorMaid.Core;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using Naukri.InspectorMaid.Core;
+using UnityEditor;
 using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
 
@@ -8,42 +10,49 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     internal class CustomMethodDrawer
     {
-        internal CustomMethodDrawer(UObject target, MethodInfo info)
+        internal CustomMethodDrawer(UObject target, MethodInfo methodInfo)
         {
             this.target = target;
-            this.info = info;
+            this.methodInfo = methodInfo;
         }
 
-        public readonly MethodInfo info;
+        public readonly MethodInfo methodInfo;
 
         public readonly UObject target;
 
         public VisualElement CreatePropertyGUI()
         {
-            var sortedAttrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).OrderByDescending(it => it.order);
+            var name = ObjectNames.NicifyVariableName(methodInfo.Name);
+            var builder = new MethodBuilder(target, methodInfo, name);
 
-            var builder = new MethodBuilder(target, info, info.Name);
+            var drawers = methodInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
+                .OrderByDescending(it => it.order)
+                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, methodInfo))
+                .ToList();
 
-            var args = new MethodDrawerArgs(target, info);
-
-            foreach (var attr in sortedAttrs)
+            // Style the method
+            foreach (var drawer in drawers)
             {
-                var drawer = DrawerMapper.Get(attr.GetType());
-                drawer.OnDrawMethod(builder, attr, args);
+                drawer.OnDrawMethod(builder);
             }
 
-            VisualElement ve = builder.Build();
+            var method = builder.Build();
 
-            foreach (var attr in sortedAttrs)
+            // Decorate the method
+            var decorator = new DecoratorElement("Method Decorator");
+            decorator.Add(method);
+
+            foreach (var drawer in drawers)
             {
-                var drawer = DrawerMapper.Get(attr.GetType());
-                var decorator = drawer.OnDrawDecorator(ve, attr, args);
-                if (decorator != null)
+                decorator = drawer.OnDrawDecorator(decorator);
+
+                if (decorator == null)
                 {
-                    ve = decorator;
+                    throw new System.Exception($"Decorator is null. {drawer.GetType().Name} is not allowed to return null.");
                 }
             }
-            return ve;
+
+            return decorator;
         }
     }
 }
