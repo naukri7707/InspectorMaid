@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Naukri.InspectorMaid.Core;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Naukri.InspectorMaid.Core;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
