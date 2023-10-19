@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Naukri.InspectorMaid.Core;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Naukri.InspectorMaid.Core;
+using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Core
@@ -10,6 +12,8 @@ namespace Naukri.InspectorMaid.Editor.Core
     public abstract class CustomDrawer
     {
         private MemberInfo _info;
+
+        private SerializedProperty _serializedProperty;
 
         private UObject _target;
 
@@ -29,6 +33,8 @@ namespace Naukri.InspectorMaid.Editor.Core
                 }
             }
         }
+
+        public bool IsBinding => attributeRef.binding != null;
 
         [SuppressMessage("Style", "IDE1006")]
         public MethodInfo methodInfo
@@ -65,11 +71,18 @@ namespace Naukri.InspectorMaid.Editor.Core
         }
 
         [SuppressMessage("Style", "IDE1006")]
+        public SerializedProperty serializedProperty => _serializedProperty;
+
+        [SuppressMessage("Style", "IDE1006")]
         public UObject target => _target;
 
         internal abstract Type AttributeType { get; }
 
+        [SuppressMessage("Style", "IDE1006")]
         protected internal abstract InspectorMaidAttribute attributeRef { get; set; }
+
+        [SuppressMessage("Style", "IDE1006")]
+        protected internal abstract DecoratorElement decoratorRef { get; set; }
 
         public object GetBindingValue()
         {
@@ -108,37 +121,28 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        public virtual DecoratorElement OnDrawDecorator(DecoratorElement child)
-        {
-            var name = GetType().Name;
-            // if the name end with "Drawer" suffix, remove it.
-            if (name.EndsWith("Drawer"))
-            {
-                name = name[..^6];
-            }
-
-            var decorator = new DecoratorElement($"{name} Decorator");
-            decorator.Add(child);
-
-            return decorator;
-        }
+        public abstract void OnDrawDecorator(DecoratorElement child);
 
         public virtual void OnDrawField(PropertyField field)
         { }
 
-        public virtual void OnDrawMethod(MethodBuilder builder)
+        public virtual void OnDrawMethod(MethodElement builder)
         { }
 
-        public virtual void OnDrawProperty(PropertyBuilder builder)
+        public virtual void OnDrawProperty(BindableElement property)
         { }
 
-        internal CustomDrawer CloneWith(InspectorMaidAttribute attribute, UObject target, MemberInfo info)
+        internal CustomDrawer CloneWith(InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
         {
             var cloned = (CustomDrawer)MemberwiseClone();
             cloned.attributeRef = attribute;
             cloned._target = target;
             cloned._info = info;
+            cloned._serializedProperty = serializedProperty;
+            cloned.decoratorRef = cloned.CreateDecoratorImpl();
             return cloned;
         }
+
+        protected internal abstract DecoratorElement CreateDecoratorImpl();
     }
 }

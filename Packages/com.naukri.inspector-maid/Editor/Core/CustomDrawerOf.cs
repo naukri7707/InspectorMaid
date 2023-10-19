@@ -1,28 +1,41 @@
 ﻿using Naukri.InspectorMaid.Core;
-using System;
-using System.Diagnostics.CodeAnalysis;
+using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    public abstract class CustomDrawerOf<T> : CustomDrawer where T : InspectorMaidAttribute
+    public abstract class CustomDrawerOf<TAttribute> : CustomDrawerWithDecoratorOf<TAttribute, DecoratorElement>
+        where TAttribute : InspectorMaidAttribute
     {
-        private T _attribute;
+        public virtual void OnDestroy()
+        { }
 
-        [SuppressMessage("Style", "IDE1006")]
-        public T attribute => _attribute;
+        public virtual void OnSceneGUI()
+        { }
 
-        internal override Type AttributeType => typeof(T);
+        public virtual void OnStart()
+        { }
 
-        protected internal override sealed InspectorMaidAttribute attributeRef
+        protected override sealed DecoratorElement CreateDecorator()
         {
-            get => _attribute;
-            set
+            var name = GetType().Name;
+
+            // if the name end with "Drawer" suffix, remove it.
+            if (name.EndsWith("Drawer"))
             {
-                if (value is T tValue)
-                {
-                    _attribute = tValue;
-                }
+                name = name[..^6];
             }
+
+            // use nicify name
+            name = ObjectNames.NicifyVariableName(name);
+
+            var decorator = new DecoratorElement($"{name} Decorator");
+
+            // use anonymous function to wrap the function so that the function cannot be unregistered
+            decorator.OnStart += () => OnStart();
+            decorator.OnSceneGUI += () => OnSceneGUI();
+            decorator.OnDestroy += () => OnDestroy();
+
+            return decorator;
         }
     }
 }

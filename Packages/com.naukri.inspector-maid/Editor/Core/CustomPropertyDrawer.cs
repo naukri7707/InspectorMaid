@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Naukri.InspectorMaid.Core;
+using System.Linq;
 using System.Reflection;
-using Naukri.InspectorMaid.Core;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
@@ -22,20 +22,13 @@ namespace Naukri.InspectorMaid.Editor.Core
         public VisualElement CreatePropertyGUI()
         {
             var name = ObjectNames.NicifyVariableName(propertyInfo.Name);
-            var builder = new PropertyBuilder(target, propertyInfo, name);
+            var property = new PropertyBuilder(target, propertyInfo).Build();
+            property.SetLabel(name);
 
             var drawers = propertyInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
                 .Select(it => DrawerTemplates.Create(it.GetType(), it, target, propertyInfo))
                 .ToList();
-
-            // Style the property
-            foreach (var drawer in drawers)
-            {
-                drawer.OnDrawProperty(builder);
-            }
-
-            var property = builder.Build();
 
             // Decorate the property
             var decorator = new DecoratorElement("Property Decorator");
@@ -43,12 +36,14 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var drawer in drawers)
             {
-                decorator = drawer.OnDrawDecorator(decorator);
+                drawer.OnDrawDecorator(decorator);
+                decorator = drawer.decoratorRef;
+            }
 
-                if (decorator == null)
-                {
-                    throw new System.Exception($"Decorator is null. {drawer.GetType().Name} is not allowed to return null.");
-                }
+            // Style the property
+            foreach (var drawer in drawers)
+            {
+                drawer.OnDrawProperty(property);
             }
 
             return decorator;

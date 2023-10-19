@@ -4,17 +4,7 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class EnableIfDrawer : CustomDrawerOf<EnableIfAttribute>
     {
-        public override DecoratorElement OnDrawDecorator(DecoratorElement child)
-        {
-            var decorator = new DecoratorElement("EnableIf Decorator");
-            decorator.OnSceneGUI += Decorator_OnSceneGUI;
-
-            decorator.Add(child);
-
-            return decorator;
-        }
-
-        private void Decorator_OnSceneGUI(DecoratorElement decorator)
+        public override void OnSceneGUI()
         {
             var enable = GetBindingValue<bool>();
 

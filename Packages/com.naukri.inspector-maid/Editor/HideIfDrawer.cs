@@ -5,20 +5,11 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class HideIfDrawer : CustomDrawerOf<HideIfAttribute>
     {
-        public override DecoratorElement OnDrawDecorator(DecoratorElement child)
-        {
-            var decorator = new DecoratorElement("HideIf Decorator");
-            decorator.OnSceneGUI += Decorator_OnSceneGUI;
-
-            decorator.Add(child);
-
-            return decorator;
-        }
-
-        private void Decorator_OnSceneGUI(DecoratorElement decorator)
+        public override void OnSceneGUI()
         {
             var hide = GetBindingValue<bool>();
-            if (hide == true)
+
+            if (hide)
             {
                 decorator.visible = false;
                 decorator.style.height = 0;

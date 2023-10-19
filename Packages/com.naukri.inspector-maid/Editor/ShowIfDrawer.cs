@@ -5,20 +5,11 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class ShowIfDrawer : CustomDrawerOf<ShowIfAttribute>
     {
-        public override DecoratorElement OnDrawDecorator(DecoratorElement child)
-        {
-            var decorator = new DecoratorElement("ShowIf Decorator");
-            decorator.OnSceneGUI += Decorator_OnSceneGUI;
-
-            decorator.Add(child);
-
-            return decorator;
-        }
-
-        private void Decorator_OnSceneGUI(DecoratorElement decorator)
+        public override void OnSceneGUI()
         {
             var show = GetBindingValue<bool>();
-            if (show == true)
+
+            if (show)
             {
                 decorator.visible = true;
                 decorator.style.height = StyleKeyword.Auto;
