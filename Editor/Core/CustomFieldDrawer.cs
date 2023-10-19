@@ -4,20 +4,34 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    [UnityEditor.CustomPropertyDrawer(typeof(InspectorMaidAttribute), true)]
-    internal class CustomFieldDrawer : PropertyDrawer
+    internal class CustomFieldDrawer
     {
-        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        internal CustomFieldDrawer(UObject target, FieldInfo fieldInfo, PropertyField field)
         {
-            var field = new PropertyField(property);
-            var target = property.serializedObject.targetObject;
+            this.target = target;
+            this.fieldInfo = fieldInfo;
+            this.field = field;
+        }
+
+        public readonly FieldInfo fieldInfo;
+
+        public readonly UObject target;
+
+        private readonly PropertyField field;
+
+        public VisualElement CreateFieldGUI()
+        {
+            var name = ObjectNames.NicifyVariableName(fieldInfo.Name);
+
+            field.label = name;
 
             var drawers = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo, property))
+                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo))
                 .ToList();
 
             // Decorate the field

@@ -10,6 +10,8 @@ namespace Naukri.InspectorMaid.Editor.Core
             base.name = name;
         }
 
+        internal bool IsStarted { get; set; }
+
         public event Action OnDestroy = () => { };
 
         public event Action OnSceneGUI = () => { };

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine.UIElements;
 
@@ -22,6 +23,15 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 return -1;
             }
+        }
+
+        public static FieldInfo GetFieldInfo(this SerializedProperty property)
+        {
+            var target = property.serializedObject.targetObject;
+            var type = target.GetType();
+            var fieldInfo = type.GetField(property.propertyPath);
+
+            return fieldInfo;
         }
 
         public static string GetLabel(this BindableElement self)

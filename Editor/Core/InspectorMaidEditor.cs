@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using Naukri.InspectorMaid.Core;
+﻿using Naukri.InspectorMaid.Core;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -8,12 +7,10 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    [CustomEditor(typeof(Object), true, isFallback = true)]
+    [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
     internal class InspectorMaidEditor : UnityEditor.Editor
     {
         private VisualElement componentContainer;
-
-        private bool isStarted;
 
         public override VisualElement CreateInspectorGUI()
         {
@@ -31,9 +28,21 @@ namespace Naukri.InspectorMaid.Editor.Core
                     if (iterator.propertyPath == "m_Script" && serializedObject.targetObject != null)
                     {
                         propertyField.SetEnabled(false);
+                        fieldsContainer.Add(propertyField);
+                        continue;
                     }
+                    var fieldInfo = iterator.GetFieldInfo();
 
-                    fieldsContainer.Add(propertyField);
+                    if (fieldInfo.HasAttribute<InspectorMaidAttribute>())
+                    {
+                        var fieldDrawer = new CustomFieldDrawer(target, fieldInfo, propertyField);
+                        var fieldGUI = fieldDrawer.CreateFieldGUI();
+                        fieldsContainer.Add(fieldGUI);
+                    }
+                    else
+                    {
+                        fieldsContainer.Add(propertyField);
+                    }
                 }
                 while (iterator.NextVisible(false));
             }
@@ -46,7 +55,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var propertyInfo in propertyInfos)
             {
-                if (propertyInfo.GetCustomAttribute<InspectorMaidAttribute>() != null)
+                if (propertyInfo.HasAttribute<InspectorMaidAttribute>())
                 {
                     var propertyDrawer = new CustomPropertyDrawer(target, propertyInfo);
                     var propertyGUI = propertyDrawer.CreatePropertyGUI();
@@ -60,7 +69,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var methodInfo in methodInfos)
             {
-                if (methodInfo.GetCustomAttribute<InspectorMaidAttribute>() != null)
+                if (methodInfo.HasAttribute<InspectorMaidAttribute>())
                 {
                     var methodDrawer = new CustomMethodDrawer(target, methodInfo);
                     var methodGUI = methodDrawer.CreatePropertyGUI();
@@ -90,17 +99,13 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             if (TryGetDecoratorElements(out var decorators))
             {
-                if (!isStarted)
-                {
-                    foreach (var decorator in decorators)
-                    {
-                        DecoratorElement.InvokeOnStart(decorator);
-                    }
-                    isStarted = true;
-                }
-
                 foreach (var decorator in decorators)
                 {
+                    if (!decorator.IsStarted)
+                    {
+                        DecoratorElement.InvokeOnStart(decorator);
+                        decorator.IsStarted = true;
+                    }
                     DecoratorElement.InvokeOnSceneGUI(decorator);
                 }
             }
