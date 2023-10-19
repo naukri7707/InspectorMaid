@@ -81,7 +81,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             AddBuilderWithBinding<byte, int>(() => new RangedIntegerField(byte.MinValue, byte.MaxValue));
             AddBuilderWithBinding<sbyte, int>(() => new RangedIntegerField(sbyte.MinValue, sbyte.MaxValue));
             AddBuilderWithBinding<char, string>(() => new TextField(1, false, false, '*'));
-            AddBuilderWithBinding<decimal>(() => throw new NotImplementedException());
+            AddBuilderWithBinding<decimal>(() => new NoGuiImplemented<decimal>());
             AddBuilderWithBinding<double>(() => new DoubleField());
             AddBuilderWithBinding<float>(() => new FloatField());
 
@@ -97,16 +97,16 @@ namespace Naukri.InspectorMaid.Editor.Core
 #else
             AddBuilderWithBinding<uint, long>(() => new RangedLongField(uint.MinValue, uint.MaxValue));
             AddBuilderWithBinding<nuint, long>(() => new RangedLongField(uint.MinValue, uint.MaxValue));
-            AddBuilderWithBinding<ulong, long>(() => throw new NotImplementedException());
+            AddBuilderWithBinding<ulong>(() => new NoGuiImplemented<ulong>());
 #endif
 
             AddBuilderWithBinding<ushort, int>(() => new RangedIntegerField(ushort.MinValue, ushort.MaxValue));
 
             // C# built-in reference types
-            AddBuilderWithBinding<object>(() => throw new NotImplementedException());
+            AddBuilderWithBinding<object>(() => new NoGuiImplemented<object>());
             AddBuilderWithBinding<string>(() => new TextField());
             // Cannot use dynamic because it will be treated as object
-            //AddBuilderWithBinding<dynamic>( => throw new NotImplementedException());
+            //AddBuilderWithBinding<dynamic>(() => new NoGuiImplemented<dynamic>());
             // Unity value type
             AddBuilderWithBinding<Bounds>(() => new BoundsField());
             AddBuilderWithBinding<BoundsInt>(() => new BoundsIntField());
