@@ -17,14 +17,8 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var drawers = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo))
+                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo, property))
                 .ToList();
-
-            // Style the field
-            foreach (var drawer in drawers)
-            {
-                drawer.OnDrawField(field);
-            }
 
             // Decorate the field
             var decorator = new DecoratorElement("Field Decorator");
@@ -32,12 +26,14 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var drawer in drawers)
             {
-                decorator = drawer.OnDrawDecorator(decorator);
+                drawer.OnDrawDecorator(decorator);
+                decorator = drawer.decoratorRef;
+            }
 
-                if (decorator == null)
-                {
-                    throw new System.Exception($"Decorator is null. {drawer.GetType().Name} is not allowed to return null.");
-                }
+            // Style the field
+            foreach (var drawer in drawers)
+            {
+                drawer.OnDrawField(field);
             }
 
             return decorator;

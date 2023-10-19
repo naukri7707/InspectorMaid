@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using Naukri.InspectorMaid.UIElements;
@@ -11,20 +12,14 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     public class PropertyBuilder
     {
-        public PropertyBuilder(UObject target, PropertyInfo info, string label)
+        public PropertyBuilder(UObject target, PropertyInfo info)
         {
             this.target = target;
             this.info = info;
             propertyType = info.PropertyType;
-            args = new Args()
-            {
-                Label = label
-            };
         }
 
-        public readonly Args args;
-
-        private static Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>> _builderDict = null;
+        private static Dictionary<Type, Func<UObject, PropertyInfo, BindableElement>> _builderDict = null;
 
         private readonly PropertyInfo info;
 
@@ -32,32 +27,32 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         private readonly UObject target;
 
-        public static Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>> BuilderDict
+        public static Dictionary<Type, Func<UObject, PropertyInfo, BindableElement>> BuilderDict
         {
             get
             {
                 if (_builderDict == null)
                 {
-                    _builderDict = new Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>>();
+                    _builderDict = new Dictionary<Type, Func<UObject, PropertyInfo, BindableElement>>();
                     InitDict();
                 }
                 return _builderDict;
             }
         }
 
-        public static void AddBuilder<T>(Func<string, UObject, PropertyInfo, BaseField<T>> factory)
+        public static void AddBuilder<T>(Func<UObject, PropertyInfo, BaseField<T>> factory)
         {
             BuilderDict.Add(typeof(T), factory);
         }
 
-        public static void AddBuilderWithBinding<T>(Func<string, BaseField<T>> factory)
+        public static void AddBuilderWithBinding<T>(Func<BaseField<T>> factory)
         {
-            BuilderDict.Add(typeof(T), (label, target, info) => factory(label).WithBind(target, info));
+            BuilderDict.Add(typeof(T), (target, info) => factory().WithBind(target, info));
         }
 
-        public static void AddBuilderWithBinding<T, TValue>(Func<string, BaseField<TValue>> factory)
+        public static void AddBuilderWithBinding<T, TValue>(Func<BaseField<TValue>> factory)
         {
-            BuilderDict.Add(typeof(T), (label, target, info) => factory(label).WithBind(target, info));
+            BuilderDict.Add(typeof(T), (target, info) => factory().WithBind(target, info));
         }
 
         internal BindableElement Build()
@@ -66,12 +61,15 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 var isFlags = info.GetCustomAttribute<FlagsAttribute>() != null;
                 return isFlags
-                    ? new EnumFlagsField(args.Label).WithBind(target, info)
-                    : new EnumField(args.Label).WithBind(target, info);
+                    ? new EnumFlagsField().WithBind(target, info)
+                    : new EnumField().WithBind(target, info);
             }
-
-            var element = BuilderDict[propertyType].Invoke(args.Label, target, info);
-            element.SetEnabled(args.Enable);
+            if (typeof(IList).IsAssignableFrom(propertyType))
+            {
+                // Todo: Implement ListView
+                throw new NotImplementedException();
+            }
+            var element = BuilderDict[propertyType].Invoke(target, info);
 
             return element;
         }
@@ -79,64 +77,57 @@ namespace Naukri.InspectorMaid.Editor.Core
         private static void InitDict()
         {
             // C# built-in value types
-            AddBuilderWithBinding<bool>(label => new Toggle(label));
-            AddBuilderWithBinding<byte, int>(label => new RangedIntegerField(label, byte.MinValue, byte.MaxValue));
-            AddBuilderWithBinding<sbyte, int>(label => new RangedIntegerField(label, sbyte.MinValue, sbyte.MaxValue));
-            AddBuilderWithBinding<char, string>(label => new TextField(label, 1, false, false, '*'));
-            AddBuilderWithBinding<decimal>(label => throw new NotImplementedException());
-            AddBuilderWithBinding<double>(label => new DoubleField(label));
-            AddBuilderWithBinding<float>(label => new FloatField(label));
+            AddBuilderWithBinding<bool>(() => new Toggle());
+            AddBuilderWithBinding<byte, int>(() => new RangedIntegerField(byte.MinValue, byte.MaxValue));
+            AddBuilderWithBinding<sbyte, int>(() => new RangedIntegerField(sbyte.MinValue, sbyte.MaxValue));
+            AddBuilderWithBinding<char, string>(() => new TextField(1, false, false, '*'));
+            AddBuilderWithBinding<decimal>(() => throw new NotImplementedException());
+            AddBuilderWithBinding<double>(() => new DoubleField());
+            AddBuilderWithBinding<float>(() => new FloatField());
 
-            AddBuilderWithBinding<int>(label => new IntegerField(label));
-            AddBuilderWithBinding<nint, int>(label => new IntegerField(label));
-            AddBuilderWithBinding<long>(label => new LongField(label));
-            AddBuilderWithBinding<short, int>(label => new RangedIntegerField(label, short.MinValue, short.MaxValue));
+            AddBuilderWithBinding<int>(() => new IntegerField());
+            AddBuilderWithBinding<nint, int>(() => new IntegerField());
+            AddBuilderWithBinding<long>(() => new LongField());
+            AddBuilderWithBinding<short, int>(() => new RangedIntegerField(short.MinValue, short.MaxValue));
 
 #if UNITY_2022_3_OR_NEWER
-            AddBuilderWithBinding<uint>(label => new UnsignedIntegerField(label));
-            AddBuilderWithBinding<nuint, uint>(label => new UnsignedIntegerField(label));
-            AddBuilderWithBinding<ulong>(label => new UnsignedLongField(label));
+            AddBuilderWithBinding<uint>(() => new UnsignedIntegerField());
+            AddBuilderWithBinding<nuint, uint>(() => new UnsignedIntegerField());
+            AddBuilderWithBinding<ulong>(() => new UnsignedLongField());
 #else
-            AddBuilderWithBinding<uint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
-            AddBuilderWithBinding<nuint, long>(label => new RangedLongField(label, uint.MinValue, uint.MaxValue));
-            AddBuilderWithBinding<ulong, long>(label => throw new NotImplementedException());
+            AddBuilderWithBinding<uint, long>(() => new RangedLongField(uint.MinValue, uint.MaxValue));
+            AddBuilderWithBinding<nuint, long>(() => new RangedLongField(uint.MinValue, uint.MaxValue));
+            AddBuilderWithBinding<ulong, long>(() => throw new NotImplementedException());
 #endif
 
-            AddBuilderWithBinding<ushort, int>(label => new RangedIntegerField(label, ushort.MinValue, ushort.MaxValue));
+            AddBuilderWithBinding<ushort, int>(() => new RangedIntegerField(ushort.MinValue, ushort.MaxValue));
 
             // C# built-in reference types
-            AddBuilderWithBinding<object>(label => throw new NotImplementedException());
-            AddBuilderWithBinding<string>(label => new TextField(label));
+            AddBuilderWithBinding<object>(() => throw new NotImplementedException());
+            AddBuilderWithBinding<string>(() => new TextField());
             // Cannot use dynamic because it will be treated as object
-            //AddBuilderWithBinding<dynamic>(label => throw new NotImplementedException());
+            //AddBuilderWithBinding<dynamic>( => throw new NotImplementedException());
             // Unity value type
-            AddBuilderWithBinding<Bounds>(label => new BoundsField(label));
-            AddBuilderWithBinding<BoundsInt>(label => new BoundsIntField(label));
-            AddBuilderWithBinding<Hash128>(label => new Hash128Field(label));
-            AddBuilderWithBinding<Rect>(label => new RectField(label));
-            AddBuilderWithBinding<RectInt>(label => new RectIntField(label));
-            AddBuilderWithBinding<Vector2>(label => new Vector2Field(label));
-            AddBuilderWithBinding<Vector2Int>(label => new Vector2IntField(label));
-            AddBuilderWithBinding<Vector3>(label => new Vector3Field(label));
-            AddBuilderWithBinding<Vector3Int>(label => new Vector3IntField(label));
-            AddBuilderWithBinding<Vector4>(label => new Vector4Field(label));
+            AddBuilderWithBinding<Bounds>(() => new BoundsField());
+            AddBuilderWithBinding<BoundsInt>(() => new BoundsIntField());
+            AddBuilderWithBinding<Hash128>(() => new Hash128Field());
+            AddBuilderWithBinding<Rect>(() => new RectField());
+            AddBuilderWithBinding<RectInt>(() => new RectIntField());
+            AddBuilderWithBinding<Vector2>(() => new Vector2Field());
+            AddBuilderWithBinding<Vector2Int>(() => new Vector2IntField());
+            AddBuilderWithBinding<Vector3>(() => new Vector3Field());
+            AddBuilderWithBinding<Vector3Int>(() => new Vector3IntField());
+            AddBuilderWithBinding<Vector4>(() => new Vector4Field());
 
             // Unity special types
-            AddBuilderWithBinding<Color>(label => new ColorField(label));
-            AddBuilderWithBinding<AnimationCurve>(label => new CurveField(label));
-            AddBuilderWithBinding<Gradient>(label => new GradientField(label));
-            // AddWithBinding<Layer, int>(label => new LayerField(label));
-            AddBuilderWithBinding<LayerMask, int>(label => new LayerMaskField(label));
-            // AddWithBinding<Mask, int>(label => new MaskField(label));
-            AddBuilderWithBinding<UObject>(label => new ObjectField(label));
-            // AddWithBinding<Tag, string>(label => new TagField(label));
-        }
-
-        public class Args
-        {
-            public bool Enable { get; set; } = true;
-
-            public string Label { get; set; }
+            AddBuilderWithBinding<Color>(() => new ColorField());
+            AddBuilderWithBinding<AnimationCurve>(() => new CurveField());
+            AddBuilderWithBinding<Gradient>(() => new GradientField());
+            // AddWithBinding<Layer, int>(() => new LayerField());
+            AddBuilderWithBinding<LayerMask, int>(() => new LayerMaskField());
+            // AddWithBinding<Mask, int>(() => new MaskField());
+            AddBuilderWithBinding<UObject>(() => new ObjectField());
+            // AddWithBinding<Tag, string>(() => new TagField());
         }
     }
 }

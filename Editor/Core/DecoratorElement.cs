@@ -1,26 +1,25 @@
-﻿using UnityEngine.UIElements;
+﻿using System;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    public sealed class DecoratorElement : VisualElement
+    public class DecoratorElement : VisualElement
     {
         public DecoratorElement(string name)
         {
             base.name = name;
         }
 
-        public event EditorEvent OnDestroy = decorator => { };
+        public event Action OnDestroy = () => { };
 
-        public event EditorEvent OnSceneGUI = decorator => { };
+        public event Action OnSceneGUI = () => { };
 
-        public event EditorEvent OnStart = decorator => { };
+        public event Action OnStart = () => { };
 
-        internal static void InvokeOnDestroy(DecoratorElement decorator) => decorator.OnDestroy.Invoke(decorator);
+        internal static void InvokeOnDestroy(DecoratorElement decorator) => decorator.OnDestroy.Invoke();
 
-        internal static void InvokeOnSceneGUI(DecoratorElement decorator) => decorator.OnSceneGUI.Invoke(decorator);
+        internal static void InvokeOnSceneGUI(DecoratorElement decorator) => decorator.OnSceneGUI.Invoke();
 
-        internal static void InvokeOnStart(DecoratorElement decorator) => decorator.OnStart.Invoke(decorator);
-
-        public delegate void EditorEvent(DecoratorElement decorator);
+        internal static void InvokeOnStart(DecoratorElement decorator) => decorator.OnStart.Invoke();
     }
 }
