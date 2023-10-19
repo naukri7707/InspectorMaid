@@ -4,7 +4,7 @@ namespace Naukri.InspectorMaid.Editor
 {
     public class ReadOnlyDrawer : CustomDrawerOf<ReadOnlyAttribute>
     {
-        public override void OnDrawDecorator(DecoratorElement child)
+        public override void OnStart()
         {
             decorator.SetEnabled(false);
         }
