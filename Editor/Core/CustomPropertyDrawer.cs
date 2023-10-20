@@ -22,8 +22,7 @@ namespace Naukri.InspectorMaid.Editor.Core
         public VisualElement CreatePropertyGUI()
         {
             var name = ObjectNames.NicifyVariableName(propertyInfo.Name);
-            var property = new PropertyBuilder(target, propertyInfo).Build();
-            property.SetLabel(name);
+            var property = new PropertyElement(name, target, propertyInfo);
 
             var drawers = propertyInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
@@ -45,6 +44,9 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 drawer.OnDrawProperty(property);
             }
+
+            // Build the property
+            property.Build();
 
             return decorator;
         }

@@ -11,24 +11,29 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             this.target = target;
             this.info = info;
-            BuildElement();
         }
 
         private readonly MethodInfo info;
 
         private readonly object target;
 
-        private Label labelElement = new Label();
+        private string _label;
 
         [SuppressMessage("Style", "IDE1006")]
-        public string label { get => labelElement.text; set => labelElement.text = value; }
+        public string label { get => _label; set => _label = value; }
 
-        protected virtual void BuildElement()
+        internal void Build()
+        {
+            OnBuild();
+        }
+
+        protected virtual void OnBuild()
         {
             // Todo: Add support for parameters
             AddToClassList(BaseField<object>.ussClassName);
             style.flexDirection = FlexDirection.Row;
 
+            var labelElement = new Label(label);
             labelElement.AddToClassList(BaseField<object>.labelUssClassName);
             if (label == null)
             {
