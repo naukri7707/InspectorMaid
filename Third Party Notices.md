@@ -7,7 +7,7 @@ License Type: MIT
 
 MIT License
 
-Copyright (c) 2022 Naukri
+Copyright (c) 2023 Naukri
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

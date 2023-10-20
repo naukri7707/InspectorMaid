@@ -1,5 +1,7 @@
 # Changelog
 
-## [0.1.0] - 2022-05-24
+## [0.1.0] - 2023-10-21
 
-### This is the first release of *Inspector Maid*.
+### 新增
+- 首次發布專案。
+- 基本框架已經穩定，可供開發使用。
