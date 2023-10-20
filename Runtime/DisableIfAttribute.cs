@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class DisableIfAttribute : InspectorMaidAttribute
+    public class DisableIfAttribute : InspectorMaidBindableAttribute
     {
     }
 }

@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using IBindable = Naukri.InspectorMaid.Core.IBindable;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Core
@@ -34,7 +35,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        public bool IsBinding => attributeRef.binding != null;
+        public bool IsBinding => attributeRef is IBindable bindable && bindable.binding != null;
 
         [SuppressMessage("Style", "IDE1006")]
         public MethodInfo methodInfo
@@ -87,49 +88,57 @@ namespace Naukri.InspectorMaid.Editor.Core
         public object GetBindingValue()
         {
             var type = target.GetType();
-            var bindingPath = attributeRef.binding;
 
-            if (type.GetField(bindingPath, Utility.AllAccessFlags) is FieldInfo field)
+            if (attributeRef is IBindable bindable)
             {
-                return field.GetValue(target);
-            }
-            else if (type.GetProperty(bindingPath, Utility.AllAccessFlags) is PropertyInfo property)
-            {
-                return property.GetValue(target);
-            }
-            else if (type.GetMethod(bindingPath, Utility.AllAccessFlags) is MethodInfo method)
-            {
-                var args = attributeRef.args;
-                return method.Invoke(target, args);
+                var bindingPath = bindable.binding;
+
+                if (type.GetField(bindingPath, Utility.AllAccessFlags) is FieldInfo field)
+                {
+                    return field.GetValue(target);
+                }
+                else if (type.GetProperty(bindingPath, Utility.AllAccessFlags) is PropertyInfo property)
+                {
+                    return property.GetValue(target);
+                }
+                else if (type.GetMethod(bindingPath, Utility.AllAccessFlags) is MethodInfo method)
+                {
+                    var args = bindable.args;
+                    return method.Invoke(target, args);
+                }
+                else
+                {
+                    throw new Exception($"Can't find binding path: {bindingPath}");
+                }
             }
             else
             {
-                throw new Exception($"Can't find binding path: {bindingPath}");
+                throw new Exception($"{attributeRef.GetType()} is not bindable.");
             }
         }
 
-        public TBinding GetBindingValue<TBinding>()
+        public T GetBindingValue<T>()
         {
             var value = GetBindingValue();
             try
             {
-                return (TBinding)Convert.ChangeType(value, typeof(TBinding));
+                return (T)Convert.ChangeType(value, typeof(T));
             }
             catch
             {
-                throw new Exception($"Can't convert binding value '{attributeRef.binding}' to {typeof(TBinding).Name}");
+                throw new Exception($"Can't convert {attributeRef.GetType()}'s binding value to {typeof(T).Name}");
             }
         }
 
         public abstract void OnDrawDecorator(DecoratorElement child);
 
-        public virtual void OnDrawField(PropertyField field)
+        public virtual void OnDrawField(PropertyField fieldElement)
         { }
 
-        public virtual void OnDrawMethod(MethodElement builder)
+        public virtual void OnDrawMethod(MethodElement methodElement)
         { }
 
-        public virtual void OnDrawProperty(BindableElement property)
+        public virtual void OnDrawProperty(BindableElement propertyElement)
         { }
 
         internal CustomDrawer CloneWith(InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
