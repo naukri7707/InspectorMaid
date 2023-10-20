@@ -14,6 +14,6 @@ namespace Naukri.InspectorMaid
 
         public readonly string label;
 
-        public bool useNicifyName = true;
+        public bool useNicifyName = false;
     }
 }
