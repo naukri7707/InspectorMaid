@@ -27,7 +27,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var drawers = propertyInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, propertyInfo))
+                .Select(it => DrawerTemplates.Create(it.GetType(), DrawerTarget.Property, it, target, propertyInfo))
                 .ToList();
 
             // Decorate the property

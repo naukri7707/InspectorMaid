@@ -31,7 +31,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var drawers = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), it, target, fieldInfo))
+                .Select(it => DrawerTemplates.Create(it.GetType(), DrawerTarget.Field, it, target, fieldInfo))
                 .ToList();
 
             // Decorate the field
