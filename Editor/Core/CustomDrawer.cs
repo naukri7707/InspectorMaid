@@ -12,11 +12,16 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     public abstract class CustomDrawer
     {
+        private DrawerTarget _drawerTarget;
+
         private MemberInfo _info;
 
         private SerializedProperty _serializedProperty;
 
         private UObject _target;
+
+        [SuppressMessage("Style", "IDE1006")]
+        public DrawerTarget drawerTarget => _drawerTarget;
 
         [SuppressMessage("Style", "IDE1006")]
         public FieldInfo fieldInfo
@@ -141,9 +146,10 @@ namespace Naukri.InspectorMaid.Editor.Core
         public virtual void OnDrawProperty(BindableElement propertyElement)
         { }
 
-        internal CustomDrawer CloneWith(InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
+        internal CustomDrawer CloneWith(DrawerTarget drawerTarget, InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
         {
             var cloned = (CustomDrawer)MemberwiseClone();
+            cloned._drawerTarget = drawerTarget;
             cloned.attributeRef = attribute;
             cloned._target = target;
             cloned._info = info;
