@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 using IBindable = Naukri.InspectorMaid.Core.IBindable;
 using UObject = UnityEngine.Object;
 
@@ -143,7 +142,7 @@ namespace Naukri.InspectorMaid.Editor.Core
         public virtual void OnDrawMethod(MethodElement methodElement)
         { }
 
-        public virtual void OnDrawProperty(BindableElement propertyElement)
+        public virtual void OnDrawProperty(PropertyElement propertyElement)
         { }
 
         internal CustomDrawer CloneWith(DrawerTarget drawerTarget, InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)

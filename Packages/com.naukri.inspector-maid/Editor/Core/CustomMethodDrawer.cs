@@ -48,6 +48,9 @@ namespace Naukri.InspectorMaid.Editor.Core
                 drawer.OnDrawMethod(method);
             }
 
+            // Build the method
+            method.Build();
+
             return decorator;
         }
     }
