@@ -2,8 +2,8 @@
 {
     public class InspectorMaidBindableAttribute : InspectorMaidAttribute, IBindable
     {
-        public object[] args { get; set; }
+        public object[] bindingArgs { get; set; }
 
-        public string binding { get; set; }
+        public string bindingPath { get; set; }
     }
 }
