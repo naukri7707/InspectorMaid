@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ReadOnlyAttribute : InspectorMaidAttribute
+    public class ReadOnlyAttribute : DrawerAttribute
     {
     }
 }

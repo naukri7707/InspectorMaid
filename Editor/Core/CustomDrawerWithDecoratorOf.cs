@@ -1,11 +1,12 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
     public abstract class CustomDrawerWithDecoratorOf<TAttribute, TDecorator> : CustomDrawer
-           where TAttribute : InspectorMaidAttribute
+           where TAttribute : DrawerAttribute
            where TDecorator : DecoratorElement
     {
         private TAttribute _attribute;
@@ -20,7 +21,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         internal override Type AttributeType => typeof(TAttribute);
 
-        protected internal override sealed InspectorMaidAttribute attributeRef
+        protected internal override sealed DrawerAttribute attributeRef
         {
             get => _attribute;
             set

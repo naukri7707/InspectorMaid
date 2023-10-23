@@ -29,17 +29,12 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        internal static CustomDrawer Create(Type type, DrawerTarget drawerTarget, InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
+        internal static CustomDrawer Create(DrawerAttribute attribute, DrawerTarget drawerTarget, UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
         {
+            var type = attribute.GetType();
             var template = Templates[type];
             var instance = template.CloneWith(drawerTarget, attribute, target, info, serializedProperty);
             return instance;
-        }
-
-        internal static CustomDrawer Create<T>(DrawerTarget drawerTarget, InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty = null) where T : InspectorMaidAttribute
-        {
-            var type = typeof(T);
-            return Create(type, drawerTarget, attribute, target, info, serializedProperty);
         }
     }
 }

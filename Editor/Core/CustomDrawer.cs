@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -84,10 +85,34 @@ namespace Naukri.InspectorMaid.Editor.Core
         internal abstract Type AttributeType { get; }
 
         [SuppressMessage("Style", "IDE1006")]
-        protected internal abstract InspectorMaidAttribute attributeRef { get; set; }
+        protected internal abstract DrawerAttribute attributeRef { get; set; }
 
         [SuppressMessage("Style", "IDE1006")]
         protected internal abstract DecoratorElement decoratorRef { get; set; }
+
+        public Action CreateBindingMethodAction()
+        {
+            var type = target.GetType();
+
+            if (attributeRef is IBindable bindable)
+            {
+                var binding = bindable.binding;
+
+                if (type.GetMethod(binding, Utility.AllAccessFlags) is MethodInfo method)
+                {
+                    var args = bindable.args;
+                    return () => method.Invoke(target, args);
+                }
+                else
+                {
+                    throw new Exception($"Can't find binding path: {binding}");
+                }
+            }
+            else
+            {
+                throw new Exception($"{attributeRef.GetType()} is not bindable.");
+            }
+        }
 
         public object GetBindingValue()
         {
@@ -95,24 +120,24 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             if (attributeRef is IBindable bindable)
             {
-                var bindingPath = bindable.binding;
+                var binding = bindable.binding;
 
-                if (type.GetField(bindingPath, Utility.AllAccessFlags) is FieldInfo field)
+                if (type.GetField(binding, Utility.AllAccessFlags) is FieldInfo field)
                 {
                     return field.GetValue(target);
                 }
-                else if (type.GetProperty(bindingPath, Utility.AllAccessFlags) is PropertyInfo property)
+                else if (type.GetProperty(binding, Utility.AllAccessFlags) is PropertyInfo property)
                 {
                     return property.GetValue(target);
                 }
-                else if (type.GetMethod(bindingPath, Utility.AllAccessFlags) is MethodInfo method)
+                else if (type.GetMethod(binding, Utility.AllAccessFlags) is MethodInfo method)
                 {
                     var args = bindable.args;
                     return method.Invoke(target, args);
                 }
                 else
                 {
-                    throw new Exception($"Can't find binding path: {bindingPath}");
+                    throw new Exception($"Can't find binding path: {binding}");
                 }
             }
             else
@@ -145,7 +170,7 @@ namespace Naukri.InspectorMaid.Editor.Core
         public virtual void OnDrawProperty(PropertyElement propertyElement)
         { }
 
-        internal CustomDrawer CloneWith(DrawerTarget drawerTarget, InspectorMaidAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
+        internal CustomDrawer CloneWith(DrawerTarget drawerTarget, DrawerAttribute attribute, UObject target, MemberInfo info, SerializedProperty serializedProperty)
         {
             var cloned = (CustomDrawer)MemberwiseClone();
             cloned._drawerTarget = drawerTarget;

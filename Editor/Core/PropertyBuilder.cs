@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;

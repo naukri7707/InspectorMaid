@@ -1,0 +1,16 @@
+{
+    "name": "Naukri.InspectorMaid.Samples",
+    "rootNamespace": "Naukri.InspectorMaid.Samples",
+    "references": [
+        "Naukri.InspectorMaid"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

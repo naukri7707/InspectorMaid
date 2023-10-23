@@ -1,10 +1,11 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.UIElements;
 using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
     public abstract class CustomDrawerOf<TAttribute> : CustomDrawerWithDecoratorOf<TAttribute, DecoratorElement>
-        where TAttribute : InspectorMaidAttribute
+        where TAttribute : DrawerAttribute
     {
         public virtual void OnDestroy()
         { }
