@@ -1,4 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.UIElements;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -29,19 +31,33 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             field.label = name;
 
-            var drawers = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
-                .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), DrawerTarget.Field, it, target, fieldInfo))
+            var drawers = new List<CustomDrawer>();
+            var attrs = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .ToList();
+
+            attrs.Reverse();
 
             // Decorate the field
             var decorator = new DecoratorElement("Field Decorator");
             decorator.Add(field);
 
-            foreach (var drawer in drawers)
+            foreach (var attr in attrs)
             {
-                drawer.OnDrawDecorator(decorator);
-                decorator = drawer.decoratorRef;
+                // Draw decorator
+                if (attr is DrawerAttribute drawerAttr)
+                {
+                    var drawer = DrawerTemplates.Create(drawerAttr, DrawerTarget.Field, target, fieldInfo);
+                    drawers.Add(drawer);
+
+                    drawer.OnDrawDecorator(decorator);
+                    decorator = drawer.decoratorRef;
+                }
+                // Style decorator
+                else if (attr is StylerAttribute styleAttr)
+                {
+                    var styler = StylerTemplates.Create(styleAttr);
+                    styler.OnStyling(decorator.style);
+                }
             }
 
             // Style the field

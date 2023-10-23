@@ -1,4 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.UIElements;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -22,24 +24,33 @@ namespace Naukri.InspectorMaid.Editor.Core
         public VisualElement CreatePropertyGUI()
         {
             var name = ObjectNames.NicifyVariableName(methodInfo.Name);
-            var method = new MethodElement(target, methodInfo)
-            {
-                label = name
-            };
+            var method = new MethodElement(name, target, methodInfo);
 
-            var drawers = methodInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
-                .OrderByDescending(it => it.order)
-                .Select(it => DrawerTemplates.Create(it.GetType(), DrawerTarget.Method, it, target, methodInfo))
+            var drawers = new List<CustomDrawer>();
+            var attrs = methodInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
                 .ToList();
 
             // Decorate the method
             var decorator = new DecoratorElement("Method Decorator");
             decorator.Add(method);
 
-            foreach (var drawer in drawers)
+            foreach (var attr in attrs)
             {
-                drawer.OnDrawDecorator(decorator);
-                decorator = drawer.decoratorRef;
+                // Draw decorator
+                if (attr is DrawerAttribute drawerAttr)
+                {
+                    var drawer = DrawerTemplates.Create(drawerAttr, DrawerTarget.Field, target, methodInfo);
+                    drawers.Add(drawer);
+
+                    drawer.OnDrawDecorator(decorator);
+                    decorator = drawer.decoratorRef;
+                }
+                // Style decorator
+                else if (attr is StylerAttribute styleAttr)
+                {
+                    var styler = StylerTemplates.Create(styleAttr);
+                    styler.OnStyling(decorator.style);
+                }
             }
 
             // Style the method
