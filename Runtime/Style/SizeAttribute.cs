@@ -1,11 +1,30 @@
-﻿using Naukri.InspectorMaid.Core;
+﻿using Naukri.InspectorMaid.Converters;
+using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Helpers;
+using System.Net.Http;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Style
 {
     public class SizeAttribute : StylerAttribute
     {
+        public SizeAttribute(
+           string width = null,
+           string height = null,
+           string minWidth = null,
+           string minHeight = null,
+           string maxWidth = null,
+           string maxHeight = null
+           )
+        {
+            this.width = StringConverter.ToStyleLength(width);
+            this.height = StringConverter.ToStyleLength(height);
+            this.minWidth = StringConverter.ToStyleLength(minWidth);
+            this.minHeight = StringConverter.ToStyleLength(minHeight);
+            this.maxWidth = StringConverter.ToStyleLength(maxWidth);
+            this.maxHeight = StringConverter.ToStyleLength(maxHeight);
+        }
+
         public SizeAttribute(
             float width = float.NaN, LengthUnit widthUnit = LengthUnit.Pixel,
             float height = float.NaN, LengthUnit heightUnit = LengthUnit.Pixel,
