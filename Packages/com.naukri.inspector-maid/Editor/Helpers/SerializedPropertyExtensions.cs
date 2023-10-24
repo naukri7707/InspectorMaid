@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Naukri.InspectorMaid.Editor.Core;
+using System.Reflection;
 using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor.Helpers
@@ -9,7 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         {
             var target = property.serializedObject.targetObject;
             var type = target.GetType();
-            var fieldInfo = type.GetField(property.propertyPath);
+            var fieldInfo = type.GetField(property.propertyPath, Utility.AllAccessFlags);
 
             return fieldInfo;
         }
