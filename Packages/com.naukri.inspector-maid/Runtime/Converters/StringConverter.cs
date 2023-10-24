@@ -9,6 +9,12 @@ namespace Naukri.InspectorMaid.Converters
     {
         public static StyleFloat ToStyleFloat(string input)
         {
+            // Null
+            if(input == null)
+            {
+                return new StyleFloat(StyleKeyword.Null);
+            }
+
             var valueText = input.Trim().ToLower();
 
             if (TryConvertToKeyWord(valueText, out var keyword))
@@ -34,6 +40,12 @@ namespace Naukri.InspectorMaid.Converters
 
         public static StyleLength ToStyleLength(string input)
         {
+            // Null
+            if (input == null)
+            {
+                return new StyleLength(StyleKeyword.Null);
+            }
+
             var valueText = input.Trim().ToLower();
 
             if (TryConvertToKeyWord(valueText, out var keyword))
