@@ -15,21 +15,14 @@ namespace Naukri.InspectorMaid.Editor
                 text = attribute.text
             };
 
-            if (attribute.width >= 0)
-            {
-                button.style.width = attribute.width;
-            }
-
-            if (attribute.height >= 0)
-            {
-                button.style.height = attribute.height;
-            }
-
-            // set child
+            // Set flexGrow to 1, so that the child can fill the entire decorator,
+            // this is particularly useful when flexDricetion is row
             child.style.flexGrow = 1;
 
-            // set decorator
-            decorator.style.flexDirection = attribute.flexDirection;
+            // In order to unify the design logic, the newly added child elements must be added before the child decorator
+            // so here we need to set the flex-direction of the decorator to column-reverse
+            // let button be below the decorator by default
+            decorator.style.flexDirection = FlexDirection.ColumnReverse;
 
             decorator.Add(button);
             base.OnDrawDecorator(child);
