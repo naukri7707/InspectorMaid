@@ -12,10 +12,16 @@ namespace Naukri.InspectorMaid.Editor
         {
             helpBox = new HelpBox(attribute.message, attribute.messageType);
 
-            decorator.style.flexDirection = attribute.flexDirection;
             decorator.Add(helpBox);
 
+            // Set flexGrow to 1, so that the child can fill the entire decorator,
+            // this is particularly useful when flexDricetion is row
             child.style.flexGrow = 1;
+
+            // In order to unify the design logic, the newly added child elements must be added before the child decorator
+            // so here we need to set the flex-direction of the decorator to column-reverse
+            // let helpBox be below the decorator by default
+            decorator.style.flexDirection = FlexDirection.ColumnReverse;
 
             base.OnDrawDecorator(child);
         }
