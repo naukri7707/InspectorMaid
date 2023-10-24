@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Style;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -55,8 +56,19 @@ namespace Naukri.InspectorMaid.Editor.Core
                 // Style decorator
                 else if (attr is StylerAttribute styleAttr)
                 {
-                    var styler = StylerTemplates.Create(styleAttr);
-                    styler.OnStyling(decorator.style);
+                    // Special processing ClassAttribute
+                    if (attr is ClassAttribute classAttr)
+                    {
+                        foreach (var className in classAttr.classNames)
+                        {
+                            decorator.AddToClassList(className);
+                        }
+                    }
+                    else
+                    {
+                        var styler = StylerTemplates.Create(styleAttr);
+                        styler.OnStyling(decorator.style);
+                    }
                 }
             }
 
