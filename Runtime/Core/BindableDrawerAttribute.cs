@@ -8,12 +8,8 @@
             this.args = args;
         }
 
-        public readonly string binding;
+        public string binding { get; }
 
-        public readonly object[] args;
-
-        string IBindable.binding => binding;
-
-        object[] IBindable.args => args;
+        public object[] args { get; }
     }
 }
