@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ShowAttribute : InspectorMaidAttribute
+    public class ShowAttribute : DrawerAttribute
     {
     }
 }

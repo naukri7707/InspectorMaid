@@ -2,7 +2,13 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ShowIfAttribute : InspectorMaidBindableAttribute
+    public class ShowIfAttribute : BindableDrawerAttribute
     {
+        public ShowIfAttribute(
+            string binding = null,
+            params object[] args
+            ) : base(binding, args)
+        {
+        }
     }
 }

@@ -2,18 +2,21 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : InspectorMaidBindableAttribute
+    public class LabelAttribute : BindableDrawerAttribute
     {
-        public LabelAttribute() : this(string.Empty)
-        { }
-
-        public LabelAttribute(string label)
+        public LabelAttribute(
+            string label = "",
+            bool useNicifyName = false,
+            string binding = null,
+            params object[] args
+            ) : base(binding, args)
         {
             this.label = label;
+            this.useNicifyName = useNicifyName;
         }
 
         public readonly string label;
 
-        public bool useNicifyName = false;
+        public readonly bool useNicifyName;
     }
 }
