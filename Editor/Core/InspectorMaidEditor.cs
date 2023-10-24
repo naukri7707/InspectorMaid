@@ -17,6 +17,11 @@ namespace Naukri.InspectorMaid.Editor.Core
         public override VisualElement CreateInspectorGUI()
         {
             componentContainer = new VisualElement() { name = "component" };
+            var styleSheets = InspectorMaidSettings.Instance.injectList;
+            foreach (var sheet in styleSheets)
+            {
+                componentContainer.styleSheets.Add(sheet);
+            }
 
             // fields
             var fieldsContainer = new VisualElement() { name = "fields" };
