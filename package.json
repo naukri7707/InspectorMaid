@@ -2,7 +2,7 @@
   "name": "com.naukri.inspector-maid",
   "author": "Naukri",
   "displayName": "Inspector Maid",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "unity": "2022.3",
   "description": "This is a custom tool for Unity's Inspector, featuring the following key characteristics:\r\n\r\n\u2022 Utilizes UIElements for rendering, making UI development more straightforward and flexible.\r\n\n\u2022 Allows direct display of properties and methods in the Inspector interface, simplifying data access and modification.\r\n\n\u2022 Supports multiple drawers for the same field, facilitating adjustment and configuration of various field properties.\r\n\n\u2022 Nested UI decorator structure for orderly combining multiple drawers.\r\n\n\u2022 Offers parameter binding functionality, enabling dynamic UI changes based on bound parameters.",
   "samples": [
