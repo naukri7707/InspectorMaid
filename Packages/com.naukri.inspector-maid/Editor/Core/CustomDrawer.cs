@@ -159,8 +159,6 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        public abstract void OnDrawDecorator(DecoratorElement child);
-
         public virtual void OnDrawField(PropertyField fieldElement)
         { }
 

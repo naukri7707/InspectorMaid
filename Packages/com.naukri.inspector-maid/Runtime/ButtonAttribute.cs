@@ -1,19 +1,24 @@
 ﻿using Naukri.InspectorMaid.Core;
-using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid
 {
-    public class ButtonAttribute : BindableDrawerAttribute
+    public class ButtonAttribute : ScopeAttribute, IBindable
     {
         public ButtonAttribute(
             string text = "",
             string binding = null,
             params object[] args
-            ) : base(binding, args)
+            )
         {
             this.text = text;
+            this.binding = binding;
+            this.args = args;
         }
 
         public readonly string text;
+
+        public object[] args { get; }
+
+        public string binding { get; }
     }
 }

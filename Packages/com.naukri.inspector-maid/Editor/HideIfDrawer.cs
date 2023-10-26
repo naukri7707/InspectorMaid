@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public class HideIfDrawer : CustomDrawerOf<HideIfAttribute>
+    public class HideIfDrawer : CustomDrawerOf<HideIfScopeAttribute>
     {
         public override void OnSceneGUI()
         {

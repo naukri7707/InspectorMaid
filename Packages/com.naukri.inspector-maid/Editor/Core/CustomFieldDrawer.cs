@@ -1,9 +1,4 @@
-﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.UIElements;
-using Naukri.InspectorMaid.Style;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -29,56 +24,11 @@ namespace Naukri.InspectorMaid.Editor.Core
         public VisualElement CreateFieldGUI()
         {
             var name = ObjectNames.NicifyVariableName(fieldInfo.Name);
-
             field.label = name;
 
-            var drawers = new List<CustomDrawer>();
-            var attrs = fieldInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
-                .ToList();
+            var root = Utility.DrawDecoratorTree(target, fieldInfo, drawer => drawer.OnDrawField(field));
 
-            attrs.Reverse();
-
-            // Decorate the field
-            var decorator = new DecoratorElement("Field Decorator");
-            decorator.Add(field);
-
-            foreach (var attr in attrs)
-            {
-                // Draw decorator
-                if (attr is DrawerAttribute drawerAttr)
-                {
-                    var drawer = DrawerTemplates.Create(drawerAttr, DrawerTarget.Field, target, fieldInfo);
-                    drawers.Add(drawer);
-
-                    drawer.OnDrawDecorator(decorator);
-                    decorator = drawer.decoratorRef;
-                }
-                // Style decorator
-                else if (attr is StylerAttribute styleAttr)
-                {
-                    // Special processing ClassAttribute
-                    if (attr is ClassAttribute classAttr)
-                    {
-                        foreach (var className in classAttr.classNames)
-                        {
-                            decorator.AddToClassList(className);
-                        }
-                    }
-                    else
-                    {
-                        var styler = StylerTemplates.Create(styleAttr);
-                        styler.OnStyling(decorator.style);
-                    }
-                }
-            }
-
-            // Style the field
-            foreach (var drawer in drawers)
-            {
-                drawer.OnDrawField(field);
-            }
-
-            return decorator;
+            return root;
         }
     }
 }
