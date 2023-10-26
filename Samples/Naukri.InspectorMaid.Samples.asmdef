@@ -2,14 +2,9 @@
     "name": "Naukri.InspectorMaid.Samples",
     "rootNamespace": "Naukri.InspectorMaid.Samples",
     "references": [
-        "Naukri.InspectorMaid",
-        "Naukri.InspectorMaid.Editor"
+        "Naukri.InspectorMaid"
     ],
-    "includePlatforms": [
-        "Editor",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
