@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class TargetAttribute : ScopeAttribute
+    public class TargetAttribute : ItemAttribute
     {
     }
 }
