@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : ScopeAttribute, IBindable
+    public class LabelAttribute : ItemAttribute, IBindable
     {
         public LabelAttribute(
             string label = "",
