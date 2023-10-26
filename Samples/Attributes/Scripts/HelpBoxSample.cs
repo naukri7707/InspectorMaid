@@ -13,17 +13,17 @@ namespace Naukri.InspectorMaid.Samples.Attributes
 
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
         // Sample 2
-        [HelpBox("Helpbox with info", HelpBoxMessageType.Info)]
+        [HelpBox("Helpbox with info icon", HelpBoxMessageType.Info)]
         public int info = 0;
 
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
         // Sample 3
-        [HelpBox("Normal helpbox", HelpBoxMessageType.Warning)]
+        [HelpBox("Helpbox with warning icon", HelpBoxMessageType.Warning)]
         public int warning = 0;
 
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
         // Sample 4
-        [HelpBox("Helpbox with info", HelpBoxMessageType.Error)]
+        [HelpBox("Helpbox with error icon", HelpBoxMessageType.Error)]
         public int error = 0;
 
         [HelpBox("You can also change the content of HelpBox dynamically by binding.", HelpBoxMessageType.Info)]
