@@ -7,12 +7,35 @@ namespace Naukri.InspectorMaid.Converters
 {
     internal static class StringConverter
     {
-        public static StyleFloat ToStyleFloat(string input)
+        public static StyleInt? ToStyleInt(string input)
         {
             // Null
             if (input == null)
             {
-                return new StyleFloat(StyleKeyword.Null);
+                return null;
+            }
+
+            var valueText = input.Trim().ToLower();
+
+            if (TryConvertToKeyWord(valueText, out var keyword))
+            {
+                return new StyleInt(keyword);
+            }
+
+            if (int.TryParse(valueText, out var value))
+            {
+                return new StyleInt(value);
+            }
+
+            throw new Exception($"Can't convert {input} to {nameof(StyleInt)}");
+        }
+
+        public static StyleFloat? ToStyleFloat(string input)
+        {
+            // Null
+            if (input == null)
+            {
+                return null;
             }
 
             var valueText = input.Trim().ToLower();
@@ -30,20 +53,20 @@ namespace Naukri.InspectorMaid.Converters
             throw new Exception($"Can't convert {input} to {nameof(StyleFloat)}");
         }
 
-        public static StyleFloat[] ToStyleFloats(string input)
+        public static StyleFloat?[] ToStyleFloats(string input)
         {
             return input
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Select(it => ToStyleFloat(it))
                 .ToArray();
         }
 
-        public static StyleLength ToStyleLength(string input)
+        public static StyleLength? ToStyleLength(string input)
         {
             // Null
             if (input == null)
             {
-                return new StyleLength(StyleKeyword.Null);
+                return null;
             }
 
             var valueText = input.Trim().ToLower();
@@ -80,20 +103,20 @@ namespace Naukri.InspectorMaid.Converters
             throw new Exception($"Can't convert {input} to {nameof(StyleLength)}");
         }
 
-        public static StyleLength[] ToStyleLengths(string input)
+        public static StyleLength?[] ToStyleLengths(string input)
         {
             return input
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Select(it => ToStyleLength(it))
                 .ToArray();
         }
 
-        public static StyleColor ToStyleColor(string input)
+        public static StyleColor? ToStyleColor(string input)
         {
             // Null
             if (input == null)
             {
-                return new StyleColor(StyleKeyword.Null);
+                return null;
             }
 
             // By hex color
@@ -122,22 +145,27 @@ namespace Naukri.InspectorMaid.Converters
             throw new Exception($"Can't convert {input} to {nameof(StyleColor)}");
         }
 
+        public static StyleEnum<T>? ToStyleEnum<T>(string input) where T : struct, IConvertible
+        {
+            if (input == null)
+            {
+                return null;
+            }
+
+            var value = Enum.Parse<T>(input, true);
+            return new StyleEnum<T>(value);
+        }
+
         private static bool TryConvertToKeyWord(string input, out StyleKeyword keyword)
         {
-            var valueText = input.Trim().ToLower();
+            // Since Enum.TryParse will convert number to Enum, so we need to check if the input is number first.
+            if (int.TryParse(input, out var intValue))
+            {
+                keyword = StyleKeyword.Null;
+                return false;
+            }
 
-            if (valueText == StyleKeyword.Auto.ToString().ToLower())
-            {
-                keyword = StyleKeyword.Auto;
-                return true;
-            }
-            else if (input == StyleKeyword.None.ToString().ToLower())
-            {
-                keyword = StyleKeyword.None;
-                return true;
-            }
-            keyword = default;
-            return false;
+            return Enum.TryParse(input, true, out keyword);
         }
     }
 }

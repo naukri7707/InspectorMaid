@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ButtonAttribute : ScopeAttribute, IBindable
+    public class ButtonAttribute : ItemAttribute, IBindable
     {
         public ButtonAttribute(
             string text = "",
