@@ -27,7 +27,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         public int changeThePosition = 0;
 
         [Margin(top: 20)]
-        [Size(width: "40%"), HelpBox("Specific Size", HelpBoxMessageType.Info)]
+        [HelpBox("Specific Size", HelpBoxMessageType.Info), Size(width: "40%")]
         public int specificSize = 0;
     }
 }

@@ -18,7 +18,7 @@ namespace Naukri.InspectorMaid.Style
 
         public readonly StyleEnum<Align> alignItems;
 
-        #endregion
+        #endregion -- Align --
 
         #region -- BackgroundImage --
 
@@ -60,7 +60,7 @@ namespace Naukri.InspectorMaid.Style
 
         public readonly StyleEnum<Wrap> flexWrap;
 
-        #endregion
+        #endregion -- Flex --
 
         #region -- Text --
 

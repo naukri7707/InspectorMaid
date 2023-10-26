@@ -1,8 +1,4 @@
-﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.UIElements;
-using Naukri.InspectorMaid.Style;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -27,54 +23,12 @@ namespace Naukri.InspectorMaid.Editor.Core
             var name = ObjectNames.NicifyVariableName(methodInfo.Name);
             var method = new MethodElement(name, target, methodInfo);
 
-            var drawers = new List<CustomDrawer>();
-            var attrs = methodInfo.GetCustomAttributes<InspectorMaidAttribute>(true)
-                .ToList();
+            var root = Utility.DrawDecoratorTree(target, methodInfo, drawer => drawer.OnDrawMethod(method));
 
-            // Decorate the method
-            var decorator = new DecoratorElement("Method Decorator");
-            decorator.Add(method);
-
-            foreach (var attr in attrs)
-            {
-                // Draw decorator
-                if (attr is DrawerAttribute drawerAttr)
-                {
-                    var drawer = DrawerTemplates.Create(drawerAttr, DrawerTarget.Field, target, methodInfo);
-                    drawers.Add(drawer);
-
-                    drawer.OnDrawDecorator(decorator);
-                    decorator = drawer.decoratorRef;
-                }
-                // Style decorator
-                else if (attr is StylerAttribute styleAttr)
-                {
-                    // Special processing ClassAttribute
-                    if (attr is ClassAttribute classAttr)
-                    {
-                        foreach (var className in classAttr.classNames)
-                        {
-                            decorator.AddToClassList(className);
-                        }
-                    }
-                    else
-                    {
-                        var styler = StylerTemplates.Create(styleAttr);
-                        styler.OnStyling(decorator.style);
-                    }
-                }
-            }
-
-            // Style the method
-            foreach (var drawer in drawers)
-            {
-                drawer.OnDrawMethod(method);
-            }
-
-            // Build the method
+            // Build the property
             method.Build();
 
-            return decorator;
+            return root;
         }
     }
 }

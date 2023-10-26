@@ -6,7 +6,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
     {
         public bool disable;
 
-        [DisableIf(binding: nameof(disable))]
+        [DisableIfScope(binding: nameof(disable))]
         public int myField;
     }
 }

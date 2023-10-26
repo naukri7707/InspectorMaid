@@ -4,21 +4,21 @@ using UnityEditor.UIElements;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public class ReadOnlyDrawer : CustomDrawerOf<ReadOnlyAttribute>
+    public class TargetDrawer : CustomDrawerOf<TargetAttribute>
     {
         public override void OnDrawField(PropertyField fieldElement)
         {
-            fieldElement.SetEnabled(false);
+            decorator.Add(fieldElement);
         }
 
         public override void OnDrawProperty(PropertyElement propertyElement)
         {
-            propertyElement.SetEnabled(false);
+            decorator.Add(propertyElement);
         }
 
         public override void OnDrawMethod(MethodElement methodElement)
         {
-            methodElement.SetEnabled(false);
+            decorator.Add(methodElement);
         }
     }
 }

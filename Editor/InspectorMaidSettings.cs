@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,6 +8,23 @@ public class InspectorMaidSettings : ScriptableObject
     public StyleSheet[] injectList = new StyleSheet[0];
 
     public static InspectorMaidSettings Instance => GetOrCreateSettings();
+
+    [SettingsProvider]
+    internal static SettingsProvider CreateFromSettingsFromFunctor()
+    {
+        var settings = GetOrCreateSettings();
+        var settingsSO = new SerializedObject(settings);
+        var provider = AssetSettingsProvider.CreateProviderFromObject(
+            settingsWindowPath: "Project/Inspector Maid",
+            settingsObj: settings,
+            keywords: new[] { "Inspector Maid", "Inspector", "Maid", "IM" }
+            );
+
+        // Register keywords from the properties
+        provider.keywords = SettingsProvider.GetSearchKeywordsFromSerializedObject(settingsSO);
+
+        return provider;
+    }
 
     private static InspectorMaidSettings GetOrCreateSettings()
     {
@@ -28,23 +44,6 @@ public class InspectorMaidSettings : ScriptableObject
             AssetDatabase.SaveAssets();
         }
         return settings;
-    }
-
-    [SettingsProvider]
-    internal static SettingsProvider CreateFromSettingsFromFunctor()
-    {
-        var settings = GetOrCreateSettings();
-        var settingsSO = new SerializedObject(settings);
-        var provider = AssetSettingsProvider.CreateProviderFromObject(
-            settingsWindowPath: "Project/Inspector Maid",
-            settingsObj: settings,
-            keywords: new[] { "Inspector Maid", "Inspector", "Maid", "IM" }
-            );
-
-        // Register keywords from the properties
-        provider.keywords = SettingsProvider.GetSearchKeywordsFromSerializedObject(settingsSO);
-
-        return provider;
     }
 }
 

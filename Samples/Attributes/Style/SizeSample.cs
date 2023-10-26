@@ -1,6 +1,5 @@
 ﻿using Naukri.InspectorMaid.Style;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples
 {

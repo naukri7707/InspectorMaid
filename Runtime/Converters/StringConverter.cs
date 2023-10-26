@@ -10,7 +10,7 @@ namespace Naukri.InspectorMaid.Converters
         public static StyleFloat ToStyleFloat(string input)
         {
             // Null
-            if(input == null)
+            if (input == null)
             {
                 return new StyleFloat(StyleKeyword.Null);
             }

@@ -45,11 +45,6 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
-        public override void OnDrawDecorator(DecoratorElement child)
-        {
-            decorator.Add(child);
-        }
-
         protected internal override sealed DecoratorElement CreateDecoratorImpl()
         {
             return CreateDecorator();

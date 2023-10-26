@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public class DisableIfDrawer : CustomDrawerOf<DisableIfAttribute>
+    public class DisableIfDrawer : CustomDrawerOf<DisableIfScopeAttribute>
     {
         public override void OnSceneGUI()
         {

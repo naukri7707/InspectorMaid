@@ -6,7 +6,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
     {
         public bool enable;
 
-        [EnableIf(binding: nameof(enable))]
+        [EnableIfScope(binding: nameof(enable))]
         public int myField;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public class ShowIfDrawer : CustomDrawerOf<ShowIfAttribute>
+    public class ShowIfDrawer : CustomDrawerOf<ShowIfScopeAttribute>
     {
         public override void OnSceneGUI()
         {
