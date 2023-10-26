@@ -2,11 +2,11 @@
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class ShowIfSample : MonoBehaviour
+    public class HideIfSample : MonoBehaviour
     {
-        public bool show;
+        public bool hide;
 
-        [ShowIf(binding: nameof(show))]
+        [HideIfScope(binding: nameof(hide))]
         public int myField;
     }
 }

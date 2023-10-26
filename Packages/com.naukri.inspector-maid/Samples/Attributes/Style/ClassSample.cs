@@ -1,6 +1,4 @@
 ﻿using Naukri.InspectorMaid.Style;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 

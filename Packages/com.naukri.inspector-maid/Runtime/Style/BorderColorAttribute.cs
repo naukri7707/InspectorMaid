@@ -1,6 +1,5 @@
-﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Converters;
-using UnityEngine;
+﻿using Naukri.InspectorMaid.Converters;
+using Naukri.InspectorMaid.Core;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Style
@@ -30,7 +29,7 @@ namespace Naukri.InspectorMaid.Style
         public BorderColorAttribute(
             string top = null,
             string right = null,
-            string bottom = null, 
+            string bottom = null,
             string left = null
             )
         {

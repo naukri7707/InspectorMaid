@@ -2,24 +2,16 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : ScopeAttribute, IBindable
+    public class EnableIfScopeAttribute : ScopeAttribute, IBindable
     {
-        public LabelAttribute(
-            string label = "",
-            bool useNicifyName = false,
+        public EnableIfScopeAttribute(
             string binding = null,
             params object[] args
             )
         {
-            this.label = label;
-            this.useNicifyName = useNicifyName;
             this.binding = binding;
             this.args = args;
         }
-
-        public readonly string label;
-
-        public readonly bool useNicifyName;
 
         public object[] args { get; }
 

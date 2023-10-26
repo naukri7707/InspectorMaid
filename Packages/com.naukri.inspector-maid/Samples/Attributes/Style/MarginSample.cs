@@ -6,19 +6,19 @@ namespace Naukri.InspectorMaid.Samples
 {
     public class MarginSample : MonoBehaviour
     {
-        [Margin(all: 10), BackgroundColor("#FF0000"), Container]
+        [Container, BackgroundColor("#FF0000"), Margin(all: 10, LengthUnit.Pixel)]
         [BackgroundColor("#0000FF")]
         public string all;
 
-        [Margin(vertical: 20, horizontal: 10), BackgroundColor("#FF0000"), Container]
+        [Container, BackgroundColor("#FF0000"), Margin(vertical: 20, horizontal: 10)]
         [BackgroundColor("#0000FF")]
         public string axis;
 
-        [Margin(bottom: 5), BackgroundColor("#FF0000"), Container]
+        [Container, BackgroundColor("#FF0000"), Margin(bottom: 5)]
         [BackgroundColor("#0000FF")]
         public string specific;
 
-        [Margin(left: 10, leftUnit: LengthUnit.Percent), BackgroundColor("#FF0000"), Container]
+        [Container, BackgroundColor("#FF0000"), Margin(left: 10, leftUnit: LengthUnit.Percent)]
         [BackgroundColor("#0000FF")]
         public string withUnit;
     }
