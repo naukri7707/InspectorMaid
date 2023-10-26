@@ -152,26 +152,20 @@ namespace Naukri.InspectorMaid.Converters
                 return null;
             }
 
-            var value = (T)Enum.Parse(typeof(T), input, true);
+            var value = Enum.Parse<T>(input, true);
             return new StyleEnum<T>(value);
         }
 
         private static bool TryConvertToKeyWord(string input, out StyleKeyword keyword)
         {
-            var valueText = input.Trim().ToLower();
+            // Since Enum.TryParse will convert number to Enum, so we need to check if the input is number first.
+            if (int.TryParse(input, out var intValue))
+            {
+                keyword = StyleKeyword.Null;
+                return false;
+            }
 
-            if (valueText == StyleKeyword.Auto.ToString().ToLower())
-            {
-                keyword = StyleKeyword.Auto;
-                return true;
-            }
-            else if (input == StyleKeyword.None.ToString().ToLower())
-            {
-                keyword = StyleKeyword.None;
-                return true;
-            }
-            keyword = default;
-            return false;
+            return Enum.TryParse(input, true, out keyword);
         }
     }
 }
