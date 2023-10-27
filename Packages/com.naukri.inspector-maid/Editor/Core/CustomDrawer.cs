@@ -15,6 +15,8 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         private DrawerTarget _drawerTarget;
 
+        private Decorator _decorator;
+
         private MemberInfo _info;
 
         private SerializedProperty _serializedProperty;
@@ -23,6 +25,9 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         [SuppressMessage("Style", "IDE1006")]
         public DrawerTarget drawerTarget => _drawerTarget;
+
+        [SuppressMessage("Style", "IDE1006")]
+        public Decorator decorator => _decorator;
 
         [SuppressMessage("Style", "IDE1006")]
         public FieldInfo fieldInfo
@@ -87,9 +92,6 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         [SuppressMessage("Style", "IDE1006")]
         protected internal abstract DrawerAttribute attributeRef { get; set; }
-
-        [SuppressMessage("Style", "IDE1006")]
-        protected internal abstract DecoratorElement decoratorRef { get; set; }
 
         public Action CreateBindingMethodAction()
         {
@@ -177,10 +179,10 @@ namespace Naukri.InspectorMaid.Editor.Core
             cloned._target = target;
             cloned._info = info;
             cloned._serializedProperty = serializedProperty;
-            cloned.decoratorRef = cloned.CreateDecoratorImpl();
+            cloned._decorator = cloned.CreateDecorator();
             return cloned;
         }
 
-        protected internal abstract DecoratorElement CreateDecoratorImpl();
+        internal protected abstract Decorator CreateDecorator();
     }
 }
