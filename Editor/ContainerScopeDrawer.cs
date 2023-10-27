@@ -1,6 +1,6 @@
 ﻿using Naukri.InspectorMaid.Editor.Core;
 
-namespace Naukri.InspectorMaid.Samples
+namespace Naukri.InspectorMaid.Editor
 {
     public class ContainerScopeDrawer : CustomDrawerOf<ContainerScopeAttribute>
     {

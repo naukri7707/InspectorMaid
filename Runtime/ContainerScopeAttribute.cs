@@ -1,6 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
 
-namespace Naukri.InspectorMaid.Samples
+namespace Naukri.InspectorMaid
 {
     public class ContainerScopeAttribute : ScopeAttribute
     {
