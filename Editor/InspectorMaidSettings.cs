@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class InspectorMaidSettings : ScriptableObject
 {
-    public StyleSheet[] injectList = new StyleSheet[0];
+    public StyleSheet[] importStyleSheets = new StyleSheet[0];
 
     public static InspectorMaidSettings Instance => GetOrCreateSettings();
 
