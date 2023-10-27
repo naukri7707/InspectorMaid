@@ -15,7 +15,7 @@ This is particularly useful when defining the target location or setting the tar
         public int withoutTarget = 0;
 
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
-        // Sample 1
+        // Sample 2
         [Target]
         [HelpBox("Due to the declaration of [Target] before [Helpbox], now the 'Helpbox' is positioned below 'Target'")]
         public int withTarget = 0;

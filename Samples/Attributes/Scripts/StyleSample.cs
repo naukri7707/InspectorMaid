@@ -83,7 +83,7 @@ In this example, you can import 'SampleStyleSheet.uss,' which is provided in thi
 If configured correctly, the element's style will result in a 50% width and a 100px height.
 ", HelpBoxMessageType.Warning)]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
-        // Sample 5
+        // Sample 6
         [ContainerScope, Style(classList: "width-50-percent height-50-px", backgroundColor: "#FF0000")]
         public int usingClasses = 0;
     }
