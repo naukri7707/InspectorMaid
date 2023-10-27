@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Samples
+namespace Naukri.InspectorMaid.Samples.Attributes
 {
     public class ContainerScopeSample : MonoBehaviour
     {
