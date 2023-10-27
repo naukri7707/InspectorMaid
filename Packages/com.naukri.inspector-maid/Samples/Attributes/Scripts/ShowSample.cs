@@ -16,7 +16,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         [Show]
         public void MyMethod()
         {
-
+            Debug.Log("Hello world!");
         }
     }
 }

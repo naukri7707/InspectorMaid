@@ -32,6 +32,5 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         // You can also change the content of HelpBox dynamically by binding.
         [HelpBox(binding: nameof(bindingMessage))]
         public string bindingMessage = "change me!";
-
     }
 }
