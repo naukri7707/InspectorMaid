@@ -67,10 +67,12 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             if (type.IsEnum)
             {
+                var defaultValue = (Enum)Activator.CreateInstance(type);
+
                 var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
                 return isFlags
-                    ? new EnumFlagsField(label).WithBind(getter, setter)
-                    : new EnumField(label).WithBind(getter, setter);
+                    ? new EnumFlagsField(label, defaultValue).WithBind(getter, setter)
+                    : new EnumField(label, defaultValue).WithBind(getter, setter);
             }
 
             if (typeof(IList).IsAssignableFrom(type))
