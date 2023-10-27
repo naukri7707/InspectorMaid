@@ -68,27 +68,32 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             button.style.alignSelf = Align.FlexEnd;
 
             // for button evnet implement
-            var parameters = info.GetParameters();
-            args = new object[parameters.Length];
+            var parameterInfos = info.GetParameters();
+            args = new object[parameterInfos.Length];
 
-            for (var i = 0; i < parameters.Length; i++)
+            for (var i = 0; i < parameterInfos.Length; i++)
             {
                 // We need to cache the value of i,
                 // because if we use i in lambda, it will directly reference the current i reference,
                 // but what we want is the i value at the time of definition.
                 var idx = i;
-                var p = parameters[idx];
-                var pType = p.ParameterType;
+                var pInfo = parameterInfos[idx];
+                var pType = pInfo.ParameterType;
 
-                // If the parameter is a value type, we need to create an instance of it.
+                // If the parameter has a default value, set argument to the default value.
+                if (pInfo.HasDefaultValue)
+                {
+                    args[i] = pInfo.DefaultValue;
+                }
+                // If the parameter doesn't have default value, and it is a value type, we need to create an instance of it.
                 // because the valueType can not be null.
-                if (pType.IsValueType)
+                else if (pType.IsValueType)
                 {
                     args[i] = Activator.CreateInstance(pType);
                 }
 
                 var pElement = PropertyBuilder.Build(
-                    pType, $"{p.Name} ({pType.Name}) ", target,
+                    pType, $"{pInfo.Name} ({pType.Name}) ", target,
                     () => args[idx],
                     v => args[idx] = v
                     );
