@@ -81,7 +81,24 @@ namespace Naukri.InspectorMaid.Editor.Core
                 throw new NotImplementedException();
             }
 
-            var element = BuilderDict[type].Invoke(label, target, getter, setter);
+            var targetType = type;
+            while (targetType != null && !BuilderDict.ContainsKey(targetType))
+            {
+                targetType = targetType.BaseType;
+            }
+
+            if (targetType == null)
+            {
+                throw new Exception($"{type.Name} is not a supported type");
+            }
+
+            var element = BuilderDict[targetType].Invoke(label, target, getter, setter);
+
+            // Special processing for ObjectField type filters
+            if (element is ObjectField objectField)
+            {
+                objectField.objectType = type;
+            }
 
             return element;
         }
