@@ -1,49 +1,52 @@
 ﻿using System;
-using System.Reflection;
-using UnityEditor;
 using UnityEngine.UIElements;
-using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
     public static class PropertyBindingExtension
     {
-        public static BaseField<T> WithBind<T>(this BaseField<T> field, UObject target, PropertyInfo info)
+        public static BaseField<T> WithBind<T>(this BaseField<T> field, Func<object> getter, Action<object> setter)
         {
-            field.binding = new PropertyBinding<T>(field, target, info);
+            Func<T> typeGetter = getter != null ? () => (T)getter() : null;
+            Action<T> typeSetter = setter != null ? v => setter(v) : null;
+
+            return field.WithBind(typeGetter, typeSetter);
+        }
+
+        public static BaseField<T> WithBind<T>(this BaseField<T> field, Func<T> getter, Action<T> setter)
+        {
+            field.binding = new PropertyBinding<T>(field, getter, setter);
             return field;
         }
     }
 
     internal class PropertyBinding<T> : IBinding
     {
-        public PropertyBinding(BaseField<T> field, UObject target, PropertyInfo info)
+        public PropertyBinding(BaseField<T> field, Func<T> getter, Action<T> setter)
         {
-            this.target = target;
             this.field = field;
-            this.info = info;
+            this.getter = getter;
+            this.setter = setter;
 
-            if (info.CanWrite)
+            if (setter == null)
             {
-                field.RegisterValueChangedCallback(OnChanged);
+                field.SetEnabled(false);
             }
             else
             {
-                field.SetEnabled(false);
+                field.RegisterValueChangedCallback(OnChanged);
             }
         }
 
         public readonly BaseField<T> field;
 
-        public readonly UObject target;
+        public readonly Func<T> getter;
 
-        private readonly PropertyInfo info;
+        private readonly Action<T> setter;
 
         public void OnChanged(ChangeEvent<T> changeEvent)
         {
-            var v = Convert.ChangeType(changeEvent.newValue, info.PropertyType);
-            info.SetValue(target, v);
-            EditorUtility.SetDirty(target);
+            setter.Invoke(changeEvent.newValue);
         }
 
         public void PreUpdate()
@@ -51,7 +54,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         public void Release()
         {
-            if (info.CanWrite)
+            if (setter != null)
             {
                 field.UnregisterValueChangedCallback(OnChanged);
             }
@@ -59,10 +62,9 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         public void Update()
         {
-            if (info.CanRead)
+            if (getter != null)
             {
-                var v = info.GetValue(target);
-                field.value = (T)Convert.ChangeType(v, typeof(T));
+                field.value = getter();
             }
         }
     }

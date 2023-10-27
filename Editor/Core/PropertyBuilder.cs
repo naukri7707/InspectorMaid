@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,53 +13,73 @@ namespace Naukri.InspectorMaid.Editor.Core
 {
     public static class PropertyBuilder
     {
-        private static Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>> _builderDict = null;
+        public delegate BindableElement BuilderFunc(string label, UObject target, Func<object> getter, Action<object> setter);
 
-        public static Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>> BuilderDict
+        private static Dictionary<Type, BuilderFunc> _builderDict = null;
+
+        public static Dictionary<Type, BuilderFunc> BuilderDict
         {
             get
             {
                 if (_builderDict == null)
                 {
-                    _builderDict = new Dictionary<Type, Func<string, UObject, PropertyInfo, BindableElement>>();
+                    _builderDict = new Dictionary<Type, BuilderFunc>();
                     InitDict();
                 }
                 return _builderDict;
             }
         }
 
-        public static void AddBuilder<T>(Func<string, UObject, PropertyInfo, BaseField<T>> factory)
-        {
-            BuilderDict.Add(typeof(T), factory);
-        }
-
         public static void AddBuilderWithBinding<T>(Func<string, BaseField<T>> factory)
         {
-            BuilderDict.Add(typeof(T), (label, target, info) => factory(label).WithBind(target, info));
+            BuilderDict
+                .Add(typeof(T), (label, target, getter, setter)
+                    => factory(label).WithBind(getter, setter)
+                );
         }
 
         public static void AddBuilderWithBinding<T, TValue>(Func<string, BaseField<TValue>> factory)
         {
-            BuilderDict.Add(typeof(T), (label, target, info) => factory(label).WithBind(target, info));
+            BuilderDict
+                .Add(typeof(T), (label, target, getter, setter)
+                    => factory(label).WithBind(getter, setter)
+                );
         }
 
         internal static BindableElement Build(string label, UObject target, PropertyInfo info)
         {
             var propertyType = info.PropertyType;
+            Func<object> getter = info.CanRead
+                ? () => info.GetValue(target)
+                : null;
+            Action<object> setter = info.CanWrite
+                ? v =>
+                {
+                    info.SetValue(target, v);
+                    EditorUtility.SetDirty(target);
+                }
+            : null;
 
-            if (propertyType.IsEnum)
+            return Build(propertyType, label, target, getter, setter);
+        }
+
+        internal static BindableElement Build(Type type, string label, UObject target, Func<object> getter, Action<object> setter)
+        {
+            if (type.IsEnum)
             {
-                var isFlags = info.GetCustomAttribute<FlagsAttribute>() != null;
+                var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
                 return isFlags
-                    ? new EnumFlagsField(label).WithBind(target, info)
-                    : new EnumField(label).WithBind(target, info);
+                    ? new EnumFlagsField(label).WithBind(getter, setter)
+                    : new EnumField(label).WithBind(getter, setter);
             }
-            if (typeof(IList).IsAssignableFrom(propertyType))
+
+            if (typeof(IList).IsAssignableFrom(type))
             {
                 // Todo: Implement ListView
                 throw new NotImplementedException();
             }
-            var element = BuilderDict[propertyType].Invoke(label, target, info);
+
+            var element = BuilderDict[type].Invoke(label, target, getter, setter);
 
             return element;
         }
