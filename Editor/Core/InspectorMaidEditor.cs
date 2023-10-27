@@ -97,7 +97,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 foreach (var decorator in decorators)
                 {
-                    DecoratorElement.InvokeOnDestroy(decorator);
+                    Decorator.InvokeOnDestroy(decorator);
                 }
             }
         }
@@ -110,15 +110,15 @@ namespace Naukri.InspectorMaid.Editor.Core
                 {
                     if (!decorator.IsStarted)
                     {
-                        DecoratorElement.InvokeOnStart(decorator);
+                        Decorator.InvokeOnStart(decorator);
                         decorator.IsStarted = true;
                     }
-                    DecoratorElement.InvokeOnSceneGUI(decorator);
+                    Decorator.InvokeOnSceneGUI(decorator);
                 }
             }
         }
 
-        private bool TryGetDecoratorElements(out IEnumerable<DecoratorElement> decorators)
+        private bool TryGetDecoratorElements(out IEnumerable<Decorator> decorators)
         {
             if (componentContainer == null)
             {
@@ -127,7 +127,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
             else
             {
-                decorators = componentContainer.Query<DecoratorElement>().ToList();
+                decorators = componentContainer.Query<Decorator>().ToList();
                 return true;
             }
         }
