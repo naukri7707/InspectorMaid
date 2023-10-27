@@ -4,17 +4,17 @@ namespace Naukri.InspectorMaid.Editor
 {
     public static class IStyleExtensions
     {
-        public static void SetBorderWidthAll(this IStyle style, StyleFloat? width)
+        public static void SetBorderWidthAll(this IStyle style, StyleFloat? all = null)
         {
-            SetBorderWidthOnly(style, width, width, width, width);
+            SetBorderWidthOnly(style, all, all, all, all);
         }
 
-        public static void SetBorderWidthSymmetric(this IStyle style, StyleFloat? vertical, StyleFloat? horizontal)
+        public static void SetBorderWidthSymmetric(this IStyle style, StyleFloat? vertical = null, StyleFloat? horizontal = null)
         {
             SetBorderWidthOnly(style, vertical, horizontal, vertical, horizontal);
         }
 
-        public static void SetBorderWidthOnly(this IStyle style, StyleFloat? top, StyleFloat? right, StyleFloat? bottom, StyleFloat? left)
+        public static void SetBorderWidthOnly(this IStyle style, StyleFloat? top = null, StyleFloat? right = null, StyleFloat? bottom = null, StyleFloat? left = null)
         {
             if (top.HasValue)
             {
@@ -34,17 +34,17 @@ namespace Naukri.InspectorMaid.Editor
             }
         }
 
-        public static void SetBorderColorAll(this IStyle style, StyleColor? Color)
+        public static void SetBorderColorAll(this IStyle style, StyleColor? Color = null)
         {
             SetBorderColorOnly(style, Color, Color, Color, Color);
         }
 
-        public static void SetBorderColorSymmetric(this IStyle style, StyleColor? vertical, StyleColor? horizontal)
+        public static void SetBorderColorSymmetric(this IStyle style, StyleColor? vertical = null, StyleColor? horizontal = null)
         {
             SetBorderColorOnly(style, vertical, horizontal, vertical, horizontal);
         }
 
-        public static void SetBorderColorOnly(this IStyle style, StyleColor? top, StyleColor? right, StyleColor? bottom, StyleColor? left)
+        public static void SetBorderColorOnly(this IStyle style, StyleColor? top = null, StyleColor? right = null, StyleColor? bottom = null, StyleColor? left = null)
         {
             if (top.HasValue)
             {
@@ -64,17 +64,17 @@ namespace Naukri.InspectorMaid.Editor
             }
         }
 
-        public static void SetBorderRadiusAll(this IStyle style, StyleLength Radius)
+        public static void SetBorderRadiusAll(this IStyle style, StyleLength? all = null)
         {
-            SetBorderRadiusOnly(style, Radius, Radius, Radius, Radius);
+            SetBorderRadiusOnly(style, all, all, all, all);
         }
 
-        public static void SetBorderRadiusVertical(this IStyle style, StyleLength? top, StyleLength? bottom)
+        public static void SetBorderRadiusVertical(this IStyle style, StyleLength? top = null, StyleLength? bottom = null)
         {
             SetBorderRadiusOnly(style, top, top, bottom, bottom);
         }
 
-        public static void SetBorderRadiusHorizontal(this IStyle style, StyleLength? left, StyleLength? right)
+        public static void SetBorderRadiusHorizontal(this IStyle style, StyleLength? left = null, StyleLength? right = null)
         {
             SetBorderRadiusOnly(style, left, right, left, right);
         }
@@ -96,6 +96,66 @@ namespace Naukri.InspectorMaid.Editor
             if (bottomRight.HasValue)
             {
                 style.borderBottomRightRadius = bottomRight.Value;
+            }
+        }
+
+        public static void SetMarginAll(this IStyle style, StyleLength? all = null)
+        {
+            SetMarginOnly(style, all, all, all, all);
+        }
+
+        public static void SetMarginSymmetric(this IStyle style, StyleLength? vertical = null, StyleLength? horizontal = null)
+        {
+            SetMarginOnly(style, vertical, horizontal, vertical, horizontal);
+        }
+
+        public static void SetMarginOnly(this IStyle style, StyleLength? top = null, StyleLength? right = null, StyleLength? bottom = null, StyleLength? left = null)
+        {
+            if (top.HasValue)
+            {
+                style.marginTop = top.Value;
+            }
+            if (right.HasValue)
+            {
+                style.marginRight = right.Value;
+            }
+            if (bottom.HasValue)
+            {
+                style.marginBottom = bottom.Value;
+            }
+            if (left.HasValue)
+            {
+                style.marginLeft = left.Value;
+            }
+        }
+
+        public static void SetPaddingAll(this IStyle style, StyleLength? all = null)
+        {
+            SetPaddingOnly(style, all, all, all, all);
+        }
+
+        public static void SetPaddingSymmetric(this IStyle style, StyleLength? vertical = null, StyleLength? horizontal = null)
+        {
+            SetPaddingOnly(style, vertical, horizontal, vertical, horizontal);
+        }
+
+        public static void SetPaddingOnly(this IStyle style, StyleLength? top = null, StyleLength? right = null, StyleLength? bottom = null, StyleLength? left = null)
+        {
+            if (top.HasValue)
+            {
+                style.paddingTop = top.Value;
+            }
+            if (right.HasValue)
+            {
+                style.paddingRight = right.Value;
+            }
+            if (bottom.HasValue)
+            {
+                style.paddingBottom = bottom.Value;
+            }
+            if (left.HasValue)
+            {
+                style.paddingLeft = left.Value;
             }
         }
     }
