@@ -15,7 +15,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         public int SimpleDivider;
 
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
-        // Sample 1
+        // Sample 2
         [Target]
         [Divider("Text Divider")]
         [HelpBox("My UI", HelpBoxMessageType.Info)]

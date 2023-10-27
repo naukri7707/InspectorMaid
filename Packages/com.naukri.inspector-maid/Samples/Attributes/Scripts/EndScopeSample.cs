@@ -7,6 +7,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
     {
         [HelpBox("[EndScope] can close the latest open scope, allowing you to add elements to another scope.", HelpBoxMessageType.Info)]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        // Sample 1
         [Target]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#404040")]
         [HelpBox("My Element in scope 1", HelpBoxMessageType.Info)]
