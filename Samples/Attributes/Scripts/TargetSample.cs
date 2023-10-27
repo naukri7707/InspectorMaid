@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Samples
+namespace Naukri.InspectorMaid.Samples.Attributes
 {
     public class TargetSample : MonoBehaviour
     {
@@ -20,5 +20,4 @@ This is particularly useful when defining the target location or setting the tar
         [HelpBox("Due to the declaration of [Target] before [Helpbox], now the 'Helpbox' is positioned below 'Target'")]
         public int withTarget = 0;
     }
-
 }
