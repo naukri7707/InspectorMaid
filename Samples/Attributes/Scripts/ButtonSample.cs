@@ -18,7 +18,6 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         [Button("Click", binding: nameof(MyMethod))]
         public int ButtonAfterTarget = 0;
 
-
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
         // Sample 3
         // In order to place the Button and Target on the same line,
