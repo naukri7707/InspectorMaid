@@ -2,7 +2,9 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
-/[Aa]ssets/
+/[Aa]ssets/**
+# Keeping an empty Assets folder, this is useful for initial the cloned project on Unity.
+!/[Aa]ssets/.gitkeep
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -10,6 +12,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+
 
 # NPM logs
 npm-debug.log
