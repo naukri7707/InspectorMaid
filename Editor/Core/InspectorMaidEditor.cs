@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Events;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.UIElements;
 using System.Collections.Generic;
@@ -14,9 +15,14 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         private VisualElement componentContainer;
 
+        public void RR()
+        {
+            componentContainer.SendEvent(new ChangeEvent<int>());
+        }
+
         public override VisualElement CreateInspectorGUI()
         {
-            componentContainer = new VisualElement() { name = "component" };
+            componentContainer = new VisualElement() { name = "Component" };
             var styleSheets = InspectorMaidSettings.Instance.importStyleSheets;
             foreach (var sheet in styleSheets)
             {
@@ -24,7 +30,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
 
             // fields
-            var fieldsContainer = new VisualElement() { name = "fields" };
+            var fieldsContainer = new VisualElement() { name = "Fields" };
             var iterator = serializedObject.GetIterator();
             if (iterator.NextVisible(true))
             {
@@ -57,7 +63,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             var type = target.GetType();
 
             // properties
-            var propertiesContainer = new VisualElement() { name = "properties" };
+            var propertiesContainer = new VisualElement() { name = "Properties" };
             var propertyInfos = type.GetProperties(Utility.AllAccessFlags);
 
             foreach (var propertyInfo in propertyInfos)
@@ -71,7 +77,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
 
             // methods
-            var methodsContainer = new VisualElement() { name = "methods" };
+            var methodsContainer = new VisualElement() { name = "Methods" };
             var methodInfos = type.GetMethods(Utility.AllAccessFlags);
 
             foreach (var methodInfo in methodInfos)
@@ -104,16 +110,22 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         protected void OnSceneGUI()
         {
-            if (TryGetDecoratorElements(out var decorators))
+            var needRepaint = true;
+            while (needRepaint)
             {
-                foreach (var decorator in decorators)
+                needRepaint = false;
+                if (TryGetDecoratorElements(out var decorators))
                 {
-                    if (!decorator.IsStarted)
+                    foreach (var decorator in decorators)
                     {
-                        Decorator.InvokeOnStart(decorator);
-                        decorator.IsStarted = true;
+                        if (!decorator.IsStarted)
+                        {
+                            decorator.RegisterCallback<RepaintEvent>(evt => OnSceneGUI());
+                            Decorator.InvokeOnStart(decorator);
+                            decorator.IsStarted = true;
+                        }
+                        Decorator.InvokeOnSceneGUI(decorator);
                     }
-                    Decorator.InvokeOnSceneGUI(decorator);
                 }
             }
         }
