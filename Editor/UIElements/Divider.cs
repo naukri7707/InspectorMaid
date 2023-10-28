@@ -5,10 +5,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 {
     public class Divider : VisualElement
     {
-        public readonly StyleColor kColor = new(new Color32(128, 128, 128, 255));
-
-        public string text;
-
         public Divider(string text)
         {
             this.text = text;
@@ -55,5 +51,9 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 Add(boxEnd);
             }
         }
+
+        public readonly StyleColor kColor = new(new Color32(128, 128, 128, 255));
+
+        public string text;
     }
 }
