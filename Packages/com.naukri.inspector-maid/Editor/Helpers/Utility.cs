@@ -23,7 +23,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         {
             var nicifyName = ObjectNames.NicifyVariableName(info.Name);
             var root = new Decorator($"{nicifyName} Decorator");
-            var attrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).ToList();
+            var attrs = info.GetCustomAttributes<DecoratorAttribute>(true).ToList();
 
             var targetAttributeCount = attrs.Count(attr => attr is TargetAttribute);
 

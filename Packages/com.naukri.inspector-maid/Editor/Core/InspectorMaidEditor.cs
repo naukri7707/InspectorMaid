@@ -46,7 +46,7 @@ namespace Naukri.InspectorMaid.Editor.Core
                     }
                     var fieldInfo = iterator.GetFieldInfo();
 
-                    if (fieldInfo.HasAttribute<InspectorMaidAttribute>())
+                    if (fieldInfo.HasAttribute<DecoratorAttribute>())
                     {
                         var fieldDrawer = new CustomFieldDrawer(target, fieldInfo, propertyField);
                         var fieldGUI = fieldDrawer.CreateFieldGUI();
@@ -68,7 +68,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var propertyInfo in propertyInfos)
             {
-                if (propertyInfo.HasAttribute<InspectorMaidAttribute>())
+                if (propertyInfo.HasAttribute<DecoratorAttribute>())
                 {
                     var propertyDrawer = new CustomPropertyDrawer(target, propertyInfo);
                     var propertyGUI = propertyDrawer.CreatePropertyGUI();
@@ -82,7 +82,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             foreach (var methodInfo in methodInfos)
             {
-                if (methodInfo.HasAttribute<InspectorMaidAttribute>())
+                if (methodInfo.HasAttribute<DecoratorAttribute>())
                 {
                     var methodDrawer = new CustomMethodDrawer(target, methodInfo);
                     var methodGUI = methodDrawer.CreatePropertyGUI();
