@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Helpers
@@ -20,7 +21,8 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
         public static Decorator DrawDecoratorTree(UObject target, MemberInfo info, Action<CustomDrawer> onDrawTarget)
         {
-            var root = new Decorator("Field Decorator");
+            var nicifyName = ObjectNames.NicifyVariableName(info.Name);
+            var root = new Decorator($"{nicifyName} Decorator");
             var attrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).ToList();
 
             var targetAttributeCount = attrs.Count(attr => attr is TargetAttribute);
