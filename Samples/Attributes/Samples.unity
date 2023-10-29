@@ -409,8 +409,9 @@ MonoBehaviour:
   enumType: 0
   unit: 0
   color: 0
-  valueGroup: 0
-  valueGroupConverter: 0
+  propertyConflict: 0
+  shorthandProperty: 0
+  usingClasses: 0
 --- !u!4 &405290178
 Transform:
   m_ObjectHideFlags: 0
