@@ -37,7 +37,7 @@ namespace Naukri.InspectorMaid.Editor.Core
         public virtual void OnStart()
         { }
 
-        protected internal override Decorator CreateDecorator()
+        internal override Decorator CreateDecorator()
         {
             var name = GetType().Name;
 

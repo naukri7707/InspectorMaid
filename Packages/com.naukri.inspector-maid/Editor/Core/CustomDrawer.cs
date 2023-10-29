@@ -187,6 +187,6 @@ namespace Naukri.InspectorMaid.Editor.Core
             return cloned;
         }
 
-        internal protected abstract Decorator CreateDecorator();
+        internal abstract Decorator CreateDecorator();
     }
 }
