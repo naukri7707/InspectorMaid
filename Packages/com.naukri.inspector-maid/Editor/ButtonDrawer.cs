@@ -13,6 +13,9 @@ namespace Naukri.InspectorMaid.Editor
             {
                 text = attribute.text
             };
+
+            button.clicked += decorator.Repaint;
+
             decorator.Add(button);
         }
     }

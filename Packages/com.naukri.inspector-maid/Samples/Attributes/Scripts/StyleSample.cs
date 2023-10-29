@@ -1,19 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Samples
+namespace Naukri.InspectorMaid.Samples.Attributes
 {
     public class StyleSample : MonoBehaviour
     {
         [HelpBox(@"[Style] is a special attribute used to define the style for lastest declared elements. you can use 'Named arguments' to define value", HelpBoxMessageType.Info)]
 
         [HelpBox(@"
-Keyword & Enum: 
+Keyword & Enum:
 When working with a value that is an enum or uses a style keyword,
-you can set the value using the name of the keyword. 
+you can set the value using the name of the keyword.
 However, for safety, I suggest using the nameof expression
 ", HelpBoxMessageType.Info), Style(marginTop: "30")]
-
         [HelpBox("enum with const string"), Style(flexDirection: "row")]
         [HelpBox("enum with nameof expression"), Style(flexDirection: nameof(FlexDirection.RowReverse))]
         [HelpBox("keyword with const string"), Style(width: "auto")]
@@ -22,7 +21,7 @@ However, for safety, I suggest using the nameof expression
         public int enumType = 0;
 
         [HelpBox(@"
-Unit: 
+Unit:
 If a value has a unit, you can append the unit to the number.
 If no unit is added, the default unit will be used.
 ", HelpBoxMessageType.Info), Style(marginTop: "30")]
@@ -34,7 +33,7 @@ If no unit is added, the default unit will be used.
         public int unit = 0;
 
         [HelpBox(@"
-Color: 
+Color:
 You can set colors using either hex-color or RGB values, with the alpha value being optional.
 ", HelpBoxMessageType.Info), Style(marginTop: "30")]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
@@ -56,7 +55,7 @@ In this example, the final padding is '40 10 20 10'.
         // Sample 4
         [ContainerScope, Style(paddingAll: "10", paddingVertical: "20", paddingTop: "40", backgroundColor: "#FF0000")]
         [Target, Style(backgroundColor: "#000000")]
-        public int valueGroup = 0;
+        public int propertyConflict = 0;
 
         [HelpBox(@"
 Shorthand Property:
@@ -71,7 +70,21 @@ It's important to note that shorthand properties have the lowest priority and ca
         [ContainerScope, Style(padding: "10 20 30", backgroundColor: "#0000FF")] // top horizontal bottom
         [ContainerScope, Style(padding: "10 20 30 40", backgroundColor: "#AAAA00")] // top right bottom left
         [Target, Style(backgroundColor: "#000000")]
-        public int valueGroupConverter = 0;
-    }
+        public int shorthandProperty = 0;
 
+        [HelpBox(@"
+Class:
+You can use classList to load predefined properties, similar to HTML.
+If there are two or more classes, use spaces to separate them.
+", HelpBoxMessageType.Info), Style(marginTop: "30")]
+        [HelpBox(@"
+Notice that you should import the stylesheet (.uss) by adding it to the inject list at the following location: 'ProjectSetting/Inspector Maid/importStyleSheets.'
+In this example, you can import 'SampleStyleSheet.uss,' which is provided in this sample.
+If configured correctly, the element's style will result in a 50% width and a 100px height.
+", HelpBoxMessageType.Warning)]
+        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        // Sample 6
+        [ContainerScope, Style(classList: "width-50-percent height-50-px", backgroundColor: "#FF0000")]
+        public int usingClasses = 0;
+    }
 }

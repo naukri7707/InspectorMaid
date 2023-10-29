@@ -15,6 +15,8 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         private DrawerTarget _drawerTarget;
 
+        private Decorator _decorator;
+
         private MemberInfo _info;
 
         private SerializedProperty _serializedProperty;
@@ -23,6 +25,9 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         [SuppressMessage("Style", "IDE1006")]
         public DrawerTarget drawerTarget => _drawerTarget;
+
+        [SuppressMessage("Style", "IDE1006")]
+        public Decorator decorator => _decorator;
 
         [SuppressMessage("Style", "IDE1006")]
         public FieldInfo fieldInfo
@@ -88,9 +93,6 @@ namespace Naukri.InspectorMaid.Editor.Core
         [SuppressMessage("Style", "IDE1006")]
         protected internal abstract DrawerAttribute attributeRef { get; set; }
 
-        [SuppressMessage("Style", "IDE1006")]
-        protected internal abstract DecoratorElement decoratorRef { get; set; }
-
         public Action CreateBindingMethodAction()
         {
             var type = target.GetType();
@@ -121,24 +123,28 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             if (attributeRef is IBindable bindable)
             {
-                var binding = bindable.binding;
+                var bindingPath = bindable.binding;
 
-                if (type.GetField(binding, Utility.AllAccessFlags) is FieldInfo field)
+                if (bindingPath == "this")
+                {
+                    return target;
+                }
+                else if (type.GetField(bindingPath, Utility.AllAccessFlags) is FieldInfo field)
                 {
                     return field.GetValue(target);
                 }
-                else if (type.GetProperty(binding, Utility.AllAccessFlags) is PropertyInfo property)
+                else if (type.GetProperty(bindingPath, Utility.AllAccessFlags) is PropertyInfo property)
                 {
                     return property.GetValue(target);
                 }
-                else if (type.GetMethod(binding, Utility.AllAccessFlags) is MethodInfo method)
+                else if (type.GetMethod(bindingPath, Utility.AllAccessFlags) is MethodInfo method)
                 {
                     var args = bindable.args;
                     return method.Invoke(target, args);
                 }
                 else
                 {
-                    throw new Exception($"Can't find binding path: {binding}");
+                    throw new Exception($"Can't find binding path: {bindingPath}");
                 }
             }
             else
@@ -177,10 +183,10 @@ namespace Naukri.InspectorMaid.Editor.Core
             cloned._target = target;
             cloned._info = info;
             cloned._serializedProperty = serializedProperty;
-            cloned.decoratorRef = cloned.CreateDecoratorImpl();
+            cloned._decorator = cloned.CreateDecorator();
             return cloned;
         }
 
-        protected internal abstract DecoratorElement CreateDecoratorImpl();
+        internal abstract Decorator CreateDecorator();
     }
 }

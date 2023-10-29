@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEditor;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Helpers
@@ -18,10 +19,11 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             return Attribute.IsDefined(self, typeof(T));
         }
 
-        public static DecoratorElement DrawDecoratorTree(UObject target, MemberInfo info, Action<CustomDrawer> onDrawTarget)
+        public static Decorator DrawDecoratorTree(UObject target, MemberInfo info, Action<CustomDrawer> onDrawTarget)
         {
-            var root = new DecoratorElement("Field Decorator");
-            var attrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).ToList();
+            var nicifyName = ObjectNames.NicifyVariableName(info.Name);
+            var root = new Decorator($"{nicifyName} Decorator");
+            var attrs = info.GetCustomAttributes<DecoratorAttribute>(true).ToList();
 
             var targetAttributeCount = attrs.Count(attr => attr is TargetAttribute);
 
@@ -37,11 +39,11 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
             var iteractor = attrs.GetEnumerator();
 
-            DecoratorElement lastDecorator = null;
+            Decorator lastDecorator = null;
 
-            List<DecoratorElement> DrawDecorators()
+            List<Decorator> DrawDecorators()
             {
-                var items = new List<DecoratorElement>();
+                var items = new List<Decorator>();
                 while (iteractor.MoveNext())
                 {
                     var current = iteractor.Current;
@@ -55,7 +57,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                         }
 
                         var drawer = DrawerTemplates.Create(drawerAttr, DrawerTarget.Field, target, info);
-                        var currentDecorator = drawer.decoratorRef;
+                        var currentDecorator = drawer.decorator;
                         lastDecorator = currentDecorator;
                         items.Add(lastDecorator);
 
