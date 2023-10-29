@@ -1,10 +1,12 @@
 # Inspector Maid
 
-這是一個 Unity Inspector 的 UI 自定義更具。你可以使用他會你的 Component 建立一些簡單的互動功能而不需編寫專屬的 Editor。並具有以下幾大特色
+![demo](./Documentation/Images/demo.gif)
+
+這是一個 Unity Inspector 的 UI 自定義工具。你可以使用他會你的 Component 建立一些簡單的互動功能而不需編寫專屬的 Editor。並具有以下幾大特色
 
 - 使用 UIElement 進行繪製。
 - 可以在 Inspector 介面中直接存取屬性和函式。
-- 支援為同一欄位加入多個裝飾器。
+- 支援為同一目標加入多個裝飾器。
 - 可以自訂義專用的裝飾器。
 - 可以透過綁定的方式動態修改內容。
 
@@ -18,7 +20,7 @@ https://github.com/naukri7707/InspectorMaid.git
 
 ## Usage
 
-1. 為腳本加入 InspectorMaid 的命名空間。
+1. 為腳本引用 InspectorMaid 的命名空間。
 
 ```cs
 using Naukri.InspectorMaid;
@@ -41,7 +43,7 @@ public void HelloWorld(string name = "Jonny")
 }
 ```
 
-3. 完成！回到 UnityEditor 你會看到以下畫面
+3. 完成！回到 UnityEditor 你會看到以下畫面：
 
 ![usage-preview](./Documentation/Images/usage-preview.png)
 
