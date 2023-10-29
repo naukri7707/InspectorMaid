@@ -55,7 +55,7 @@ In this example, the final padding is '40 10 20 10'.
         // Sample 4
         [ContainerScope, Style(paddingAll: "10", paddingVertical: "20", paddingTop: "40", backgroundColor: "#FF0000")]
         [Target, Style(backgroundColor: "#000000")]
-        public int valueGroup = 0;
+        public int propertyConflict = 0;
 
         [HelpBox(@"
 Shorthand Property:
@@ -70,7 +70,7 @@ It's important to note that shorthand properties have the lowest priority and ca
         [ContainerScope, Style(padding: "10 20 30", backgroundColor: "#0000FF")] // top horizontal bottom
         [ContainerScope, Style(padding: "10 20 30 40", backgroundColor: "#AAAA00")] // top right bottom left
         [Target, Style(backgroundColor: "#000000")]
-        public int valueGroupConverter = 0;
+        public int shorthandProperty = 0;
 
         [HelpBox(@"
 Class:
