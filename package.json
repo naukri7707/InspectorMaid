@@ -4,7 +4,7 @@
   "displayName": "Inspector Maid",
   "version": "0.5.0",
   "unity": "2022.3",
-  "description": "This is a custom tool for Unity's Inspector, featuring the following key characteristics:\r\n\r\n\u2022 Utilizes UIElements for rendering, making UI development more straightforward and flexible.\r\n\n\u2022 Allows direct display of properties and methods in the Inspector interface, simplifying data access and modification.\r\n\n\u2022 Supports multiple drawers for the same field, facilitating adjustment and configuration of various field properties.\r\n\n\u2022 Nested UI decorator structure for orderly combining multiple drawers.\r\n\n\u2022 Offers parameter binding functionality, enabling dynamic UI changes based on bound parameters.",
+  "description": "This is a Unity Inspector UI customization feature.\r\n You can use it to create some simple interactive functionalities for your Component without the need to write a dedicated Editor. It has several key features:\r\n\r\n\u2022Uses UIElements for rendering.\r\n\r\n\u2022Allows direct access to properties and functions in the Inspector.\r\n\r\n\u2022Supports adding multiple decorators to the same target.\r\n\r\n\u2022Allows customization of custom decorators.\r\n\r\n\u2022Allows dynamic content modification through binding.",
   "samples": [
     {
       "displayName": "Attributes",

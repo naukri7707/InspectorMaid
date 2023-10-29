@@ -1,9 +1,28 @@
 # Changelog
 
+## [1.0.0] - 2023-10-27
+
+### 新增
+- `MethodElement` 現在支援帶參數的函式了，當傳入的參數可以被 `PropetyBuilder` 建立，`MethodElement` 便會在 Foldout content 中產生對應的欄位用以設定參數。
+- `PropetyBuilder` 現在如果目標類別沒有被註冊，會在已註冊的類別中尋找與目標最接近的類別進行實作。這可以幫助產生類似 GameObject、Collider 等欄位。
+- `FoldoutDrawer` : 建立一個可以動態改變是否顯示的區域。
+- `DividerDrawer` : 產生一個分隔線，用以分割不同區域的 UI。
+
+### 修正
+- `PropetyBuilder` 無法正確存取 Enum 型態的欄位錯誤。
+- 修正部分類別命名空間錯誤問題。
+
+### 刪除
+- 移除 `ShowDrawer` 因為其功能可以完全被 `ShowDrawer` 覆蓋。
+
+### 重構
+- 使用 getter + setter 重構 `PropetyBuilder` 使其與 PropertyInfo 屬性解耦。
+- 移除不再需要的 CustomDrawerWithDecoratorOf 類別，現在 CustomDrawerOf 直接繼承自 CustomDrawer。
+
 ## [0.5.0] - 2023-10-27
 
 ### 更新
-- 美化 Sample ，並加入簡單的講解，使其更具參考性。
+- 美化 Sample 腳本並加入簡單的講解，使其更具參考性。
 
 ### 重構
 - 使用超集合 Style 取代所有的 Styler，降低認知負荷並使程式碼更簡潔。
