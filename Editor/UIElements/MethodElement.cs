@@ -30,6 +30,8 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         [SuppressMessage("Style", "IDE1006")]
         public string label { get => _label; set => _label = value; }
 
+        public event Action OnInvoke = () => { };
+
         internal void Build()
         {
             OnBuild();
@@ -57,7 +59,13 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             });
 
             // style button
-            var button = new Button(() => info.Invoke(target, args))
+            void buttonAction()
+            {
+                info.Invoke(target, args);
+                OnInvoke.Invoke();
+            }
+
+            var button = new Button(buttonAction)
             {
                 text = "Invoke",
                 focusable = false

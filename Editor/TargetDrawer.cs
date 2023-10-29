@@ -19,6 +19,7 @@ namespace Naukri.InspectorMaid.Editor
         public override void OnDrawMethod(MethodElement methodElement)
         {
             decorator.Add(methodElement);
+            methodElement.OnInvoke += () => decorator.Repaint();
         }
     }
 }
