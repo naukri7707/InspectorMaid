@@ -2,14 +2,19 @@
   "name": "com.naukri.inspector-maid",
   "author": "Naukri",
   "displayName": "Inspector Maid",
-  "version": "1.0.2",
+  "version": "1.3.1",
   "unity": "2022.3",
-  "description": "This is a Unity Inspector UI customization feature.\r\n You can use it to create some simple interactive functionalities for your Component without the need to write a dedicated Editor. It has several key features:\r\n\r\n\u2022Uses UIElements for rendering.\r\n\r\n\u2022Allows direct access to properties and functions in the Inspector.\r\n\r\n\u2022Supports adding multiple decorators to the same target.\r\n\r\n\u2022Allows customization of custom decorators.\r\n\r\n\u2022Allows dynamic content modification through binding.",
+  "description": "This is a Unity Inspector UI customization feature.\r\n You can use it to create some simple interactive functionalities for your Component without the need to write a dedicated Editor. It has several key features:\r\n\r\n\u2022Uses UIElements for rendering.\r\n\r\n\u2022Allows direct access to properties and functions in the Inspector.\r\n\r\n\u2022Supports adding multiple widgets to the same target.\r\n\r\n\u2022Allows customization of custom widgets.\r\n\r\n\u2022Allows dynamic content modification through binding.",
   "samples": [
     {
-      "displayName": "Attributes",
+      "displayName": "01. Widget's Attributes",
       "description": "The usage and samples of each attribute",
-      "path": "Samples~/Attributes"
+      "path": "Samples~/01. Widget's Attributes"
+    },
+    {
+      "displayName": "02. Property And Method",
+      "description": "The usage and samples of how to dispaly property And method",
+      "path": "Samples~/02. Property And Method"
     }
   ]
 }
