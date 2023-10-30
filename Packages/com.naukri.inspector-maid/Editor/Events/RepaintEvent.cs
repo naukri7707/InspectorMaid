@@ -2,19 +2,11 @@
 
 namespace Naukri.InspectorMaid.Editor.Events
 {
-    public class RepaintEvent : InspectorMaidEvent<RepaintEvent>
+    public partial class RepaintEvent : WidgetEvent<RepaintEvent>
     {
         public RepaintEvent()
         {
             LocalInit();
-        }
-
-        public static RepaintEvent GetPooled(VisualElement target)
-        {
-            var evt = GetPooled();
-            evt.target = target;
-
-            return evt;
         }
 
         protected override void Init()
@@ -26,7 +18,18 @@ namespace Naukri.InspectorMaid.Editor.Events
         private void LocalInit()
         {
             tricklesDown = false;
-            bubbles = false;
+            bubbles = true;
+        }
+    }
+
+    partial class RepaintEvent
+    {
+        public static RepaintEvent GetPooled(VisualElement target)
+        {
+            var evt = GetPooled();
+            evt.target = target;
+
+            return evt;
         }
     }
 }
