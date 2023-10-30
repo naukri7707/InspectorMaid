@@ -1,6 +1,6 @@
 ﻿namespace Naukri.InspectorMaid.Core
 {
-    public abstract class StylerAttribute : DecoratorAttribute
+    public abstract class StylerAttribute : WidgetAttribute
     {
     }
 }

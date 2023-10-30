@@ -1,9 +1,9 @@
-﻿using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -33,32 +33,43 @@ namespace Naukri.InspectorMaid.Editor.Core
         public static void AddBuilderWithBinding<T>(Func<string, BaseField<T>> factory)
         {
             BuilderDict
-                .Add(typeof(T), (label, target, getter, setter)
-                    => factory(label).WithBind(getter, setter)
-                );
+                .Add(typeof(T), (label, target, getter, setter) =>
+                {
+                    var field = factory(label);
+                    DelegateBinding.Bind(field, getter, setter);
+                    return field;
+                });
         }
 
         public static void AddBuilderWithBinding<T, TValue>(Func<string, BaseField<TValue>> factory)
         {
             BuilderDict
-                .Add(typeof(T), (label, target, getter, setter)
-                    => factory(label).WithBind(getter, setter)
-                );
+                .Add(typeof(T), (label, target, getter, setter) =>
+                {
+                    var field = factory(label);
+                    DelegateBinding.Bind(field, getter, setter);
+                    return field;
+                });
         }
 
         internal static BindableElement Build(string label, UObject target, PropertyInfo info)
         {
             var propertyType = info.PropertyType;
-            Func<object> getter = info.CanRead
-                ? () => info.GetValue(target)
-                : null;
-            Action<object> setter = info.CanWrite
-                ? v =>
-                {
-                    info.SetValue(target, v);
-                    EditorUtility.SetDirty(target);
-                }
-            : null;
+
+            Func<object> getter = null;
+            Action<object> setter = null;
+
+            if (info.CanRead)
+            {
+                var frGetter = FastReflection.Polymorphism.CreateGetter<object, object>(info, target.GetType());
+                getter = () => frGetter(target);
+            }
+
+            if (info.CanWrite)
+            {
+                var frSetter = FastReflection.Polymorphism.CreateSetter<object, object>(info, target.GetType());
+                setter = value => frSetter(target, value);
+            }
 
             return Build(propertyType, label, target, getter, setter);
         }
@@ -69,10 +80,15 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 var defaultValue = (Enum)Activator.CreateInstance(type);
 
-                var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
-                return isFlags
-                    ? new EnumFlagsField(label, defaultValue).WithBind(getter, setter)
-                    : new EnumField(label, defaultValue).WithBind(getter, setter);
+                var isFlags = type.HasAttribute<FlagsAttribute>();
+
+                BaseField<Enum> field = isFlags
+                    ? new EnumFlagsField(label, defaultValue)
+                    : new EnumField(label, defaultValue);
+
+                DelegateBinding.Bind(field, getter, setter);
+
+                return field;
             }
 
             if (typeof(IList).IsAssignableFrom(type))
