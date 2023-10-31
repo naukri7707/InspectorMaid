@@ -2,7 +2,9 @@
 
 ![demo](./Documentation/Images/demo.gif)
 
-這是一個 Unity Inspector 的 UI 自定義工具。你可以使用他會你的 Component 建立一些簡單的互動功能而不需編寫專屬的 Editor。並具有以下幾大特色
+這是一個 Unity Inspector 的 UI 自定義工具。你可以使用他為你的 Component 建立一些簡單的互動功能而不需編寫專屬的 Editor。
+
+Inspector Maid 具有以下幾大特色：
 
 - 使用 UIElement 進行繪製。
 - 可以在 Inspector 介面中直接存取屬性和函式。
@@ -48,4 +50,4 @@ public void HelloWorld(string name = "Jonny")
 ![usage-preview](./Documentation/Images/usage-preview.png)
 
 
-更完整的說明請參考[這裡](./Documentation/Inspector%20Maid.md)，以及 package 中的範例場景。
+更完整的說明請參考[這裡](./Documentation/Introduction.md)，以及 package 中的範例場景。

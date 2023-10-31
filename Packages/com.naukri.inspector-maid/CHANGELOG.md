@@ -27,7 +27,7 @@
 
 ### 重構
 - 使用 getter + setter 重構 `PropetyBuilder` 使其與 PropertyInfo 屬性解耦。
-- 移除不再需要的 CustomDrawerWithDecoratorOf 類別，現在 CustomDrawerOf 直接繼承自 CustomDrawer。
+- 移除不再需要的 `CustomDrawerWithDecoratorOf` 類別，現在 `CustomDrawerOf` 直接繼承自 `CustomDrawer`。
 
 ## [0.5.0] - 2023-10-27
 

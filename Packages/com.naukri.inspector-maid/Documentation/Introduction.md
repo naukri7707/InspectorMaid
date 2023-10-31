@@ -138,7 +138,7 @@ public void ResetValue()
 ```
 </details>
 
-透過以上釋例，你可以了解到如何使用 Item、Scope以及 Styler 互相協作產生想要的 UI 了
+透過以上釋例，你可以了解到如何讓 Item、Scope　以及 Styler 互相協作產生想要的 UI 。
 
 
 ## 如何使用 `Style` 定義裝飾器風格
@@ -150,7 +150,7 @@ public void ResetValue()
 - `StyleInt` : 使用整數字串 e.g. `"0"`, `"10"`
 - `StyleFloat` : 使用浮點字串 e.g. `"0.5"`, `"11.7"`
 - `StyleLength` : 使用浮點字串，如果要指定單位則在後面將上對應的符號 e.g. `"13px"`, `"40%"`，如果沒有填入單位的話會使用預設的單位來計算 (px)。
-- `StyleColor` : 使用 HexColor 或 RBGA 色彩來設定 e.g. `"#FF0000FF"`, `"0,255,0,255"`，其中 alpha 值是可選項，如果沒有填入則預設為不透明 (FF / 255) e.g. `"#FF0000"` e.g. `"0,255,0"`
+- `StyleColor` : 使用 HexColor 或 RBGA 色彩來設定 e.g. `"#FF0000FF"`, `"0,255,0,255"`，其中 alpha 值是可選項，如果沒有填入則預設為不透明 (FF / 255) e.g. `"#FF0000"`, `"0,255,0"`
 - `StyleEnum` : 使用對應 `Enum` 的名稱 e.g. `"row"`, `"column"` ， 也可以使用 nameof 運算式輔助 e.g. `nameof(FlexDirection.Row)`, `nameof(FlexDirection.Column)`。
 
 對於部分高度相關的屬性 (如：`margin`、`padding` 等系列屬性) 我們可以使用速記屬性 (Shorthand Property) 來簡化設定流程。
@@ -204,7 +204,7 @@ public int good;
     public int styleTest;
     ```
 
-5. 你也可以將 `classList` 可以與其他屬性混合使用，不過要注意 `classList` 的優先度是最低的，類似於 `HTML` 中 `class` 與 `inline-style` 的關係。
+5. 你也可以將 `classList` 與其他屬性混合使用，不過要注意 `classList` 的優先度是最低的，類似於 `HTML` 中 `class` 與 `inline-style` 的關係。
 
     ```cs
     [Target, Style(classList: "width-50-percent height-30-px", justifyContent: nameof(Align.Center))]
@@ -344,7 +344,7 @@ public void MyMethod()
         public readonly string myString;
     }
     ```
-3. 可能有些參數可能是選擇性的，我們建議使用預設引數來定義預設值，因為它能夠被 IDE 偵測到並顯示。
+3. 有些參數可能是選擇性的，我們建議使用預設引數來定義預設值，因為它能夠被 IDE 偵測到並顯示。
     ```cs
     public class MyItemAttribute : ItemAttribute
     {
