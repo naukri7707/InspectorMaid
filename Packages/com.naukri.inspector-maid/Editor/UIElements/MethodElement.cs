@@ -2,19 +2,20 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class MethodElement : VisualElement
+    public class MethodElement : VisualElement, IBuildable
     {
-        public MethodElement(string label, UObject target, MethodInfo info)
+        public MethodElement(UObject target, MethodInfo info)
         {
-            this.label = label;
             this.target = target;
             this.info = info;
+            label = ObjectNames.NicifyVariableName(info.Name);
         }
 
         private static readonly StyleColor kHoverColor = new(new Color32(69, 69, 69, 255));
@@ -32,12 +33,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         public event Action OnInvoke = () => { };
 
-        internal void Build()
-        {
-            OnBuild();
-        }
-
-        protected virtual void OnBuild()
+        void IBuildable.Build()
         {
             style.flexDirection = FlexDirection.Column;
 

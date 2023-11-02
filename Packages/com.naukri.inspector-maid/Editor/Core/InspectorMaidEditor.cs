@@ -1,8 +1,10 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Events;
+using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
+using Naukri.InspectorMaid.Editor.Receivers;
+using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.UIElements;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -13,48 +15,57 @@ namespace Naukri.InspectorMaid.Editor.Core
     [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
     internal class InspectorMaidEditor : UnityEditor.Editor
     {
-        private VisualElement componentContainer;
+        private InspectorMaidElement root;
 
-        public void RR()
-        {
-            componentContainer.SendEvent(new ChangeEvent<int>());
-        }
+        private EditorEventService editorEventService;
+
+        private InspectorMaidSettings settings;
 
         public override VisualElement CreateInspectorGUI()
         {
-            componentContainer = new VisualElement() { name = "Component" };
-            var styleSheets = InspectorMaidSettings.Instance.importStyleSheets;
+            root = new();
+            root.RegisterCallback<RepaintEvent>(evt =>
+            {
+                editorEventService?.OnSceneGUI();
+            });
+
+            editorEventService = new();
+            settings = InspectorMaidSettings.Instance;
+
+            root.AddService<TemplateService>();
+            root.AddService(editorEventService);
+            root.AddService(settings);
+
+            var styleSheets = settings.importStyleSheets;
             foreach (var sheet in styleSheets)
             {
-                componentContainer.styleSheets.Add(sheet);
+                root.styleSheets.Add(sheet);
             }
 
             // fields
-            var fieldsContainer = new VisualElement() { name = "Fields" };
             var iterator = serializedObject.GetIterator();
             if (iterator.NextVisible(true))
             {
                 do
                 {
-                    var propertyField = new PropertyField(iterator.Copy()) { name = $"PropertyField:{iterator.propertyPath}" };
-
+                    var fieldElement = new PropertyField(iterator.Copy()) { name = $"PropertyField:{iterator.propertyPath}" };
                     if (iterator.propertyPath == "m_Script" && serializedObject.targetObject != null)
                     {
-                        propertyField.SetEnabled(false);
-                        fieldsContainer.Add(propertyField);
+                        fieldElement.SetEnabled(false);
+                        root.Add(fieldElement);
                         continue;
                     }
                     var fieldInfo = iterator.GetFieldInfo();
 
-                    if (fieldInfo.HasAttribute<DecoratorAttribute>())
+                    if (fieldInfo.HasAttribute<WidgetAttribute>())
                     {
-                        var fieldDrawer = new CustomFieldDrawer(target, fieldInfo, propertyField);
-                        var fieldGUI = fieldDrawer.CreateFieldGUI();
-                        fieldsContainer.Add(fieldGUI);
+                        var widgetTree = new WidgetTree(target, fieldInfo, iterator);
+
+                        root.Add(widgetTree);
                     }
                     else
                     {
-                        fieldsContainer.Add(propertyField);
+                        root.Add(fieldElement);
                     }
                 }
                 while (iterator.NextVisible(false));
@@ -63,85 +74,82 @@ namespace Naukri.InspectorMaid.Editor.Core
             var type = target.GetType();
 
             // properties
-            var propertiesContainer = new VisualElement() { name = "Properties" };
             var propertyInfos = type.GetProperties(Utility.AllAccessFlags);
 
             foreach (var propertyInfo in propertyInfos)
             {
-                if (propertyInfo.HasAttribute<DecoratorAttribute>())
+                if (propertyInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var propertyDrawer = new CustomPropertyDrawer(target, propertyInfo);
-                    var propertyGUI = propertyDrawer.CreatePropertyGUI();
-                    propertiesContainer.Add(propertyGUI);
+                    var widgetTree = new WidgetTree(target, propertyInfo);
+
+                    root.Add(widgetTree);
                 }
             }
 
             // methods
-            var methodsContainer = new VisualElement() { name = "Methods" };
             var methodInfos = type.GetMethods(Utility.AllAccessFlags);
 
             foreach (var methodInfo in methodInfos)
             {
-                if (methodInfo.HasAttribute<DecoratorAttribute>())
+                if (methodInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var methodDrawer = new CustomMethodDrawer(target, methodInfo);
-                    var methodGUI = methodDrawer.CreatePropertyGUI();
-                    methodsContainer.Add(methodGUI);
+                    var widgetTree = new WidgetTree(target, methodInfo);
+
+                    root.Add(widgetTree);
                 }
             }
 
-            componentContainer.Add(fieldsContainer);
-            componentContainer.Add(propertiesContainer);
-            componentContainer.Add(methodsContainer);
+            var widgetTrees = root.Query<WidgetTree>().ToList();
 
-            return componentContainer;
+            // register all widgetTree as a template before widgetTree Build,
+            // so we can use it in other widgetTree on build.
+            foreach (var widgetTree in widgetTrees)
+            {
+                widgetTree.RegisterTemplate();
+            }
+
+            // we need to build widget tree before return to CreateInspectorGUI,
+            // otherwise, the `PropertyField` VisualElement will not be displayed.
+            foreach (var widgetTree in widgetTrees)
+            {
+                if (!widgetTree.ShouldBuildAtRoot)
+                {
+                    continue;
+                }
+
+                widgetTree.Build();
+            }
+
+            // Awake all widget,
+            for (int i = 0; i < settings.maxNestingDepth; i++)
+            {
+                var widgets = root.Query<Widget>().Where(it => it.LifePhase == WidgetLifePhase.Created).ToList();
+
+                if (widgets.Count == 0)
+                {
+                    break;
+                }
+
+                // send OnAwake event to all widget
+                // we need to send this event after all widgetTree build,
+                foreach (var widget in widgets)
+                {
+                    widget.SendEvent<IAwakeReceiver>(r => r.OnAwake(widget));
+                    widget.LifePhase = WidgetLifePhase.Awaked;
+                }
+            }
+
+            return root;
         }
 
         protected void OnDestroy()
         {
-            if (TryGetDecoratorElements(out var decorators))
-            {
-                foreach (var decorator in decorators)
-                {
-                    Decorator.InvokeOnDestroy(decorator);
-                }
-            }
+            editorEventService?.OnDestroy();
         }
 
         protected void OnSceneGUI()
         {
-            var needRepaint = true;
-            while (needRepaint)
-            {
-                needRepaint = false;
-                if (TryGetDecoratorElements(out var decorators))
-                {
-                    foreach (var decorator in decorators)
-                    {
-                        if (!decorator.IsStarted)
-                        {
-                            decorator.RegisterCallback<RepaintEvent>(evt => OnSceneGUI());
-                            Decorator.InvokeOnStart(decorator);
-                            decorator.IsStarted = true;
-                        }
-                        Decorator.InvokeOnSceneGUI(decorator);
-                    }
-                }
-            }
-        }
-
-        private bool TryGetDecoratorElements(out IEnumerable<Decorator> decorators)
-        {
-            if (componentContainer == null)
-            {
-                decorators = null;
-                return false;
-            }
-            else
-            {
-                decorators = componentContainer.Query<Decorator>().ToList();
-                return true;
-            }
+            editorEventService?.OnSceneGUI();
         }
     }
 }
