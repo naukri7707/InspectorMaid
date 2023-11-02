@@ -1,18 +1,19 @@
 ﻿using Naukri.InspectorMaid.Editor.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using UnityEditor;
 using UnityEngine.UIElements;
 using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class PropertyElement : VisualElement
+    public class PropertyElement : VisualElement, IBuildable
     {
-        public PropertyElement(string label, UObject target, PropertyInfo info)
+        public PropertyElement(UObject target, PropertyInfo info)
         {
-            this.label = label;
             this.target = target;
             this.info = info;
+            label = ObjectNames.NicifyVariableName(info.Name);
         }
 
         private readonly PropertyInfo info;
@@ -26,7 +27,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         [SuppressMessage("Style", "IDE1006")]
         public string label { get => _label; set => _label = value; }
 
-        internal void Build()
+        void IBuildable.Build()
         {
             bindableElement = PropertyBuilder.Build(label, target, info);
             Add(bindableElement);

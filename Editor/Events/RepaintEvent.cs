@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid.Editor.Events
 {
-    public class RepaintEvent : InspectorMaidEvent<RepaintEvent>
+    public class RepaintEvent : WidgetEvent<RepaintEvent>
     {
         public RepaintEvent()
         {

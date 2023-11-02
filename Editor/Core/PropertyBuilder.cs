@@ -1,4 +1,5 @@
-﻿using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,17 +34,23 @@ namespace Naukri.InspectorMaid.Editor.Core
         public static void AddBuilderWithBinding<T>(Func<string, BaseField<T>> factory)
         {
             BuilderDict
-                .Add(typeof(T), (label, target, getter, setter)
-                    => factory(label).WithBind(getter, setter)
-                );
+                .Add(typeof(T), (label, target, getter, setter) =>
+                {
+                    var field = factory(label);
+                    DelegateBinding.Bind(field, getter, setter);
+                    return field;
+                });
         }
 
         public static void AddBuilderWithBinding<T, TValue>(Func<string, BaseField<TValue>> factory)
         {
             BuilderDict
-                .Add(typeof(T), (label, target, getter, setter)
-                    => factory(label).WithBind(getter, setter)
-                );
+                .Add(typeof(T), (label, target, getter, setter) =>
+                {
+                    var field = factory(label);
+                    DelegateBinding.Bind(field, getter, setter);
+                    return field;
+                });
         }
 
         internal static BindableElement Build(string label, UObject target, PropertyInfo info)
@@ -69,10 +76,15 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 var defaultValue = (Enum)Activator.CreateInstance(type);
 
-                var isFlags = type.GetCustomAttribute<FlagsAttribute>() != null;
-                return isFlags
-                    ? new EnumFlagsField(label, defaultValue).WithBind(getter, setter)
-                    : new EnumField(label, defaultValue).WithBind(getter, setter);
+                var isFlags = type.HasAttribute<FlagsAttribute>();
+
+                BaseField<Enum> field = isFlags
+                    ? new EnumFlagsField(label, defaultValue)
+                    : new EnumField(label, defaultValue);
+
+                DelegateBinding.Bind(field, getter, setter);
+
+                return field;
             }
 
             if (typeof(IList).IsAssignableFrom(type))

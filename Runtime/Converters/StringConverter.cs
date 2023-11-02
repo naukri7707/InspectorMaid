@@ -159,7 +159,7 @@ namespace Naukri.InspectorMaid.Converters
         private static bool TryConvertToKeyWord(string input, out StyleKeyword keyword)
         {
             // Since Enum.TryParse will convert number to Enum, so we need to check if the input is number first.
-            if (int.TryParse(input, out var intValue))
+            if (int.TryParse(input, out _))
             {
                 keyword = StyleKeyword.Null;
                 return false;
