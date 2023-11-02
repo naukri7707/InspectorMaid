@@ -1,18 +1,18 @@
 # 功能入門
 
-## 透過 `Attribute` 描述裝飾器並繪製 UI
+## 透過 `WidgetAttribute` 描述裝 `WidgetTree` 來繪製 UI
 
-Inspector Maid 繪製的 UI 主要透過利用由以下 3 種 `Attribute` 描述對應的功能，並互相協作組合而成。
+Inspector Maid 繪製的 UI 主要透過利用由以下 3 種 `WidgetAttribute` 描述對應的功能，並互相協作組合而成。
 
-1. `Item` : 沒有子元素的部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`
-2. `Scope` : 可以容納有子元素的部件，例如 `Container` 和 `Foldout`
-3. `Styler` : 用於描述部件風格，例如 `margin`、`padding` 及 `color`。
+1. `Item` : 沒有子元素的小部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`
+2. `Scope` : 可以容納有子元素的小部件，例如 `Container` 和 `Foldout`
+3. `Styler` : 用於描述小部件風格，例如 `margin`、`padding` 及 `color`。
 
-Inspector Maid 會為每一個目標建立一棵裝飾器樹，每棵樹中根據目標所定義的 `Attribute` 進行裝飾。如下圖所示：
+Inspector Maid 會為每一個目標建立一棵 `WidgetTree`，並根據不同的 `WidgetAttribute` 產生對應的 `Widget` 進行組合。最終組成類似於下圖的結構：
 
 ![structure-1](./Images/structure-1.png)
 
-這看起來有點抽象，讓我們來點具體的例子：
+這看起來有點抽象，讓我們來點具體的例子，讓你簡單理解如何使用 Item、Scope 以及 Styler 互相協作以產生想要的 UI 。
 
 假如我希望為我的 `int` 欄位建立一個具有以下特色的 UI
 
@@ -29,7 +29,9 @@ Inspector Maid 會為每一個目標建立一棵裝飾器樹，每棵樹中根�
 
 ![intro-step-1](./Images/intro-step-1.png)
 
-為了能重置 `myIntField`，我們還需要綁定一個函式，讓其在按下按鈕後將 `myIntField` 歸零。
+首先我們先在 `myInt` 上加入一個 `ButtonAttribute` 以產生一個按鈕。
+
+而為了能讓按鈕重置 `myInt`，我們還需要綁定一個函式，讓按鈕在按下後調用該函式將 `myInt` 歸零。
 
 ```cs
 [Button("Reset", binding: nameof(ResetValue))]
@@ -47,7 +49,7 @@ public void ResetValue()
 
 ![intro-step-2](./Images/intro-step-2.png) 
 
-一般情況下目標欄位會在所有的裝飾器繪製完畢後進行繪製，如果想要在裝飾器繪製之前進行繪製，我們需要使用 `Target` 來標註它應該在哪裡繪製。
+一般情況下目標欄位會在所有的 `Widget` 繪製完畢後進行繪製，如果想要提前進行繪製，我們需要使用 `TargetAttribute` 來標註它應該在哪裡繪製。
 
 ```cs
 [Target]
@@ -62,12 +64,12 @@ public void ResetValue()
 </details>
 
 <details>
-<summary>3. 讓按鈕在 Int 為 0 時隱藏</summary>
+<summary>3. 讓按鈕在 myInt 為 0 時隱藏</summary>
 
 ![intro-step-3.1](./Images/intro-step-3.1.png)
 ![intro-step-3.2](./Images/intro-step-3.2.png)
 
-為了將按鈕隱藏，我們需要使用 `HideIfScope` 它會偵測綁定的 `bool` 如果為 `true`，便隱藏其全部子元素。
+為了在 `myInt` 為 0 時隱藏按鈕，我們需要使用 `HideIfScopeAttribute` 它會偵測綁定的 `bool` 如果為 `true`，便隱藏全部隸屬於他的 `Widget`。
 
 ```cs
 [Target]
@@ -115,9 +117,9 @@ public void ResetValue()
 
 為了強調幫助訊息我們可以使用 `ContainerScope` (一個空的 Scope) 來將它們包裝起來。並利用 `Style` 來調整它的風格。
 
-由於我們只要強調提示訊息的部分，所以我們在 `Target` 之前使用 `EndScope` 將 Scope 關閉，這樣才不會強調到不相干的部件。
+由於我們只要強調提示訊息的部分，所以我們在 `Target` 之前使用 `EndScope` 將 Scope 關閉，這樣才不會強調到不相干的 `Widget`。
 
-你可能有發現 `HideIfScope` 並沒有使用 `EndScope` 關閉，這是因為未閉合 Scope 會在所有裝飾器被繪製完畢後自動關閉，所以我們可以將其省略掉。
+你可能有發現 `HideIfScope` 並沒有使用 `EndScope` 關閉，這是因為未閉合 Scope 會在所有 `Widget` 被繪製完畢後自動關閉，所以我們可以將其省略掉。
 
 ```cs
 [ContainerScope, Style(borderRadius: "5", padding: "3", marginVertical: "5", backgroundColor: "#AAAA2040")]
@@ -138,10 +140,7 @@ public void ResetValue()
 ```
 </details>
 
-透過以上釋例，你可以了解到如何讓 Item、Scope　以及 Styler 互相協作產生想要的 UI 。
-
-
-## 如何使用 `Style` 定義裝飾器風格
+## 如何使用 `Style` 定義 `Widget` 的風格
 
 ### 設定風格的屬性
 
@@ -215,20 +214,20 @@ public int good;
 
 `Style` 中的部分屬性可能會對同一目標進行重複設定：以 `marginTop` 為例：`marginTop`、`marginVertical`、`marginAll`、`margin` 以及 `classList` 都可能影響到它。
 
-在這時候遵循目標越單一、處理越簡單，優先度越高的原則因此在這種情況下的優先度為：
+在這時候遵循「選擇越少、目標越單一，優先度越高」的原則進行處理。因此在這種情況下的各屬性的優先級為：
 > `marginTop` > `marginVertical` > `marginAll` > `margin` > `classList`
 
-6. 小技巧，使用 nameof、const string 設定 keyword
-
 ## 在 Inspector 上繪製屬性及函式
+
+![draw-property-and-method](./Images/draw-property-and-method.png)
 
 經常使用 Unity 的人應該都知道：屬性及函式是無法被繪製到 Inspector 上。這並不難理解，因為 Inspector 本質上就是用來設定序列化資料用的工具視窗。但在實務上我們總有想要監看屬性的當前資料、或是調用特定函式的時候。雖然我們可以利用 `Debug.Log()`、註冊快捷鍵或是使用中斷點等方式達成目的。但這顯然很笨重，也不視覺化。因此我們選擇利用反射來讓屬性及函式可以被呈現在 Inspector 之上，方便監看即調用。
 
 ### 如何使用
 
-要顯示屬性或函式其實非常簡單，只需要在其之上使用任意裝飾器的 `Attribute` 即可，實際上你也可以使用裝飾器來裝飾屬性及函式的 UI 就像是欄位一樣。不過在大部分時候你可能只希望顯示該目標而不做任何裝飾，這時候 `Target` 會是你最好的選擇。
+要顯示屬性或函式其實非常簡單，只需要在其之上使用任意一個 `WidgetAttribute` 即可，實際上你也可以使用它來設計屬性及函式的 UI，就像是欄位一樣。
 
-![draw-property-and-method](./Images/draw-property-and-method.png)
+不過大部分時候你可能只希望顯示該目標而不做任何設計，這時候 `TargetAttribute` 會是你最好的選擇。
 
 ```cs
 public int myField;
@@ -276,9 +275,9 @@ public void MyMethod()
 
 ## 綁定 (繫結)
 
-部分裝飾器的 `Attribute` 可以與特定欄位進行資料綁定以達成一些特殊功能。綁定的目標可以是該腳本的物件本身或是該物件下的任何成員。
+部分 `WidgetAttribute` 可以與指定特定欄位讓對應的 `Widget` 與其進行資料綁定，用以完成一些特殊功能。綁定的目標可以是該腳本的物件本身或是該物件下的任何成員。
 
-- 如果要綁定成員，將` binding` 指派為該成員的名稱以進行綁定。你可以使用 nameof 運算式來使程式碼更容易維護。
+- 如果要綁定成員，將` binding` 指派為該成員的名稱以進行綁定。你可以使用 `nameof` 運算式來使程式碼更容易維護。
 
     ```cs
     [HelpBox(binding: "message")] // Bad
@@ -313,25 +312,25 @@ public void MyMethod()
 
 ### 注意事項
 
-- 和傳統 MVVM 模式中使用觀察者模式實作的綁定不同，為了能夠綁定欄位及函式 Inspector Maid 的綁定方式是在該裝飾器需要的時候 (通常是在 `OnSceneGUI()` 中) 主動獲得並比較綁定資料，因此會浪費一些效能在處理無效的事件上，且資料更新會有輕微的滯後性 (需等候 `OnSceneGUI()` 被調用或主動使用 `Repaint()` 重繪)。但考慮到本工具只會在 Editor 上運行、以及不需額外的程式碼即可進行綁定，我們認為這點缺陷是完全能夠接受的。
+- 和傳統 MVVM 模式中使用觀察者模式實作的綁定不同，為了能夠綁定欄位及函式 Inspector Maid 的綁定方式是在該 `Widget` 需要的時候 (通常是在 `OnSceneGUI()` 中) 主動獲得並比較綁定資料，因此會浪費一些效能在處理無效的事件上，且資料更新會有輕微的滯後性 (需等候 `OnSceneGUI()` 被調用或主動使用 `Repaint()` 重繪)。但考慮到本工具只會在 Unity Editor 上運行、以及不需額外的程式碼即可進行資料綁定，我們認為這點缺陷是完全能夠接受的。
 
-## 自訂裝飾器
+## 自訂小部件
 
-沒有完美的工具，Inspector Maid 雖然提供了許多泛用的内置裝飾器，但針對特定功能可能需要大量使用的 Attribute 進行描述才能完成設計，甚至根本沒有相關的功能。這時後，你可以將複雜的 UI 設計定義於一個裝飾器中在來提升程式碼的可讀性。或是透過自訂裝飾器來實作想要的功能。
+沒有完美的工具，Inspector Maid 雖然提供了許多泛用的内置小部件，但較複雜的設計可能需要大量使用的 `WidgetAttribute` 進行描述才能完成設計，或是内置小部件根本沒有相關的功能。這時後你可以透過自訂小部件，將複雜的 UI 設計定義於一個 `Widget` 中在來提升程式碼的可讀性。以及透過自訂小部件來實作想要的功能。
 
-### 建立 Attribute
+### 建立 `WidgetAttribute`
 
-1. 首先我們需要建立用來定義裝飾器位置及屬性的 Attribute。要注意根據目標裝飾器種類的不同，你需要繼承的類別也有所不同。
+1. 首先我們需要建立用來定義 `Widget` 位置及屬性的 `WidgetAttribute`。要注意根據目標功能不同，你需要繼承的類別也有所不同。
     ```cs
-    // Item
+    // Item : 單一個小部件
     public class MyItemAttribute : ItemAttribute { }
-    // Scope
+    // Scope : 可以包裝其他小部件的小部件 (需使用 EndScope 關閉)
     public class MyScopeAttribute : ScopeAttribute { }
-    // Styler
+    // Styler : 定義前一個小部件的風格
     public class MyStylerAttribute : StylerAttribute { }
     ```
 
-2. 你可能會想要傳入一些參數，我們推薦使用 `readonly field `保證其不可變性。
+2. 你可能會想要傳入一些參數給 `WidgetAttribute`，我們推薦使用 `readonly field` 以保證其不可變性。
 
     ```cs
     public class MyItemAttribute : ItemAttribute
@@ -364,7 +363,7 @@ public void MyMethod()
 
     ![optional-variable-compare](Images/optional-variable-compare.png)
 
-4. 如果想要使用資料綁定，你需要讓該 `Attribute` 繼承 `IBindable` 介面。為了統一綁定邏輯，我們約定永遠使 binding 及 args 作為最後兩個參數且 args 需使用 params 關鍵字。
+4. 如果想要支援資料綁定，你需要讓該 `WidgetAttribute` 繼承 `IBindable` 介面。為了統一綁定邏輯，我們約定永遠使 `binding` 及 `args` 作為最後兩個參數且 `args` 需使用 `params` 關鍵字。
 
     ```cs
     public class MyItemAttribute : ItemAttribute, IBindable
@@ -390,45 +389,32 @@ public void MyMethod()
 
 ### 建立 Drawer / Styler
 
-根據目標裝飾器得種類不同，我們需要繼承的類別也有所不同
+根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
 
-#### Drawer (Item & Scope)
+#### 繪製器 `WidgetDrawerOf<TAttribute>`
+
+如果你的 `WidgetAttribute` 為 `ItemAttribute` 或是 `ScopeAttribute` 你需要使用 `WidgetDrawerOf<TAttribute>` 進行設計。
 
 ```cs
 using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.UIElements;
 using UnityEditor.UIElements;
 
-public class MyItemDrawer : CustomDrawerOf<MyItemAttribute>
+public class MyItemDrawer : WidgetDrawerOf<MyItemAttribute>
 {
-    public override void OnDrawField(PropertyField fieldElement)
+    public override void OnStart(IWidget widget)
     {
-        // 當 Decorator 被建立且，目標為 Field 時調用此函式
+        // 當 Widget 甦醒後，首次 OnSceneGUI() 之前調用此函式
     }
 
-    public override void OnDrawProperty(PropertyElement propertyElement)
+    public override void OnSceneGUI(IWidget widget)
     {
-        // 當 Decorator 被建立且，目標為 Property 時調用此函式
+        // 當 Widget 甦醒後，每次 SceneGUI 時調用此函式
     }
 
-    public override void OnDrawMethod(MethodElement methodElement)
+    public override void OnDestroy(IWidget widget)
     {
-        // 當 Decorator 被建立且，目標為 Method 時調用此函式
-    }
-
-    public override void OnStart()
-    {
-        // 當 DecoratorTree 建立完成後，首次 OnSceneGUI() 之前調用此函式
-    }
-
-    public override void OnSceneGUI()
-    {
-        // 當 DecoratorTree 建立完成後，每次 SceneGUI 時調用此函式
-    }
-
-    public override void OnDestroy()
-    {
-        // 當 DecoratorTree 被刪除時調用此函式 (一般為該 component 被刪除 / 切換到其他 GameObject 時)
+        // 當 Widget 被刪除時調用此函式 (一般為該 component 從 inspector 中消失的時候)
     }
 }
 ```
@@ -436,14 +422,30 @@ public class MyItemDrawer : CustomDrawerOf<MyItemAttribute>
 你可以使用以下屬性及函式來輔助你建立 Drawer
 
 - `attribute` : 用來存取對應的屬性資料
-- `decorator` : 取得裝飾器元素
-- `drawerTarget` : 判斷該裝飾器目標是欄位、屬性還是函式
-- `fieldInfo` : 取得目標的 FieldInfo ，如果目標不是 field 會拋出錯誤
-- `propertyInfo` : 取得目標的 PropertyInfo ，如果目標不是 property 會拋出錯誤
-- `methodInfo` : 取得目標的 MethodInfo ，如果目標不是 method 會拋出錯誤
-- `IsBinding` : 判斷該裝飾器有綁定欄位
+- `memberInfo` : 取得目標的 `MemberInfo`
+- `fieldInfo` : 取得目標的 `FieldInfo` ，如果目標不是 field 會拋出錯誤
+- `propertyInfo` : 取得目標的 `PropertyInfo` ，如果目標不是 property 會拋出錯誤
+- `methodInfo` : 取得目標的 `MethodInfo` ，如果目標不是 method 會拋出錯誤
+- `IsBinding` : 判斷該 `Widget` 有綁定欄位
 - `GetBindingValue()` : 取得綁定資料，如果取得失敗會拋出對應的錯誤。
 - `CreateBindingMethodAction()` : 如果綁定目標是函式，可以使用此函式建立一個會傳入 `args` 參數給綁定函式的委派，這在製作按鈕等需要在特定情境中調用方法的時後很有用。
+
+以 `DisableIfScope` 為例：
+```cs
+public class DisableIfScopeDrawer : WidgetDrawerOf<DisableIfScopeAttribute>
+{
+    // 為了擴展功能及封閉一些不常用的函式，我們選擇通過 IWidget 來間接操作 VisualElement，
+    // 它包含了絕大部分 VisualElement 常用的函式所以你可以像使用 VisualElement 一般使用它。
+    // 如果有函式不包含在內你可以簡單的將它轉型 (widget as VisualElement) 這是絕對安全的。
+    public override void OnSceneGUI(IWidget widget)
+    {
+        // 使用 GetBindingValue 取得綁定資料
+        var disable = GetBindingValue<bool>();
+        // 如果綁定資料為 true 將 widget 禁用，使其與其子元素無法被操作。
+        widget.SetEnabled(!disable);
+    }
+}
+```
 
 #### Styler
 
@@ -453,10 +455,10 @@ using UnityEngine.UIElements;
 
 public class MyStyler : CustomStylerOf<MyStylerAttribute>
 {
+    // style 是目標 Widget 的 style 參考
     public override void OnStyling(IStyle style)
     {
-        // 在 DecoratorTree 建立時，當 MyStyler 被建立調用此函式
-        // style 是目標裝飾器元素的 style
+        // 當 Widget 創建完成，且 MyStyler 被建立時調用此函式
     }
 }
 ```
@@ -465,8 +467,8 @@ public class MyStyler : CustomStylerOf<MyStylerAttribute>
 
 - `attribute` : 用來存取對應的屬性資料
 
-由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使其不再建置時被編譯，否則會專案程式建置。
+> 由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使其不再建置時被編譯，否則會專案程式建置。
 
-# 内置裝飾器
+# 内置小部件
 
-你可以在 package 中的 Sample 中找到所有内置裝飾器的 demo 以及詳細的說明。
+你可以在 package 中的 Sample 中找到所有内置小部件的 demo 以及詳細的說明。
