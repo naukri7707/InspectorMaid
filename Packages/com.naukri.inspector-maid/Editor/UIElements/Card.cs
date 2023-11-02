@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
@@ -7,7 +8,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements
     {
         public Card() : this(new Color32(56, 56, 56, 255))
         {
-
         }
 
         public Card(Color cardColor)
