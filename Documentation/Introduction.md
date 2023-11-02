@@ -1,6 +1,6 @@
 # 功能入門
 
-## 透過 `WidgetAttribute` 描述裝 `WidgetTree` 來繪製 UI
+## 透過 `WidgetAttribute` 描述 `WidgetTree` 來繪製 UI
 
 Inspector Maid 繪製的 UI 主要透過利用由以下 3 種 `WidgetAttribute` 描述對應的功能，並互相協作組合而成。
 
