@@ -26,7 +26,7 @@ namespace Naukri.InspectorMaid.Editor.Events
         private void LocalInit()
         {
             tricklesDown = false;
-            bubbles = false;
+            bubbles = true;
         }
     }
 }

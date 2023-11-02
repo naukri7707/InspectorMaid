@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Events;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
@@ -23,6 +24,11 @@ namespace Naukri.InspectorMaid.Editor.Core
         public override VisualElement CreateInspectorGUI()
         {
             root = new();
+            root.RegisterCallback<RepaintEvent>(evt =>
+            {
+                editorEventService?.OnSceneGUI();
+            });
+
             editorEventService = new();
             settings = InspectorMaidSettings.Instance;
 
