@@ -9,7 +9,12 @@
     {
       "displayName": "01. Widget's Attributes",
       "description": "The usage and samples of each attribute",
-      "path": "Samples~/01. WidgetAttributes"
+      "path": "Samples~/01. Widget's Attributes"
+    },
+    {
+      "displayName": "02. Property And Method",
+      "description": "The usage and samples of each attribute",
+      "path": "Samples~/02. Property And Method"
     }
   ]
 }
