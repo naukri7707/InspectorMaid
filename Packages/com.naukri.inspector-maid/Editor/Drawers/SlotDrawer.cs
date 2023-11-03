@@ -9,11 +9,9 @@ namespace Naukri.InspectorMaid.Editor.Drawers
         {
             var templateService = TemplateService.Of(widget);
             var templateName = attribute.templateName;
-            var cloned = templateService[templateName].Clone();
+            var widgetTree = templateService[templateName].CreateWidget();
 
-            cloned.Build();
-
-            widget.Add(cloned);
+            widget.Add(widgetTree);
         }
     }
 }

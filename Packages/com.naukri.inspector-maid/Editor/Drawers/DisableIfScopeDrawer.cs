@@ -1,6 +1,4 @@
-﻿using UnityEngine.UIElements;
-
-namespace Naukri.InspectorMaid.Editor.Drawers
+﻿namespace Naukri.InspectorMaid.Editor.Drawers
 {
     public class DisableIfScopeDrawer : WidgetDrawerOf<DisableIfScopeAttribute>
     {
