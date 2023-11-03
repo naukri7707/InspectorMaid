@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0] - 2023-11-03
+
+### 新增
+- 內置小部件 `Foldout` 新增 expand 屬性，以設定預設是否展開。
+- 新增缺少的 `WidgetAttribute` 示範，並美化畫面。
+- 新增 `Property And Method` 示範場景，展示如何顯示屬性、欄位。
+
+### 修正
+- Label 無法正常運作錯誤。
+- MethodElement 預設為展開錯誤。
+
+### 重構
+- 剝離 WidgetTree 自我複製的功能到 WidgetTreeDrawer 以符合單一職責原則。
+
+### 雜項
+- 發佈分支更名為 upm，並免與 relesae/v 分支衝突。
+- Sample 新增單元前綴以使其單元化。
+
 ## [1.1.0] - 2023-11-03
 
 ### 新增
