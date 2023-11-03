@@ -7,9 +7,10 @@ namespace Naukri.InspectorMaid.Editor.Drawers
     {
         public override void OnStart(IWidget widget)
         {
-            var foldout = new Foldout()
+            var foldout = new Foldout
             {
                 text = attribute.text,
+                value = attribute.expend
             };
 
             // We need to cache the children before we add the foldout to the widget,

@@ -3,21 +3,24 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class HideIfScopeSample : MonoBehaviour
+    public class HideIfScopeSample : AttributeSampleBehaviour
     {
-        [HelpBox("[HideIfScope] will hide the scope if the binded value is 'true'.\r\nThis is helpful when you want to hide some element.", HelpBoxMessageType.Info)]
+        [HelpBox(
+@"[HideIfScope] will hide the scope if the binded value is 'true'.
+This is helpful when you want to hide some element.", HelpBoxMessageType.Info)]
         public bool hide;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [HideIfScope(binding: nameof(hide))]
         public int hideTarget;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [HelpBox("You can use [EndScope] to define the working scope of [HideIfScope].", HelpBoxMessageType.Info)]
+        [CardScope(color: kSectionBGColor)]
         // Sample 2
         [HideIfScope(binding: nameof(hide))]
         [Button("Click me!", binding: nameof(MyMethod))]
-        [EndScope] // EndScope is used to end the scope, so that the next element (Target) will not be disabled.
+        [EndScope] // EndScope close the scope of HideIfScope, so that the next widget (Target) will not be hide.
         public int hideUI;
 
         public void MyMethod()

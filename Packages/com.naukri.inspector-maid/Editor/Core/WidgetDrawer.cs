@@ -18,16 +18,16 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         private Widget _widget;
 
-        private WidgetTree _widgetTree;
+        private WidgetTreeDrawer _widgetTreeDrawer;
 
         [SuppressMessage("Style", "IDE1006")]
-        public UObject target => _widgetTree.target;
+        public abstract UObject target { get; }
 
         [SuppressMessage("Style", "IDE1006")]
-        public SerializedProperty serializedProperty => _widgetTree.serializedProperty;
+        public abstract SerializedProperty serializedProperty { get; }
 
         [SuppressMessage("Style", "IDE1006")]
-        public MemberInfo memberInfo => _widgetTree.info;
+        public abstract MemberInfo memberInfo { get; }
 
         [SuppressMessage("Style", "IDE1006")]
         public FieldInfo fieldInfo
@@ -88,6 +88,8 @@ namespace Naukri.InspectorMaid.Editor.Core
         internal abstract DrawerAttribute attributeRef { get; set; }
 
         internal Widget Widget => _widget;
+
+        internal WidgetTreeDrawer WidgetTreeDrawer => _widgetTreeDrawer;
 
         public virtual void OnStart(IWidget widget) { }
 
@@ -168,6 +170,12 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
         }
 
+        internal void SetWidget(Widget widget, WidgetTreeDrawer widgetTreeDrawer)
+        {
+            _widget = widget;
+            this._widgetTreeDrawer = widgetTreeDrawer;
+        }
+
         internal void OnScenceGUIImpl()
         {
             if (lifePhase == WidgetLifePhase.Attached)
@@ -186,11 +194,11 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         internal abstract Widget CreateWidget();
 
-        private WidgetDrawer CloneWith(DrawerAttribute attribute, WidgetTree widgetTree)
+        private WidgetDrawer CloneWith(DrawerAttribute attribute, WidgetTreeDrawer widgetTreeDrawer)
         {
             var cloned = (WidgetDrawer)MemberwiseClone();
             cloned.attributeRef = attribute;
-            cloned._widgetTree = widgetTree;
+            cloned._widgetTreeDrawer = widgetTreeDrawer;
             cloned._widget = cloned.CreateWidget();
             cloned.lifePhase = WidgetLifePhase.Created;
             return cloned;
@@ -200,10 +208,10 @@ namespace Naukri.InspectorMaid.Editor.Core
         {
             private static Dictionary<Type, WidgetDrawer> _templates;
 
-            internal static WidgetDrawer Create(DrawerAttribute attribute, WidgetTree widgetTree)
+            internal static WidgetDrawer Create(DrawerAttribute attribute, WidgetTreeDrawer widgetTreeDrawer)
             {
                 var template = GetTemplate(attribute);
-                var instance = template.CloneWith(attribute, widgetTree);
+                var instance = template.CloneWith(attribute, widgetTreeDrawer);
                 return instance;
             }
 
@@ -213,7 +221,7 @@ namespace Naukri.InspectorMaid.Editor.Core
                 {
                     _templates = new Dictionary<Type, WidgetDrawer>();
                     var drawerTypes = TypeCache
-                        .GetTypesDerivedFrom(typeof(WidgetDrawer))
+                        .GetTypesDerivedFrom(typeof(WidgetDrawerOf<>))
                         .Where(it => !it.IsAbstract).ToList();
                     foreach (var type in drawerTypes)
                     {

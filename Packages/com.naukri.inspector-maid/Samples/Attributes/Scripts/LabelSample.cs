@@ -1,23 +1,22 @@
-﻿using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class LabelSample : MonoBehaviour
+    public class LabelSample : AttributeSampleBehaviour
     {
-        [HelpBox("[Label] can change 'Target' prefix label.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [HelpBox("[Label] will not render anything, but can change 'Target' prefix label.", HelpBoxMessageType.Info)]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Label("newLabel")]
         public int useLabel;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 2
         [Label("newLabelWithNicifyName", useNicifyName: true)]
         public int useLabelWithNicifyName;
 
         [HelpBox("You can also change the label of 'Target' dynamically by binding.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 3
         [Label(binding: nameof(bindingMessage))]
         public string bindingMessage = "change me!";

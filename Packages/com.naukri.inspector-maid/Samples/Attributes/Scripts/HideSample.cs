@@ -3,11 +3,11 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class HideSample : MonoBehaviour
+    public class HideSample : AttributeSampleBehaviour
     {
-        [HelpBox("[Hide] will hide the 'Target' element.", HelpBoxMessageType.Info)]
-        [HelpBox("Unlike [HideIfScope], [Hide] only hide the 'Target' element, while [HideIfScope] hide the entire scope", HelpBoxMessageType.Warning)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [HelpBox("[Hide] will not render anything, but hide the 'Target' element.", HelpBoxMessageType.Info)]
+        [HelpBox("Unlike [HideIfScope], [Hide] only hide the 'Target' element, while [HideIfScope] hide the entire scope.", HelpBoxMessageType.Warning)]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Hide]
         public int myField;
