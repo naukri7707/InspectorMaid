@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Samples.Attributes
+namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    public class EndScopeSample : MonoBehaviour
+    public class EndScopeSample : AttributeSampleBehaviour
     {
         [HelpBox("[EndScope] can close the latest open scope, allowing you to add elements to another scope.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Target]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#404040")]

@@ -13,38 +13,36 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class WidgetTree : VisualElement, IWidget
+    public class WidgetTreeDrawer : WidgetDrawer
     {
-        public WidgetTree(UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
+        public WidgetTreeDrawer(UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
         {
+            SetWidget(null, this);
+
             this.target = target;
-            this.info = info;
+            this.memberInfo = info;
             this.serializedProperty = serializedProperty?.Copy();
-
-            targetElement = info switch
-            {
-                FieldInfo fieldInfo => new PropertyField(this.serializedProperty),
-                PropertyInfo propertyInfo => new PropertyElement(target, propertyInfo),
-                MethodInfo methodInfo => new MethodElement(target, methodInfo),
-                _ => throw new InvalidOperationException($"Can not clone {nameof(WidgetTree)} because {nameof(info)} is not a {nameof(FieldInfo)}, {nameof(PropertyInfo)} or {nameof(MethodInfo)}.")
-            };
-
-            name = $"{info.Name}'s WidgetTree";
         }
 
-        internal readonly UObject target;
+        public override UObject target { get; }
 
-        internal readonly MemberInfo info;
+        public override SerializedProperty serializedProperty { get; }
 
-        internal readonly SerializedProperty serializedProperty;
+        public override MemberInfo memberInfo { get; }
 
-        private readonly VisualElement targetElement;
+        internal override Type AttributeType => throw new NotImplementedException();
+
+        internal override DrawerAttribute attributeRef
+        {
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
+        }
 
         internal bool ShouldBuildAtRoot
         {
             get
             {
-                var templateAttribute = info.GetCustomAttribute<TemplateAttribute>();
+                var templateAttribute = memberInfo.GetCustomAttribute<TemplateAttribute>();
 
                 if (templateAttribute == null)
                 {
@@ -55,24 +53,16 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             }
         }
 
-        public WidgetTree Clone()
+        internal override Widget CreateWidget()
         {
-            return new WidgetTree(target, info, serializedProperty);
-        }
+            var widgetTree = new WidgetTree(this)
+            {
+                name = $"{memberInfo.Name}'s WidgetTree"
+            };
 
-        public void RegisterTemplate()
-        {
-            var templateService = TemplateService.Of(this);
+            var targetElement = CreateTargetElement();
 
-            var templateAttribute = info.GetCustomAttribute<TemplateAttribute>();
-            var name = templateAttribute?.name ?? info.Name;
-
-            templateService.Add(name, this);
-        }
-
-        public void Build()
-        {
-            var attrs = info.GetCustomAttributes<WidgetAttribute>(true).ToList();
+            var attrs = memberInfo.GetCustomAttributes<WidgetAttribute>(true).ToList();
 
             var targetAttributeCount = attrs.Count(attr => attr is TargetAttribute);
 
@@ -105,7 +95,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                             break;
                         }
 
-                        var drawer = WidgetDrawer.Templates.Create(drawerAttr, this);
+                        var drawer = Templates.Create(drawerAttr, this);
                         var widget = drawer.Widget;
 
                         lastWidget = widget;
@@ -154,18 +144,41 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
             foreach (var widget in widgets)
             {
-                Add(widget);
+                widgetTree.Add(widget);
             }
 
             if (targetElement is IBuildable buildable)
             {
                 buildable.Build();
             }
+
+            return widgetTree;
         }
 
-        public void SendEvent<TReceiver>(Action<TReceiver> callback) where TReceiver : IReceiver
+        internal void RegisterTemplate(TemplateService templateService)
         {
-            this.Query<Widget>().ForEach(w => w.SendEvent(callback));
+            var templateAttribute = memberInfo.GetCustomAttribute<TemplateAttribute>();
+            var name = templateAttribute?.name ?? memberInfo.Name;
+
+            templateService.Add(name, this);
         }
+
+        private VisualElement CreateTargetElement()
+        {
+            return memberInfo switch
+            {
+                FieldInfo fieldInfo => new PropertyField(this.serializedProperty),
+                PropertyInfo propertyInfo => new PropertyElement(target, propertyInfo),
+                MethodInfo methodInfo => new MethodElement(target, methodInfo),
+                _ => throw new InvalidOperationException($"Can not clone {nameof(WidgetTree)} because {nameof(memberInfo)} is not a {nameof(FieldInfo)}, {nameof(PropertyInfo)} or {nameof(MethodInfo)}.")
+            };
+        }
+    }
+
+    public class WidgetTree : Widget
+    {
+        public WidgetTree(WidgetTreeDrawer widgetTreeDrawer)
+            : base(widgetTreeDrawer)
+        { }
     }
 }
