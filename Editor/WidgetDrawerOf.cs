@@ -3,6 +3,7 @@ using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor
@@ -14,6 +15,12 @@ namespace Naukri.InspectorMaid.Editor
 
         [SuppressMessage("Style", "IDE1006")]
         public TAttribute attribute => _attribute;
+
+        public override UnityEngine.Object target => WidgetTreeDrawer.target;
+
+        public override SerializedProperty serializedProperty => WidgetTreeDrawer.serializedProperty;
+
+        public override MemberInfo memberInfo => WidgetTreeDrawer.memberInfo;
 
         internal override sealed DrawerAttribute attributeRef
         {

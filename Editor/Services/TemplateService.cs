@@ -5,9 +5,9 @@ namespace Naukri.InspectorMaid.Editor.Services
 {
     internal class TemplateService
     {
-        private readonly Dictionary<string, WidgetTree> templates = new();
+        private readonly Dictionary<string, WidgetTreeDrawer> templates = new();
 
-        public WidgetTree this[string key]
+        public WidgetTreeDrawer this[string key]
         {
             get => templates[key];
             set => templates[key] = value;
@@ -18,9 +18,9 @@ namespace Naukri.InspectorMaid.Editor.Services
             return widget.GetService<TemplateService>();
         }
 
-        public void Add(string key, WidgetTree widgetTree)
+        public void Add(string key, WidgetTreeDrawer widgetTreeDrawer)
         {
-            templates.Add(key, widgetTree);
+            templates.Add(key, widgetTreeDrawer);
         }
 
         public void Remove(string key)
@@ -28,9 +28,9 @@ namespace Naukri.InspectorMaid.Editor.Services
             templates.Remove(key);
         }
 
-        public void TryGetValue(string key, out WidgetTree widgetTree)
+        public void TryGetValue(string key, out WidgetTreeDrawer widgetTreeDrawer)
         {
-            templates.TryGetValue(key, out widgetTree);
+            templates.TryGetValue(key, out widgetTreeDrawer);
         }
     }
 }

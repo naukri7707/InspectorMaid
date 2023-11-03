@@ -5,6 +5,7 @@ using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.UIElements;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         private EditorEventService editorEventService;
 
+        private TemplateService templateService;
+
         private InspectorMaidSettings settings;
 
         public override VisualElement CreateInspectorGUI()
@@ -30,9 +33,10 @@ namespace Naukri.InspectorMaid.Editor.Core
             });
 
             editorEventService = new();
+            templateService = new();
             settings = InspectorMaidSettings.Instance;
 
-            root.AddService<TemplateService>();
+            root.AddService(templateService);
             root.AddService(editorEventService);
             root.AddService(settings);
 
@@ -42,12 +46,15 @@ namespace Naukri.InspectorMaid.Editor.Core
                 root.styleSheets.Add(sheet);
             }
 
+            var widgetTreeDrawers = new List<WidgetTreeDrawer>();
+
             // fields
             var iterator = serializedObject.GetIterator();
             if (iterator.NextVisible(true))
             {
                 do
                 {
+                    // special case for m_Script: draw by default drawer and disable it
                     var fieldElement = new PropertyField(iterator.Copy()) { name = $"PropertyField:{iterator.propertyPath}" };
                     if (iterator.propertyPath == "m_Script" && serializedObject.targetObject != null)
                     {
@@ -55,18 +62,13 @@ namespace Naukri.InspectorMaid.Editor.Core
                         root.Add(fieldElement);
                         continue;
                     }
+
+                    // wrap all field with WidgetTreeDrawer, even if it is not a widget
+                    // so we can use inject any target to slot as widget
                     var fieldInfo = iterator.GetFieldInfo();
+                    var widgetTreeDrawer = new WidgetTreeDrawer(target, fieldInfo, iterator);
 
-                    if (fieldInfo.HasAttribute<WidgetAttribute>())
-                    {
-                        var widgetTree = new WidgetTree(target, fieldInfo, iterator);
-
-                        root.Add(widgetTree);
-                    }
-                    else
-                    {
-                        root.Add(fieldElement);
-                    }
+                    widgetTreeDrawers.Add(widgetTreeDrawer);
                 }
                 while (iterator.NextVisible(false));
             }
@@ -80,9 +82,8 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 if (propertyInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var widgetTree = new WidgetTree(target, propertyInfo);
-
-                    root.Add(widgetTree);
+                    var widgetTreeDrawer = new WidgetTreeDrawer(target, propertyInfo);
+                    widgetTreeDrawers.Add(widgetTreeDrawer);
                 }
             }
 
@@ -93,34 +94,32 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 if (methodInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var widgetTree = new WidgetTree(target, methodInfo);
-
-                    root.Add(widgetTree);
+                    var widgetTreeDrawer = new WidgetTreeDrawer(target, methodInfo);
+                    widgetTreeDrawers.Add(widgetTreeDrawer);
                 }
             }
 
-            var widgetTrees = root.Query<WidgetTree>().ToList();
-
             // register all widgetTree as a template before widgetTree Build,
             // so we can use it in other widgetTree on build.
-            foreach (var widgetTree in widgetTrees)
+            foreach (var widgetTreeDrawer in widgetTreeDrawers)
             {
-                widgetTree.RegisterTemplate();
+                widgetTreeDrawer.RegisterTemplate(templateService);
             }
 
             // we need to build widget tree before return to CreateInspectorGUI,
             // otherwise, the `PropertyField` VisualElement will not be displayed.
-            foreach (var widgetTree in widgetTrees)
+            foreach (var widgetTreeDrawer in widgetTreeDrawers)
             {
-                if (!widgetTree.ShouldBuildAtRoot)
+                if (!widgetTreeDrawer.ShouldBuildAtRoot)
                 {
                     continue;
                 }
 
-                widgetTree.Build();
+                var widget = widgetTreeDrawer.CreateWidget();
+                root.Add(widget);
             }
 
-            // Awake all widget,
+            // Awake all widget, because of nesting slot, we should awake several times.
             for (int i = 0; i < settings.maxNestingDepth; i++)
             {
                 var widgets = root.Query<Widget>().Where(it => it.LifePhase == WidgetLifePhase.Created).ToList();
@@ -130,7 +129,7 @@ namespace Naukri.InspectorMaid.Editor.Core
                     break;
                 }
 
-                // send OnAwake event to all widget
+                // send Awake event to all widget
                 // we need to send this event after all widgetTree build,
                 foreach (var widget in widgets)
                 {
