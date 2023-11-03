@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Samples.Attributes
+namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
     public class FoldoutScopeSample : AttributeSampleBehaviour
     {

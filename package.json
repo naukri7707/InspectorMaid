@@ -7,9 +7,9 @@
   "description": "This is a Unity Inspector UI customization feature.\r\n You can use it to create some simple interactive functionalities for your Component without the need to write a dedicated Editor. It has several key features:\r\n\r\n\u2022Uses UIElements for rendering.\r\n\r\n\u2022Allows direct access to properties and functions in the Inspector.\r\n\r\n\u2022Supports adding multiple widgets to the same target.\r\n\r\n\u2022Allows customization of custom widgets.\r\n\r\n\u2022Allows dynamic content modification through binding.",
   "samples": [
     {
-      "displayName": "Attributes",
+      "displayName": "01. Widget's Attributes",
       "description": "The usage and samples of each attribute",
-      "path": "Samples~/Attributes"
+      "path": "Samples~/01. WidgetAttributes"
     }
   ]
 }
