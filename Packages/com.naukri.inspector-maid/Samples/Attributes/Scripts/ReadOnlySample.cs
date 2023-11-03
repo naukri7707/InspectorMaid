@@ -3,11 +3,11 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class ReadOnlySample : MonoBehaviour
+    public class ReadOnlySample : AttributeSampleBehaviour
     {
-        [HelpBox("[ReadOnly] will disable the 'Target' element.", HelpBoxMessageType.Info)]
-        [HelpBox("Unlike [DisableIfScope], ReadOnly only disable the 'Target' element, while [DisableIfScope] disable the entire scope", HelpBoxMessageType.Warning)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [HelpBox("[ReadOnly] will not render anything, but disable the 'Target' element.", HelpBoxMessageType.Info)]
+        [HelpBox("Unlike [DisableIfScope], ReadOnly only disable the 'Target' element, while [DisableIfScope] disable the entire scope.", HelpBoxMessageType.Warning)]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [ReadOnly]
         public int myField;

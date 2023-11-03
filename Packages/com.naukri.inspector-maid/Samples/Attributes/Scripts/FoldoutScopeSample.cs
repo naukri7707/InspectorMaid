@@ -3,17 +3,28 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class FoldoutScopeSample : MonoBehaviour
+    public class FoldoutScopeSample : AttributeSampleBehaviour
     {
         [HelpBox("[FoldoutScope] allows you to create a scope that can be toggled visible by clicking the header.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
-        [Target]
-        [FoldoutScope("Fold out")]
-        [HelpBox("Fold Item 1", HelpBoxMessageType.Info)]
-        [HelpBox("Fold Item 2", HelpBoxMessageType.Warning)]
+        [FoldoutScope("Help Infos")]
+        [HelpBox("Some help info", HelpBoxMessageType.Info)]
+        [HelpBox("Another help info", HelpBoxMessageType.Info)]
+        [HelpBox("Some warning", HelpBoxMessageType.Warning)]
         [EndScope]
-        [HelpBox("Unfold Item 1", HelpBoxMessageType.Error)]
-        public int Sample1;
+        [Target]
+        public int sample1;
+
+        [HelpBox("You can also change the default expand if you want.", HelpBoxMessageType.Info)]
+        [CardScope(color: kSectionBGColor)]
+        // Sample 2
+        [FoldoutScope("Help Infos", expend: true)]
+        [HelpBox("Some help info", HelpBoxMessageType.Info)]
+        [HelpBox("Another help info", HelpBoxMessageType.Info)]
+        [HelpBox("Some warning", HelpBoxMessageType.Warning)]
+        [EndScope]
+        [Target]
+        public int sample2;
     }
 }
