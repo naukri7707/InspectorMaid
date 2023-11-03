@@ -37,9 +37,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         {
             style.flexDirection = FlexDirection.Column;
 
-            var foldout = new Foldout()
+            var foldout = new Foldout
             {
-                text = label
+                text = label,
+                value = false
             };
 
             // style toggle
