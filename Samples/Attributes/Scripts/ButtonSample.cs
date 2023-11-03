@@ -3,22 +3,22 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class ButtonSample : MonoBehaviour
+    public class ButtonSample : AttributeSampleBehaviour
     {
         [HelpBox("[Button] can invoke binded method on user click.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Button("Click", binding: nameof(MyMethod))]
         public int ButtonBeforeTarget = 0;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 2
         // The 'Target' attribute is used to mark where the member's field should be drawn.
         [Target]
         [Button("Click", binding: nameof(MyMethod))]
         public int ButtonAfterTarget = 0;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 3
         // In order to place the Button and Target on the same line,
         // we need to create a Container first, change the layout direction to row, and put them in it.
@@ -27,7 +27,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         [Target, Style(flexGrow: "1")] // In this case we need to set flexGrow to 1 to let Target fill the remaining space.
         public int ButtonBeforeTargetInRow = 0;
 
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 4
         [ContainerScope, Style(flexDirection: nameof(FlexDirection.Row))]
         [Target, Style(flexGrow: "1")]
@@ -35,7 +35,7 @@ namespace Naukri.InspectorMaid.Samples.Attributes
         public int ButtonAfterTargetInRow = 0;
 
         [HelpBox("[Button] can also invoke method with parameters.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 5
         // The 'args' parameter is of type object[], so when passing arguments, you typically declare an object[] when there are multiple arguments.
         // However, when you have only one argument, because of 'params' keyword, you can pass that argument without declaring an object[].

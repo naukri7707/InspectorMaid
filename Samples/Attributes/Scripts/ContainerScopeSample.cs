@@ -3,10 +3,10 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Attributes
 {
-    public class ContainerScopeSample : MonoBehaviour
+    public class ContainerScopeSample : AttributeSampleBehaviour
     {
         [HelpBox("[ContainerScope] can help you to wrap your UI and add some custom styles.", HelpBoxMessageType.Info)]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#202020")]
+        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Target]
         [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#404040", flexDirection: nameof(FlexDirection.Row))]
