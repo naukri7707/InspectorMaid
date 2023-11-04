@@ -7,6 +7,7 @@ namespace Naukri.InspectorMaid.Editor.Drawers
         public override void OnStart(IWidget widget)
         {
             var divider = new Divider(attribute.text);
+
             widget.Add(divider);
         }
     }
