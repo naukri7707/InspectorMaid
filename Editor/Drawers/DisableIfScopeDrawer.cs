@@ -4,7 +4,8 @@
     {
         public override void OnSceneGUI(IWidget widget)
         {
-            var disable = GetBindingValue<bool>();
+            var disable = widget.GetBindingValue<bool>();
+
             widget.SetEnabled(!disable);
         }
     }

@@ -34,7 +34,7 @@ namespace Naukri.InspectorMaid.Editor.Drawers
         {
             if (IsBinding && labelElement != null)
             {
-                var labelText = GetBindingValue<string>();
+                var labelText = widget.GetBindingValue<string>();
 
                 labelElement.text = ActualLabel(labelText);
             }

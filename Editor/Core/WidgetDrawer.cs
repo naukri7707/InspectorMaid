@@ -1,5 +1,4 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections.Generic;
@@ -97,83 +96,10 @@ namespace Naukri.InspectorMaid.Editor.Core
 
         public virtual void OnDestroy(IWidget widget) { }
 
-        public Action CreateBindingMethodAction()
-        {
-            var type = target.GetType();
-
-            if (attributeRef is IBindable bindable)
-            {
-                var binding = bindable.binding;
-
-                if (type.GetMethod(binding, Utility.AllAccessFlags) is MethodInfo method)
-                {
-                    var args = bindable.args;
-                    return () => method.Invoke(target, args);
-                }
-                else
-                {
-                    throw new Exception($"Can't find binding path: {binding}");
-                }
-            }
-            else
-            {
-                throw new Exception($"{attributeRef.GetType()} is not bindable.");
-            }
-        }
-
-        public object GetBindingValue()
-        {
-            var type = target.GetType();
-
-            if (attributeRef is IBindable bindable)
-            {
-                var bindingPath = bindable.binding;
-
-                if (bindingPath == "this")
-                {
-                    return target;
-                }
-                else if (type.GetField(bindingPath, Utility.AllAccessFlags) is FieldInfo field)
-                {
-                    return field.GetValue(target);
-                }
-                else if (type.GetProperty(bindingPath, Utility.AllAccessFlags) is PropertyInfo property)
-                {
-                    return property.GetValue(target);
-                }
-                else if (type.GetMethod(bindingPath, Utility.AllAccessFlags) is MethodInfo method)
-                {
-                    var args = bindable.args;
-                    return method.Invoke(target, args);
-                }
-                else
-                {
-                    throw new Exception($"Can't find binding path: {bindingPath}");
-                }
-            }
-            else
-            {
-                throw new Exception($"{attributeRef.GetType()} is not bindable.");
-            }
-        }
-
-        public T GetBindingValue<T>()
-        {
-            var value = GetBindingValue();
-            try
-            {
-                return (T)Convert.ChangeType(value, typeof(T));
-            }
-            catch
-            {
-                throw new Exception($"Can't convert {attributeRef.GetType()}'s binding value to {typeof(T).Name}");
-            }
-        }
-
         internal void SetWidget(Widget widget, WidgetTreeDrawer widgetTreeDrawer)
         {
             _widget = widget;
-            this._widgetTreeDrawer = widgetTreeDrawer;
+            _widgetTreeDrawer = widgetTreeDrawer;
         }
 
         internal void OnScenceGUIImpl()

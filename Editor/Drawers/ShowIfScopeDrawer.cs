@@ -6,7 +6,7 @@ namespace Naukri.InspectorMaid.Editor.Drawers
     {
         public override void OnSceneGUI(IWidget widget)
         {
-            var show = GetBindingValue<bool>();
+            var show = widget.GetBindingValue<bool>();
 
             if (show)
             {

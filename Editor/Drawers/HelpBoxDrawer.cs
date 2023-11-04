@@ -17,7 +17,8 @@ namespace Naukri.InspectorMaid.Editor.Drawers
         {
             if (IsBinding)
             {
-                var message = GetBindingValue<string>();
+                var message = widget.GetBindingValue<string>();
+
                 helpBox.text = message;
             }
         }

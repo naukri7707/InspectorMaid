@@ -7,8 +7,7 @@ namespace Naukri.InspectorMaid.Editor.Drawers
         public override void OnStart(IWidget widget)
         {
             // set button
-            var action = CreateBindingMethodAction();
-            var button = new Button(action)
+            var button = new Button(widget.InvokeBindingAction)
             {
                 text = attribute.text
             };
