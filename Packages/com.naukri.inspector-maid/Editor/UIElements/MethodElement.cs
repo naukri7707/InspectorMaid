@@ -53,10 +53,12 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 toggle.style.backgroundColor = new StyleColor(StyleKeyword.Undefined);
             });
 
+            var action = FastReflection.Polymorphism.CreateAction<object>(info, target.GetType());
+
             // style button
             void buttonAction()
             {
-                info.Invoke(target, args);
+                action(target, args);
                 OnInvoke.Invoke();
             }
 

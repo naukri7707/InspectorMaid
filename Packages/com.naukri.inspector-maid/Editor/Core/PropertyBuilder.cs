@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -56,16 +55,21 @@ namespace Naukri.InspectorMaid.Editor.Core
         internal static BindableElement Build(string label, UObject target, PropertyInfo info)
         {
             var propertyType = info.PropertyType;
-            Func<object> getter = info.CanRead
-                ? () => info.GetValue(target)
-                : null;
-            Action<object> setter = info.CanWrite
-                ? v =>
-                {
-                    info.SetValue(target, v);
-                    EditorUtility.SetDirty(target);
-                }
-            : null;
+
+            Func<object> getter = null;
+            Action<object> setter = null;
+
+            if (info.CanRead)
+            {
+                var frGetter = FastReflection.Polymorphism.CreateGetter<object, object>(info, target.GetType());
+                getter = () => frGetter(target);
+            }
+
+            if (info.CanWrite)
+            {
+                var frSetter = FastReflection.Polymorphism.CreateSetter<object, object>(info, target.GetType());
+                setter = value => frSetter(target, value);
+            }
 
             return Build(propertyType, label, target, getter, setter);
         }
