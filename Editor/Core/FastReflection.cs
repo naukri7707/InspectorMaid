@@ -105,9 +105,10 @@ namespace Naukri.InspectorMaid.Editor.Core
                 ).ToArray();
 
             var call = Expression.Call(objectExpr, methodInfo, convertedArgExprs);
+            var convertedCallExpr = Expression.Convert(call, typeof(TResult));
 
             return Expression.Lambda<FRFunc<TObject, TResult>>(
-                call,
+                convertedCallExpr,
                 objectExpr,
                 argsExpr
                 ).Compile();
@@ -211,9 +212,10 @@ namespace Naukri.InspectorMaid.Editor.Core
                     ).ToArray();
 
                 var call = Expression.Call(instanceExpr, methodInfo, convertedArgExprs);
+                var convertedCallExpr = Expression.Convert(call, typeof(TResult));
 
                 return Expression.Lambda<FRFunc<TObject, TResult>>(
-                    call,
+                    convertedCallExpr,
                     objectExpr,
                     argsExpr
                     ).Compile();
