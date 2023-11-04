@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Naukri.InspectorMaid.Editor.Services
 {
-    internal class TemplateService
+    internal partial class TemplateService
     {
         private readonly Dictionary<string, WidgetTreeDrawer> templates = new();
 
@@ -11,11 +11,6 @@ namespace Naukri.InspectorMaid.Editor.Services
         {
             get => templates[key];
             set => templates[key] = value;
-        }
-
-        public static TemplateService Of(IWidget widget)
-        {
-            return widget.GetService<TemplateService>();
         }
 
         public void Add(string key, WidgetTreeDrawer widgetTreeDrawer)
@@ -31,6 +26,14 @@ namespace Naukri.InspectorMaid.Editor.Services
         public void TryGetValue(string key, out WidgetTreeDrawer widgetTreeDrawer)
         {
             templates.TryGetValue(key, out widgetTreeDrawer);
+        }
+    }
+
+    partial class TemplateService
+    {
+        public static TemplateService Of(IWidget widget)
+        {
+            return widget.GetService<TemplateService>();
         }
     }
 }

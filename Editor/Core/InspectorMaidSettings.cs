@@ -5,12 +5,15 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    public class InspectorMaidSettings : ScriptableObject
+    public partial class InspectorMaidSettings : ScriptableObject
     {
         public StyleSheet[] importStyleSheets = new StyleSheet[0];
 
         public int maxNestingDepth = 7;
+    }
 
+    partial class InspectorMaidSettings
+    {
         public static InspectorMaidSettings Instance => GetOrCreateSettings();
 
         [SettingsProvider]
