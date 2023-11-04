@@ -42,6 +42,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
@@ -61,6 +62,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
@@ -84,6 +86,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
@@ -108,6 +111,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
@@ -138,6 +142,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 ## 如何使用 `Style` 定義 `Widget` 的風格
@@ -194,10 +199,11 @@ public int good;
         height: 30px;
     }
     ```
+
 3. 再來我們需要讓 Inspector Maid 知道有哪些 `uss` 可以參考。你可以在 Project Settings 視窗中的 Inspector Maid 分頁中找到 `Import Style Sheets` 欄位，並將目標 `uss` 拖曳至該欄位中以新增參考。
 
 4. 最後我們找到想要引用預定義風格的欄位，並使用 `Style` 中的 `classList` 參數新增目標 class 名稱即可。注意：如果有多個 class 要引用需使用空格進行分隔。
-    
+
     ```cs
     [Target, Style(classList: "width-50-percent height-30-px")]
     public int styleTest;
@@ -277,7 +283,7 @@ public void MyMethod()
 
 部分 `WidgetAttribute` 可以與指定特定欄位讓對應的 `Widget` 與其進行資料綁定，用以完成一些特殊功能。綁定的目標可以是該腳本的物件本身或是該物件下的任何成員。
 
-- 如果要綁定成員，將` binding` 指派為該成員的名稱以進行綁定。你可以使用 `nameof` 運算式來使程式碼更容易維護。
+- 如果要綁定成員，將 `binding` 指派為該成員的名稱以進行綁定。你可以使用 `nameof` 運算式來使程式碼更容易維護。
 
     ```cs
     [HelpBox(binding: "message")] // Bad
@@ -292,6 +298,7 @@ public void MyMethod()
     1. 欄位：該欄位的數值。
     2. 屬性：該屬性 `getMethod` 的回傳值，如果該屬性沒有 `getMethod` 則無法運行。
     3. 函式：該函式調用後的回傳值，如果該函式有參數則需使用 `args` 定義參數。
+
         ```cs
         // 如果只有一個參數，可以利用 params 關鍵字的特性，省略 new object[] { ... }
         [HelpBox(binding: nameof(HelloMessage), args: "world")]
@@ -314,6 +321,8 @@ public void MyMethod()
 
 - 和傳統 MVVM 模式中使用觀察者模式實作的綁定不同，為了能夠綁定欄位及函式 Inspector Maid 的綁定方式是在該 `Widget` 需要的時候 (通常是在 `OnSceneGUI()` 中) 主動獲得並比較綁定資料，因此會浪費一些效能在處理無效的事件上，且資料更新會有輕微的滯後性 (需等候 `OnSceneGUI()` 被調用或主動使用 `Repaint()` 重繪)。但考慮到本工具只會在 Unity Editor 上運行、以及不需額外的程式碼即可進行資料綁定，我們認為這點缺陷是完全能夠接受的。
 
+- `v1.3.0` 之後資料綁定使用快速反射實作，效能問題應可忽略不計。但資料更新的滯後性仍須注意。
+
 ## 自訂小部件
 
 沒有完美的工具，Inspector Maid 雖然提供了許多泛用的内置小部件，但較複雜的設計可能需要大量使用的 `WidgetAttribute` 進行描述才能完成設計，或是内置小部件根本沒有相關的功能。這時後你可以透過自訂小部件，將複雜的 UI 設計定義於一個 `Widget` 中在來提升程式碼的可讀性。以及透過自訂小部件來實作想要的功能。
@@ -321,6 +330,7 @@ public void MyMethod()
 ### 建立 `WidgetAttribute`
 
 1. 首先我們需要建立用來定義 `Widget` 位置及屬性的 `WidgetAttribute`。要注意根據目標功能不同，你需要繼承的類別也有所不同。
+
     ```cs
     // Item : 單一個小部件
     public class MyItemAttribute : ItemAttribute { }
@@ -343,7 +353,9 @@ public void MyMethod()
         public readonly string myString;
     }
     ```
+
 3. 有些參數可能是選擇性的，我們建議使用預設引數來定義預設值，因為它能夠被 IDE 偵測到並顯示。
+
     ```cs
     public class MyItemAttribute : ItemAttribute
     {
@@ -431,6 +443,7 @@ public class MyItemDrawer : WidgetDrawerOf<MyItemAttribute>
 - `CreateBindingMethodAction()` : 如果綁定目標是函式，可以使用此函式建立一個會傳入 `args` 參數給綁定函式的委派，這在製作按鈕等需要在特定情境中調用方法的時後很有用。
 
 以 `DisableIfScope` 為例：
+
 ```cs
 public class DisableIfScopeDrawer : WidgetDrawerOf<DisableIfScopeAttribute>
 {
@@ -469,6 +482,6 @@ public class MyStyler : CustomStylerOf<MyStylerAttribute>
 
 > 由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使其不再建置時被編譯，否則會專案程式建置。
 
-# 内置小部件
+## 内置小部件
 
 你可以在 package 中的 Sample 中找到所有内置小部件的 demo 以及詳細的說明。
