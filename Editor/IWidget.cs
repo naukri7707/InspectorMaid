@@ -6,6 +6,7 @@ using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Naukri.InspectorMaid.Editor
@@ -47,34 +48,25 @@ namespace Naukri.InspectorMaid.Editor
             return service.InvokeFunc(bindingPath, args);
         }
 
-        public object GetBindingValue()
+        public T GetBindingValue<T>()
         {
-            var widgetDrawer = GetWidgetDrawer();
-            if (widgetDrawer.methodInfo != null)
-            {
-                return InvokeBindingFunc();
-            }
-            else
-            {
-                var bindable = GetBindable();
-                return GetValue(bindable.binding);
-            }
+            return (T)GetBindingValue();
         }
 
-        public T GetBindingValue<T>()
+        public object GetBindingValue()
         {
             var widgetDrawer = GetWidgetDrawer();
             var bindable = GetBindable();
             var targetType = widgetDrawer.target.GetType();
-            var bindingInfo = targetType.GetMember(bindable.binding, Utility.AllAccessFlags)[0];
+            var bindingInfo = targetType.GetMember(bindable.binding, Utility.AllAccessFlags).First();
 
-            return (T)(bindingInfo switch
+            return bindingInfo switch
             {
-                FieldInfo => GetBindingValue(),
-                PropertyInfo => GetBindingValue(),
+                FieldInfo => GetValue(bindable.binding),
+                PropertyInfo => GetValue(bindable.binding),
                 MethodInfo => InvokeBindingFunc(),
                 _ => throw new Exception($"Can not get binding value, because the binding '{bindable.binding}' is not a field, property or method.")
-            });
+            };
         }
 
         public void SetBindingValue<T>(T value)
