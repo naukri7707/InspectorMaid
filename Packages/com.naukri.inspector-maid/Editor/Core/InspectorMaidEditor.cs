@@ -66,7 +66,7 @@ namespace Naukri.InspectorMaid.Editor.Core
                     }
 
                     // wrap all field with WidgetTreeDrawer, even if it is not a widget
-                    // so we can use inject any target to slot as widget
+                    // so we can inject any target to slot as widget
                     var fieldInfo = iterator.GetFieldInfo();
                     var widgetTreeDrawer = new WidgetTreeDrawer(target, fieldInfo, iterator);
 
@@ -126,6 +126,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             {
                 var widgets = root.Query<Widget>().Where(it => it.LifePhase == WidgetLifePhase.Created).ToList();
 
+                // If no more widget need to awake, break the loop.
                 if (widgets.Count == 0)
                 {
                     break;
