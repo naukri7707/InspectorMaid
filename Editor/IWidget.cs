@@ -2,9 +2,11 @@
 using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Events;
 using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
 using System;
+using System.Reflection;
 
 namespace Naukri.InspectorMaid.Editor
 {
@@ -34,22 +36,45 @@ namespace Naukri.InspectorMaid.Editor
             service.InvokeAction(bindingPath, args);
         }
 
-        public void InvokeFunc(string bindingPath, params object[] args)
+        public T InvokeFunc<T>(string bindingPath, params object[] args)
+        {
+            return (T)InvokeFunc(bindingPath, args);
+        }
+
+        public object InvokeFunc(string bindingPath, params object[] args)
         {
             var service = FastReflectionService.Of(this);
-            service.InvokeFunc(bindingPath, args);
+            return service.InvokeFunc(bindingPath, args);
         }
 
         public object GetBindingValue()
         {
-            var bindable = GetBindable();
-            return GetValue(bindable.binding);
+            var widgetDrawer = GetWidgetDrawer();
+            if (widgetDrawer.methodInfo != null)
+            {
+                return InvokeBindingFunc();
+            }
+            else
+            {
+                var bindable = GetBindable();
+                return GetValue(bindable.binding);
+            }
         }
 
         public T GetBindingValue<T>()
         {
+            var widgetDrawer = GetWidgetDrawer();
             var bindable = GetBindable();
-            return GetValue<T>(bindable.binding);
+            var targetType = widgetDrawer.target.GetType();
+            var bindingInfo = targetType.GetMember(bindable.binding, Utility.AllAccessFlags)[0];
+
+            return (T)(bindingInfo switch
+            {
+                FieldInfo => GetBindingValue(),
+                PropertyInfo => GetBindingValue(),
+                MethodInfo => InvokeBindingFunc(),
+                _ => throw new Exception($"Can not get binding value, because the binding '{bindable.binding}' is not a field, property or method.")
+            });
         }
 
         public void SetBindingValue<T>(T value)
@@ -64,10 +89,15 @@ namespace Naukri.InspectorMaid.Editor
             InvokeAction(bindable.binding, bindable.args);
         }
 
-        public void InvokeBindingFunc()
+        public T InvokeBindingFunc<T>()
+        {
+            return (T)InvokeBindingFunc();
+        }
+
+        public object InvokeBindingFunc()
         {
             var bindable = GetBindable();
-            InvokeFunc(bindable.binding, bindable.args);
+            return InvokeFunc(bindable.binding, bindable.args);
         }
 
         public T GetService<T>()
@@ -87,18 +117,23 @@ namespace Naukri.InspectorMaid.Editor
 
         private IBindable GetBindable()
         {
+            var widgetDrawer = GetWidgetDrawer();
+
+            if (widgetDrawer.attributeRef is IBindable bindable)
+            {
+                return bindable;
+            }
+            else
+            {
+                throw new Exception($"Can not get binding value, because the attribute '{widgetDrawer.attributeRef.GetType().Name}' is not {nameof(IBindable)}.");
+            }
+        }
+
+        private WidgetDrawer GetWidgetDrawer()
+        {
             if (this is IWidgetDrawerProvider drawerProvider)
             {
-                var widgetDrawer = drawerProvider.GetWidgetDrawer();
-
-                if (widgetDrawer.attributeRef is IBindable bindable)
-                {
-                    return bindable;
-                }
-                else
-                {
-                    throw new Exception($"Can not get binding value, because the attribute '{widgetDrawer.attributeRef.GetType().Name}' is not {nameof(IBindable)}.");
-                }
+                return drawerProvider.GetWidgetDrawer();
             }
             else
             {
