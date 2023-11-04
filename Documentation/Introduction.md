@@ -439,8 +439,6 @@ public class MyItemDrawer : WidgetDrawerOf<MyItemAttribute>
 - `propertyInfo` : 取得目標的 `PropertyInfo` ，如果目標不是 property 會拋出錯誤
 - `methodInfo` : 取得目標的 `MethodInfo` ，如果目標不是 method 會拋出錯誤
 - `IsBinding` : 判斷該 `Widget` 有綁定欄位
-- `GetBindingValue()` : 取得綁定資料，如果取得失敗會拋出對應的錯誤。
-- `CreateBindingMethodAction()` : 如果綁定目標是函式，可以使用此函式建立一個會傳入 `args` 參數給綁定函式的委派，這在製作按鈕等需要在特定情境中調用方法的時後很有用。
 
 以 `DisableIfScope` 為例：
 
@@ -480,7 +478,7 @@ public class MyStyler : CustomStylerOf<MyStylerAttribute>
 
 - `attribute` : 用來存取對應的屬性資料
 
-> 由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使其不再建置時被編譯，否則會專案程式建置。
+> 由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使 unity 不在建置時編譯該腳本。否則專案將無法建置。
 
 ## 内置小部件
 

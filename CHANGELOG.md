@@ -1,20 +1,26 @@
 # Changelog
 
+## [1.3.1] - 2023-11-05
+
+## 修正
+
+- `GetBindingValue` 判斷目標錯誤問題。
+
 ## [1.3.0] - 2023-11-05
 
 ## 新增
 
-- `FastReflectionService` : 利用快速反射存取指定欄位
+- `FastReflectionService` : 利用快速反射存取指定欄位。
 
 ## 重構
 
-- 使用 `FastReflectionService` 重構資料綁定的相關功能，以提升存取效能
+- 使用 `FastReflectionService` 重構與資料綁定相關的功能，以提升存取效能。
 
 ## [1.2.2] - 2023-11-03
 
 ### 修正
 
-- package 版本序列錯誤
+- package 版本序列錯誤。
 
 ## [1.2.1] - 2023-11-03
 
