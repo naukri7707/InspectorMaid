@@ -35,10 +35,12 @@ namespace Naukri.InspectorMaid.Editor.Core
             editorEventService = new();
             templateService = new();
             settings = InspectorMaidSettings.Instance;
+            var fastReflectionService = new FastReflectionService(target);
 
             root.AddService(templateService);
             root.AddService(editorEventService);
             root.AddService(settings);
+            root.AddService(fastReflectionService);
 
             var styleSheets = settings.importStyleSheets;
             foreach (var sheet in styleSheets)

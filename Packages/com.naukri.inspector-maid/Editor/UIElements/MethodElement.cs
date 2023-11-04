@@ -9,7 +9,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class MethodElement : VisualElement, IBuildable
+    public partial class MethodElement : VisualElement, IBuildable
     {
         public MethodElement(UObject target, MethodInfo info)
         {
@@ -17,8 +17,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             this.info = info;
             label = ObjectNames.NicifyVariableName(info.Name);
         }
-
-        private static readonly StyleColor kHoverColor = new(new Color32(69, 69, 69, 255));
 
         private readonly MethodInfo info;
 
@@ -55,10 +53,12 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 toggle.style.backgroundColor = new StyleColor(StyleKeyword.Undefined);
             });
 
+            var action = FastReflection.Polymorphism.CreateAction<object>(info, target.GetType());
+
             // style button
             void buttonAction()
             {
-                info.Invoke(target, args);
+                action(target, args);
                 OnInvoke.Invoke();
             }
 
@@ -109,5 +109,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             Add(foldout);
             Add(button);
         }
+    }
+
+    partial class MethodElement
+    {
+        private static readonly StyleColor kHoverColor = new(new Color32(69, 69, 69, 255));
     }
 }
