@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class Widget : VisualElement, IWidget
+    public class Widget : VisualElement, IWidget, IWidgetDrawerProvider
     {
         public Widget(WidgetDrawer widgetDrawer) : this(widgetDrawer, "Widget") { }
 
@@ -32,6 +32,8 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 callback?.Invoke(tReceiver);
             }
         }
+
+        WidgetDrawer IWidgetDrawerProvider.GetWidgetDrawer() => widgetDrawer;
 
         private void OnAttachToPanel(AttachToPanelEvent evt)
         {
