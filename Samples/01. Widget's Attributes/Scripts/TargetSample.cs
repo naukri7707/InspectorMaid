@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    public class TargetSample :  AttributeSampleBehaviour
+    public class TargetSample : AttributeSampleBehaviour
     {
         [HelpBox(@"
 [Target] is a special attribute used to mark the location where the field/property/method element should be drawn.
