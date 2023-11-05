@@ -5,8 +5,10 @@ using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Reflection;
+using IBindable = Naukri.InspectorMaid.Core.IBindable;
 
 namespace Naukri.InspectorMaid.Editor
 {
@@ -89,6 +91,12 @@ namespace Naukri.InspectorMaid.Editor
         {
             var bindable = GetBindable();
             return InvokeFunc(bindable.binding, bindable.args);
+        }
+
+        public Widget CreateWidget(DrawerAttribute attribute)
+        {
+            var drawer = GetWidgetDrawer();
+            return WidgetDrawer.Templates.Create(attribute, drawer.WidgetTreeDrawer).Widget;
         }
 
         public T GetService<T>()
