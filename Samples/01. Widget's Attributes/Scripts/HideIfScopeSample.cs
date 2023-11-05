@@ -7,7 +7,7 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
     {
         [HelpBox(
 @"[HideIfScope] will hide the scope if the binded value is 'true'.
-This is helpful when you want to hide some element.", HelpBoxMessageType.Info)]
+This is helpful when you want to hide some widgets for some reason.", HelpBoxMessageType.Info)]
         public bool hide;
 
         [CardScope(color: kSectionBGColor)]

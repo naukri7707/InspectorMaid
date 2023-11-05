@@ -1,10 +1,10 @@
 ﻿using Naukri.InspectorMaid.Core;
 using UnityEngine.UIElements;
-using IBindable = Naukri.InspectorMaid.Core.IBindable;
+using IBindingDataProvider = Naukri.InspectorMaid.Core.IBindingDataProvider;
 
 namespace Naukri.InspectorMaid
 {
-    public class HelpBoxAttribute : ItemAttribute, IBindable
+    public class HelpBoxAttribute : ItemAttribute, IBindingDataProvider
     {
         public HelpBoxAttribute(
             string message = "",

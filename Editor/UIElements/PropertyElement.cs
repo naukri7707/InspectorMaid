@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Core;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using UnityEditor;
@@ -7,7 +7,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class PropertyElement : VisualElement, IBuildable
+    public class PropertyElement : VisualElement
     {
         public PropertyElement(UObject target, PropertyInfo info)
         {
@@ -22,15 +22,15 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         private string _label;
 
-        private BindableElement bindableElement;
+        private BindableElement propertyElement;
 
         [SuppressMessage("Style", "IDE1006")]
         public string label { get => _label; set => _label = value; }
 
-        void IBuildable.Build()
+        internal void Build()
         {
-            bindableElement = PropertyBuilder.Build(label, target, info);
-            Add(bindableElement);
+            propertyElement = PropertyBuilder.Build(label, target, info);
+            Add(propertyElement);
         }
     }
 }
