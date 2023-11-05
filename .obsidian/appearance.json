@@ -1,0 +1,12 @@
+{
+  "accentColor": "",
+  "baseFontSize": 18,
+  "translucency": false,
+  "nativeMenus": false,
+  "monospaceFontFamily": "JetBrains Mono",
+  "enabledCssSnippets": [
+    "wider-note",
+    "line-width"
+  ],
+  "textFontFamily": "Segoe UI,Noto Sans TC"
+}

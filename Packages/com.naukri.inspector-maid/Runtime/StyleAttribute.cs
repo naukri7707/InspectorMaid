@@ -6,15 +6,12 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid
 {
-    public sealed class StyleAttribute : StylerAttribute, IUseClassable
+    public sealed class StyleAttribute : StylerAttribute
     {
         public StyleAttribute(
             // Class
             string classList = null,
             // Indirect
-            string borderColorAll = null,
-            string borderColorVertical = null,
-            string borderColorHorizontal = null,
             // - BorderRadius
             string borderRadius = null,
             string borderRadiusAll = null,
@@ -121,39 +118,7 @@ namespace Naukri.InspectorMaid
             string wordSpacing = null
             )
         {
-            #region -- BorderColor --
-
-            if (borderColorAll != null)
-            {
-                var borderColorAllValue = StringConverter.ToStyleColor(borderColorAll);
-                if (borderColorAllValue != null)
-                {
-                    this.borderTopColor = borderColorAllValue;
-                    this.borderRightColor = borderColorAllValue;
-                    this.borderBottomColor = borderColorAllValue;
-                    this.borderLeftColor = borderColorAllValue;
-                }
-            }
-            if (borderColorVertical != null)
-            {
-                var borderColorVerticalValue = StringConverter.ToStyleColor(borderColorVertical);
-                if (borderColorVerticalValue != null)
-                {
-                    this.borderTopColor = borderColorVerticalValue;
-                    this.borderBottomColor = borderColorVerticalValue;
-                }
-            }
-            if (borderColorHorizontal != null)
-            {
-                var borderColorHorizontalValue = StringConverter.ToStyleColor(borderColorVertical);
-                if (borderColorHorizontalValue != null)
-                {
-                    this.borderLeftColor = borderColorHorizontalValue;
-                    this.borderRightColor = borderColorHorizontalValue;
-                }
-            }
-
-            #endregion -- BorderColor --
+            this.classList = classList is null ? new string[0] : classList.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
 
             #region -- BorderRadius --
 
@@ -343,7 +308,6 @@ namespace Naukri.InspectorMaid
 
             #region -- Direct Setter --
 
-            this.classList = classList is null ? new string[0] : classList.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
             this.alignContent = StringConverter.ToStyleEnum<Align>(alignContent) ?? this.alignContent;
             this.alignItems = StringConverter.ToStyleEnum<Align>(alignItems) ?? this.alignItems;
             this.alignSelf = StringConverter.ToStyleEnum<Align>(alignSelf) ?? this.alignSelf;
@@ -428,6 +392,8 @@ namespace Naukri.InspectorMaid
 
             #endregion -- Direct Setter --
         }
+
+        public readonly string[] classList;
 
         public readonly StyleEnum<Align>? alignContent;
 
@@ -590,7 +556,5 @@ namespace Naukri.InspectorMaid
         public readonly StyleLength? width;
 
         public readonly StyleLength? wordSpacing;
-
-        public string[] classList { get; }
     }
 }
