@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Core;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -9,7 +9,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public partial class MethodElement : VisualElement, IBuildable
+    public partial class MethodElement : VisualElement
     {
         public MethodElement(UObject target, MethodInfo info)
         {
@@ -31,7 +31,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         public event Action OnInvoke = () => { };
 
-        void IBuildable.Build()
+        public void Build()
         {
             style.flexDirection = FlexDirection.Column;
 
@@ -97,13 +97,13 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                     args[i] = Activator.CreateInstance(pType);
                 }
 
-                var pElement = PropertyBuilder.Build(
+                var propertyElement = PropertyBuilder.Build(
                     pType, $"{pInfo.Name} ({pType.Name}) ", target,
                     () => args[idx],
                     v => args[idx] = v
                     );
 
-                foldout.Add(pElement);
+                foldout.Add(propertyElement);
             }
 
             Add(foldout);

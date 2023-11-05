@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "type": "file",
+      "ctime": 1699498649508,
+      "path": "Packages/com.naukri.inspector-maid/README.md"
+    },
+    {
+      "type": "file",
+      "ctime": 1699498653526,
+      "path": "Packages/com.naukri.inspector-maid/CHANGELOG.md"
+    },
+    {
+      "type": "file",
+      "ctime": 1699498679871,
+      "path": "Packages/com.naukri.inspector-maid/Documentation/Introduction.md"
+    },
+    {
+      "type": "folder",
+      "ctime": 1699498656923,
+      "path": "Packages/com.naukri.inspector-maid/Documentation"
+    }
+  ]
+}
