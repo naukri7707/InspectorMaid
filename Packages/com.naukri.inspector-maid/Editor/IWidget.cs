@@ -6,7 +6,6 @@ using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
 using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Naukri.InspectorMaid.Editor
@@ -58,7 +57,7 @@ namespace Naukri.InspectorMaid.Editor
             var widgetDrawer = GetWidgetDrawer();
             var bindable = GetBindable();
             var targetType = widgetDrawer.target.GetType();
-            var bindingInfo = targetType.GetMember(bindable.binding, Utility.AllAccessFlags).First();
+            var bindingInfo = targetType.GetMemberToBase(InspectorMaidUtility.BaseType, bindable.binding);
 
             return bindingInfo switch
             {
