@@ -78,7 +78,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             var type = target.GetType();
 
             // properties
-            var propertyInfos = type.GetProperties(Utility.AllAccessFlags);
+            var propertyInfos = type.GetPropertiesFromBase(InspectorMaidUtility.BaseType);
 
             foreach (var propertyInfo in propertyInfos)
             {
@@ -90,7 +90,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             }
 
             // methods
-            var methodInfos = type.GetMethods(Utility.AllAccessFlags);
+            var methodInfos = type.GetMethodsFromBase(InspectorMaidUtility.BaseType);
 
             foreach (var methodInfo in methodInfos)
             {

@@ -10,7 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Extensions
         {
             var target = property.serializedObject.targetObject;
             var type = target.GetType();
-            var fieldInfo = type.GetField(property.propertyPath, Utility.AllAccessFlags);
+            var fieldInfo = type.GetFieldToBase(InspectorMaidUtility.BaseType, property.propertyPath);
 
             return fieldInfo;
         }

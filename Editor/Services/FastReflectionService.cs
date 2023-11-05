@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Editor.Core;
+using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public object GetValue(string bindingPath)
         {
-            var memberInfo = targetType.GetMember(bindingPath, Utility.AllAccessFlags)[0];
+            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.BaseType, bindingPath);
             return GetValue(memberInfo);
         }
 
@@ -50,7 +51,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public void SetValue<T>(string bindingPath, T value)
         {
-            var memberInfo = targetType.GetMember(bindingPath, Utility.AllAccessFlags)[0];
+            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.BaseType, bindingPath);
             SetValue(memberInfo, value);
         }
 
@@ -62,7 +63,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public void InvokeAction(string bindingPath, params object[] args)
         {
-            var methodInfo = targetType.GetMethod(bindingPath, Utility.AllAccessFlags);
+            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.BaseType, bindingPath);
             InvokeAction(methodInfo, args);
         }
 
@@ -84,7 +85,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public object InvokeFunc(string bindingPath, params object[] args)
         {
-            var methodInfo = targetType.GetMethod(bindingPath, Utility.AllAccessFlags);
+            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.BaseType, bindingPath);
             return InvokeFunc(methodInfo, args);
         }
 
