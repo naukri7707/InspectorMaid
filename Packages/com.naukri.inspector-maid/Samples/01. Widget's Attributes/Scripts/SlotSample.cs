@@ -46,34 +46,16 @@ so it will not be rendered unless you use Slot", HelpBoxMessageType.Info)]
 
         // Sample 3-1
         [CardScope]
-        [Template] // Because of [Template], this member will not be rendered
+        [Template] // Because of [Template], this member will not be rendered.
         [Target]
         [EndScope]
         public int sample3_1;
 
         // Sample 3-2
         [CardScope]
-        [Slot(nameof(sample3_1))] //  But we can still display it through Slot
+        [Slot(nameof(sample3_1))] // But we can still display it through Slot.
         [Target]
         [EndScope]
         public int sample3_2;
-
-        [HelpBox("You can also use [Template] to change the name of the template", HelpBoxMessageType.Info)]
-        [Hide]
-        public int intro4;
-
-        // Sample 4-1
-        [CardScope]
-        [Template(name: "newTemplateName")] // Now, sample4_1's widgetTree template was named as "newTemplateName"
-        [Target]
-        [EndScope]
-        public int sample4_1;
-
-        // Sample 4-2
-        [CardScope]
-        [Slot("newTemplateName")] // So we need to use "newTemplateName" except of "sample4_1"
-        [Target]
-        [EndScope]
-        public int sample4_2;
     }
 }
