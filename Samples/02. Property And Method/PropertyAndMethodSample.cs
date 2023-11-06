@@ -13,7 +13,7 @@ namespace Naukri.InspectorMaid.Samples
         public int Property { get => field; set => field = value; }
 
         [Target]
-        public int ReadonlySample => field;
+        public int ReadonlyProperty => field;
 
         [Divider("Method")]
         [HelpBox("You can also show method by adding any WidgetAttribute to them.", messageType: HelpBoxMessageType.Info), Style(marginBottom: "5")]

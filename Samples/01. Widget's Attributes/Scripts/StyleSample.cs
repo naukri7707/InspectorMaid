@@ -74,7 +74,7 @@ If there are two or more classes, use spaces to separate them.", HelpBoxMessageT
         [HelpBox(
 @"Notice that you should import the stylesheet (.uss) by adding it to the inject list at the following location: 'ProjectSetting/Inspector Maid/importStyleSheets.'
 In this example, you can import 'SampleStyleSheet.uss,' which is provided in this sample.
-If configured correctly, the element's style will result in a 50% width and a 100px height.", HelpBoxMessageType.Warning)]
+If configured correctly, the element's style will result in a 50% width and a 50px height.", HelpBoxMessageType.Warning)]
         [CardScope(color: kSectionBGColor)]
         // Sample 6
         [ContainerScope, Style(classList: "width-50-percent height-50-px", backgroundColor: "#FF0000")]

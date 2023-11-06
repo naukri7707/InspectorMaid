@@ -1,6 +1,6 @@
 ﻿namespace Naukri.InspectorMaid.Core
 {
-    public abstract class ScopeAttribute : DrawerAttribute
+    public abstract class ScopeAttribute : WidgetAttribute
     {
     }
 }
