@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class HideWidget : WidgetOf<HideAttribute>, ITargetCreatedReceiver
+    public class HideWidget : VisualWidgetOf<HideAttribute>, ITargetCreatedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {

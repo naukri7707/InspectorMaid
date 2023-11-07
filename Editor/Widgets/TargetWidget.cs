@@ -1,4 +1,5 @@
-﻿using Naukri.InspectorMaid.Editor.Receivers;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Reflection;
@@ -7,8 +8,8 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class TargetWidget : WidgetOf<TargetAttribute>
-    {
+    public class TargetWidget : VisualWidgetOf<TargetAttribute>
+    {// Tod: check
         public override VisualElement Build(IBuildContext context)
         {
             return CreateTargetElement(context);
@@ -16,22 +17,22 @@ namespace Naukri.InspectorMaid.Editor.Widgets
 
         private VisualElement CreateTargetElement(IBuildContext context)
         {
-            var memberWidgetElement = context.GetElementOfAncestorWidget<MemberWidget>();
-            var memberWidget = (MemberWidget)memberWidgetElement.Widget;
+            var memberContext = context.GetContextOfAncestorWidget<MemberWidget>();
+            var memberWidget = (MemberWidget)memberContext.Widget;
+            var familyContexts = memberContext.GetFamilyContexts();
 
             VisualElement targetElement = memberWidget.info switch
             {
+                // we need to copy serializedProperty, otherwise the slot may not work correctly.
                 FieldInfo fieldInfo => new PropertyField(memberWidget.serializedProperty?.Copy()),
                 PropertyInfo propertyInfo => new PropertyElement(memberWidget.target, propertyInfo),
                 MethodInfo methodInfo => new MethodElement(memberWidget.target, methodInfo),
                 _ => throw new InvalidOperationException($"Can not create targetElement because info is not a {nameof(FieldInfo)}, {nameof(PropertyInfo)} or {nameof(MethodInfo)}.")
             };
 
-            var elements = memberWidget.GetFamily(memberWidgetElement);
-
-            foreach (var e in elements)
+            foreach (var ctx in familyContexts)
             {
-                e.SendEvent<ITargetCreatedReceiver>(r => r.OnTargetCreated(e, targetElement));
+                ctx.SendEvent<ITargetCreatedReceiver>(r => r.OnTargetCreated(ctx, targetElement));
             }
 
             if (targetElement is PropertyElement propertyElement)

@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class DisableIfScopeWidget : WidgetOf<DisableIfScopeAttribute>
+    public class DisableIfScopeWidget : VisualWidgetOf<DisableIfScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

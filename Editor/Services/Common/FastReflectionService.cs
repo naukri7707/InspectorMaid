@@ -34,7 +34,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Common
 
         public object GetValue(string bindingPath)
         {
-            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.BaseType, bindingPath);
+            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingPath);
             return GetValue(memberInfo);
         }
 
@@ -56,7 +56,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Common
 
         public void InvokeAction(string bindingPath, params object[] args)
         {
-            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.BaseType, bindingPath);
+            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.kBaseType, bindingPath);
             InvokeAction(methodInfo, args);
         }
 
@@ -68,7 +68,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Common
 
         public object InvokeFunc(string bindingPath, params object[] args)
         {
-            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.BaseType, bindingPath);
+            var methodInfo = targetType.GetMethodToBase(InspectorMaidUtility.kBaseType, bindingPath);
             return InvokeFunc(methodInfo, args);
         }
 
@@ -90,7 +90,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Common
 
         public void SetValue<T>(string bindingPath, T value)
         {
-            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.BaseType, bindingPath);
+            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingPath);
             SetValue(memberInfo, value);
         }
 

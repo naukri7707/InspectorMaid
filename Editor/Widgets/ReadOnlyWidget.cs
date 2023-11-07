@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class ReadOnlyWidget : WidgetOf<ReadOnlyAttribute>, ITargetCreatedReceiver
+    public class ReadOnlyWidget : VisualWidgetOf<ReadOnlyAttribute>, ITargetCreatedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {

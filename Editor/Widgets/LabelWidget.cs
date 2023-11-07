@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class LabelWidget : WidgetOf<LabelAttribute>, ITargetCreatedReceiver
+    public class LabelWidget : VisualWidgetOf<LabelAttribute>, ITargetCreatedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {
@@ -23,7 +23,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets
 
                 if (labelElement != null)
                 {
-                    var labelText = model.label;
+                    var labelText = attribute.label;
 
                     labelElement.text = ActualLabel(labelText);
 
@@ -40,7 +40,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets
 
         private string ActualLabel(string labelText)
         {
-            return model.useNicifyName
+            return attribute.useNicifyName
                 ? ObjectNames.NicifyVariableName(labelText)
                 : labelText;
         }

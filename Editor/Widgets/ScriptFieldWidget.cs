@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class ScriptFieldWidget : Widget
+    public class ScriptFieldWidget : VisualWidget
     {
         public ScriptFieldWidget(SerializedProperty serializedProperty)
         {

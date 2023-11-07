@@ -6,7 +6,7 @@ namespace Naukri.InspectorMaid.Editor.Extensions
     {
         public static VisualElement AddChildrenOf(this VisualElement visualElement, IBuildContext context)
         {
-            context.VisitChildElements(child =>
+            context.VisitChildVisualContexts(child =>
             {
                 visualElement.Add(child.Build());
             });

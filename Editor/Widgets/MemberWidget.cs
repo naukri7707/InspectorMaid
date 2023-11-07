@@ -1,8 +1,8 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Core;
+using Naukri.InspectorMaid.Editor.Contexts;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
-using System.Collections.Generic;
+using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -11,7 +11,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public partial class MemberWidget : Widget
+    public partial class MemberWidget : VisualWidget
     {
         public MemberWidget(MemberWidget template)
             : this(template.target, template.info, template.serializedProperty)
@@ -21,6 +21,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets
         {
             this.target = target;
             this.info = info;
+
+            // we need to copy serializedProperty, otherwise the target may not work correctly.
             this.serializedProperty = serializedProperty?.Copy();
         }
 
@@ -40,33 +42,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             }.AddChildrenOf(context);
         }
 
-        // Get all elements that belong to the the target.
-        // if target is the closest ancestor MemberWidget of the element, the element is belong to the target.
-        public Element[] GetFamily(IBuildContext context)
+        internal override void OnContextAttached(VisualContext context)
         {
-            var elements = new List<Element>();
-            // Todo: rename
-            void DFS(IBuildContext ctx)
-            {
-                ctx.VisitChildElements(child =>
-                {
-                    if (child.Widget is not MemberWidget)
-                    {
-                        elements.Add(child);
-                        DFS(child);
-                    }
-                });
-            }
-
-            DFS(context);
-
-            return elements.ToArray();
-        }
-
-        public override Element CreateElementTree(Element parent)
-        {
-            var element = new Element(this, parent);
-
             var attrs = info.GetCustomAttributes<InspectorMaidAttribute>(true).ToList();
 
             var targetAttributeCount = attrs.Count(attr => attr is TargetAttribute);
@@ -79,9 +56,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets
 
             var iteractor = attrs.GetEnumerator();
 
-            Element lastElement = element;
+            var lastContext = context;
 
-            void CreateElementTree(Element parent)
+            void BuildContextTree(VisualContext parent)
             {
                 while (iteractor.MoveNext())
                 {
@@ -95,9 +72,11 @@ namespace Naukri.InspectorMaid.Editor.Widgets
                             break;
                         }
 
-                        var widget = WidgetTemplates.Create(widgetAttr);
-                        var element = widget.CreateElementTree(parent);
-                        lastElement = element;
+                        var subWidget = VisualWidgetTemplates.Create(widgetAttr);
+                        var subContext = subWidget.CreateContext();
+                        subContext.AttachParent(parent);
+
+                        lastContext = subContext;
 
                         if (widgetAttr is ItemAttribute itemAttr)
                         {
@@ -105,21 +84,21 @@ namespace Naukri.InspectorMaid.Editor.Widgets
                         }
                         else if (widgetAttr is ScopeAttribute scopeAttr)
                         {
-                            CreateElementTree(element);
+                            BuildContextTree(subContext);
                         }
                     }
                     // Style widget
                     else if (current is StylerAttribute styleAttr)
                     {
-                        var styler = StylerTemplates.Create(styleAttr);
-                        lastElement.AddStyler(styler);
+                        var styler = StylerWidgetTemplates.Create(styleAttr);
+
+                        var stylerContext = styler.CreateContext();
+                        stylerContext.AttachParent(lastContext);
                     }
                 }
             }
 
-            CreateElementTree(element);
-
-            return element;
+            BuildContextTree(context);
         }
     }
 

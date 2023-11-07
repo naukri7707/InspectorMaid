@@ -79,8 +79,11 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static bool IsBinding(this IBuildContext context)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            return bindingData.binding != null;
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                return bindingData.binding != null;
+            }
+            return false;
         }
 
         public static T GetBindingValue<T>(this IBuildContext context)
@@ -90,28 +93,46 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static object GetBindingValue(this IBuildContext context)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            var bindingInfo = context.GetBindingInfo();
-
-            return bindingInfo switch
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
             {
-                FieldInfo => GetValue(context, bindingData.binding),
-                PropertyInfo => GetValue(context, bindingData.binding),
-                MethodInfo => InvokeBindingFunc(context),
-                _ => throw new Exception($"Can not get binding value, because the binding '{bindingData.binding}' is not a field, property or method.")
-            };
+                var bindingInfo = context.GetBindingInfo();
+
+                return bindingInfo switch
+                {
+                    FieldInfo => GetValue(context, bindingData.binding),
+                    PropertyInfo => GetValue(context, bindingData.binding),
+                    MethodInfo => InvokeBindingFunc(context),
+                    _ => throw new Exception($"Can not get binding value, because the binding '{bindingData.binding}' is not a field, property or method.")
+                };
+            }
+            else
+            {
+                throw new Exception($"Can not get binding value, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
+            }
         }
 
         public static void SetBindingValue<T>(this IBuildContext context, T value)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            context.SetValue(bindingData.binding, value);
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                context.SetValue(bindingData.binding, value);
+            }
+            else
+            {
+                throw new Exception($"Can not set binding value, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
+            }
         }
 
         public static void InvokeBindingAction(this IBuildContext context)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            context.InvokeAction(bindingData.binding, bindingData.args);
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                context.InvokeAction(bindingData.binding, bindingData.args);
+            }
+            else
+            {
+                throw new Exception($"Can not invoke binding action, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
+            }
         }
 
         public static T InvokeBindingFunc<T>(this IBuildContext context)
@@ -121,16 +142,25 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static object InvokeBindingFunc(this IBuildContext context)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            return context.InvokeFunc(bindingData.binding, bindingData.args);
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                return context.InvokeFunc(bindingData.binding, bindingData.args);
+            }
+            else
+            {
+                throw new Exception($"Can not invoke binding function, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
+            }
         }
 
         internal static MemberInfo GetBindingInfo(this IBuildContext context)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            var memberWidget = MemberWidget.Of(context);
-            var targetType = memberWidget.target.GetType();
-            return targetType.GetMember(bindingData.binding)[0];
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                var memberWidget = MemberWidget.Of(context);
+                var targetType = memberWidget.target.GetType();
+                return targetType.GetMember(bindingData.binding)[0];
+            }
+            return null;
         }
     }
 }
