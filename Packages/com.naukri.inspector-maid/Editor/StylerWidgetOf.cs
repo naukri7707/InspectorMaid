@@ -1,14 +1,13 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Stylers;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public abstract class StylerWidgetOf<TAttribute> : StylerWidget, IAttributeProvider, IStylerWidgetProvider
-        where TAttribute : StylerAttribute
+    public abstract class StylerWidgetOf<TAttribute> : StylerWidget, IAttributeProvider, IWidgetProvider
+        where TAttribute : WidgetAttribute
     {
         private TAttribute _attribute;
 
@@ -17,9 +16,9 @@ namespace Naukri.InspectorMaid.Editor
 
         object IAttributeProvider.Attribute => attribute;
 
-        Type IStylerWidgetProvider.RegisterType => typeof(TAttribute);
+        Type IWidgetProvider.RegisterType => typeof(TAttribute);
 
-        StylerWidget IStylerWidgetProvider.CloneWith(object attribute)
+        IWidget IWidgetProvider.CloneWith(WidgetAttribute attribute)
         {
             var cloned = (StylerWidgetOf<TAttribute>)MemberwiseClone();
 
@@ -30,15 +29,6 @@ namespace Naukri.InspectorMaid.Editor
             };
 
             return cloned;
-        }
-
-        protected override void OnElementRendered(VisualElement renderedElement)
-        {
-            foreach (var className in attribute.classList)
-            {
-                renderedElement.AddToClassList(className);
-            }
-            OnStyling(renderedElement.style);
         }
     }
 }

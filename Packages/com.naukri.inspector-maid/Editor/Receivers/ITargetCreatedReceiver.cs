@@ -2,8 +2,8 @@
 
 namespace Naukri.InspectorMaid.Editor.Receivers
 {
-    public interface ITargetCreatedReceiver : IEventReceiver
+    public interface ITargetBuildedReceiver
     {
-        public void OnTargetCreated(IBuildContext context, VisualElement targetElement);
+        public void OnTargetBuilded(IBuildContext context, VisualElement targetElement);
     }
 }

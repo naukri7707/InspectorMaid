@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class DisableIfScopeAttribute : ScopeAttribute, IBindingDataProvider
+    public class DisableIfScopeAttribute : WidgetAttribute, IBindingDataProvider
     {
         public DisableIfScopeAttribute(
             string binding = null,

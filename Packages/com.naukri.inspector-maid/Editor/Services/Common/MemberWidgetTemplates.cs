@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,17 +9,12 @@ namespace Naukri.InspectorMaid.Editor.Services.Common
     {
         private readonly Dictionary<string, MemberWidget> templates = new();
 
-        public void Add(MemberWidget memberWidget)
+        public void Register(MemberWidget memberWidget)
         {
-            Add(memberWidget.info.Name, memberWidget);
+            templates.Add(memberWidget.info.Name, memberWidget);
         }
 
-        public void Add(string key, MemberWidget memberWidget)
-        {
-            templates.Add(key, memberWidget);
-        }
-
-        public void Remove(string key)
+        public void Deregister(string key)
         {
             templates.Remove(key);
         }

@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid
 {
-    public class CardScopeAttribute : ScopeAttribute
+    public class CardScopeAttribute : WidgetAttribute
     {
         public CardScopeAttribute(string color = null)
         {

@@ -1,16 +1,14 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Visual;
 
 namespace Naukri.InspectorMaid.Editor.Services
 {
     internal partial interface IMemberWidgetTemplates
     {
-        public void Add(MemberWidget memberWidget);
-
-        public void Add(string key, MemberWidget memberWidget);
+        public void Register(MemberWidget memberWidget);
 
         public MemberWidget Create(string key);
 
-        public void Remove(string key);
+        public void Deregister(string key);
     }
 
     partial interface IMemberWidgetTemplates

@@ -12,12 +12,6 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
 
         public abstract IWidget Widget { get; }
 
-        public void SendEvent<TReceiver>(Action<TReceiver> callback) where TReceiver : IEventReceiver
-        {
-            if (Widget is TReceiver eventReceiver)
-                callback(eventReceiver);
-        }
-
         public T GetAncestorWidget<T>() where T : IWidget
         {
             T res = default;
@@ -67,8 +61,6 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
 
         public abstract void VisitChildContexts(Action<Context> visitor);
 
-        public abstract void VisitChildVisualContexts(Action<VisualContext> visitor);
-
         internal T GetAncestorContext<T>() where T : Context
         {
             T res = null;
@@ -91,7 +83,11 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
         {
             _parent = parent;
             _parent?.OnChildAttached(this);
-            Widget.OnContextAttached(this);
+
+            if (Widget is IContextAttachedReceiver reciver)
+            {
+                reciver.OnContextAttached(this);
+            }
         }
 
         protected abstract void OnChildAttached(Context child);

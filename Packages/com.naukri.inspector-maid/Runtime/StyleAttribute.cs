@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid
 {
-    public sealed class StyleAttribute : StylerAttribute
+    public sealed class StyleAttribute : WidgetAttribute
     {
         public StyleAttribute(
             // Class
@@ -116,8 +116,10 @@ namespace Naukri.InspectorMaid
             string whiteSpace = null,
             string width = null,
             string wordSpacing = null
-            ) : base(classList)
+            )
         {
+            this.classList = classList is null ? new string[0] : classList.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+
             #region -- BorderRadius --
 
             if (borderRadius != null)
@@ -390,6 +392,8 @@ namespace Naukri.InspectorMaid
 
             #endregion -- Direct Setter --
         }
+
+        public readonly string[] classList;
 
         public readonly StyleEnum<Align>? alignContent;
 

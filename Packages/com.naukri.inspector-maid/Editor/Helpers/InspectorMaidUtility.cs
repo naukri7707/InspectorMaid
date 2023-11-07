@@ -10,7 +10,8 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
         public const BindingFlags kAllDeclaredAccessFlags = kAllAccessFlags | BindingFlags.DeclaredOnly;
 
-        public static readonly Type kBaseType = typeof(MonoBehaviour); // this should be same as InspectorMaidEditor's CustomEditor attribute
+        // this should be same as InspectorMaidEditor's CustomEditor attribute
+        public static readonly Type kBaseType = typeof(MonoBehaviour);
 
         public static bool HasAttribute<T>(this MemberInfo self) where T : Attribute
         {

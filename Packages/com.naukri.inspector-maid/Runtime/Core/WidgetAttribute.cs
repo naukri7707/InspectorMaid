@@ -1,6 +1,9 @@
-﻿namespace Naukri.InspectorMaid.Core
+﻿using System;
+
+namespace Naukri.InspectorMaid.Core
 {
-    public abstract class WidgetAttribute : InspectorMaidAttribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+    public abstract class WidgetAttribute : Attribute
     {
     }
 }

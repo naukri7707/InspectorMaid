@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets;
+using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
 using System.Reflection;
 

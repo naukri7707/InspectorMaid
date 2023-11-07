@@ -5,8 +5,6 @@ namespace Naukri.InspectorMaid.Editor.Services
     public partial interface IInspectorMaidSettings
     {
         StyleSheet[] ImportStyleSheets { get; }
-
-        int MaxNestingDepth { get; }
     }
 
     partial interface IInspectorMaidSettings
