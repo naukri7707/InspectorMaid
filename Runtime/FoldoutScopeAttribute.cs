@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class FoldoutScopeAttribute : ScopeAttribute
+    public class FoldoutScopeAttribute : WidgetAttribute
     {
         public FoldoutScopeAttribute(string text, bool expend = false)
         {

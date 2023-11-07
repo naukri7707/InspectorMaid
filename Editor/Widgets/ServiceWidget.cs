@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
+using System;
 using System.ComponentModel.Design;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class ServiceWidget : LogicWidget, IServiceContainer, IServiceProvider
+    public class ServiceWidget : SingleChildWidget, IServiceContainer, IServiceProvider
     {
         public ServiceWidget()
         {

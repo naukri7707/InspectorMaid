@@ -1,8 +1,4 @@
-﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
-using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
 
 namespace Naukri.InspectorMaid.Editor
 {
@@ -20,32 +16,6 @@ namespace Naukri.InspectorMaid.Editor
             }
             attribute = default;
             return false;
-        }
-    }
-
-    public abstract class VisualWidgetOf<TAttribute> : VisualWidget, IAttributeProvider, IVisualWidgetProvider
-        where TAttribute : WidgetAttribute
-    {
-        private TAttribute _attribute;
-
-        [SuppressMessage("Style", "IDE1006")]
-        public TAttribute attribute => _attribute;
-
-        object IAttributeProvider.Attribute => _attribute;
-
-        Type IVisualWidgetProvider.RegisterType => typeof(TAttribute);
-
-        VisualWidget IVisualWidgetProvider.CloneWith(object attribute)
-        {
-            var cloned = (VisualWidgetOf<TAttribute>)MemberwiseClone();
-
-            cloned._attribute = attribute switch
-            {
-                TAttribute tAttribute => tAttribute,
-                _ => throw new Exception($"attribute type mismatch."),
-            };
-
-            return cloned;
         }
     }
 }

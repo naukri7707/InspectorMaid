@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class TemplateAttribute : InspectorMaidAttribute
+    public class TemplateAttribute : LogicAttribute
     {
     }
 }

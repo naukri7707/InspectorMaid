@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class DividerAttribute : ItemAttribute
+    public class DividerAttribute : WidgetAttribute
     {
         public DividerAttribute(string text = null)
         {

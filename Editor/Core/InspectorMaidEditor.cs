@@ -2,11 +2,12 @@
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Services.Common;
 using Naukri.InspectorMaid.Editor.Widgets;
+using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Editor
+namespace Naukri.InspectorMaid.Editor.Core
 {
     [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
     internal class InspectorMaidEditor : UnityEditor.Editor
@@ -32,11 +33,11 @@ namespace Naukri.InspectorMaid.Editor
             serviceWidget.AddService<IMemberWidgetTemplates>(memberWidgetTemplateService);
             serviceWidget.AddService<IChangedNotifierService>(valueChangedListenerService);
 
-            var root = new ClassWidget(target, serializedObject);
+            var rootWidget = new ClassWidget(target, serializedObject);
 
             var serviceContext = serviceWidget.CreateContext();
 
-            var rootContext = root.CreateContext();
+            var rootContext = rootWidget.CreateContext();
 
             rootContext.AttachParent(serviceContext);
 
@@ -50,8 +51,11 @@ namespace Naukri.InspectorMaid.Editor
 
         protected virtual void OnDestroy()
         {
-            EditorApplication.update -= editorEventService.InvokeUpdate;
-            editorEventService.InvokeDestroy();
+            if (editorEventService != null)
+            {
+                EditorApplication.update -= editorEventService.InvokeUpdate;
+                editorEventService.InvokeDestroy();
+            }
         }
     }
 }

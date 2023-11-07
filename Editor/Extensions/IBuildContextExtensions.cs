@@ -1,13 +1,12 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Widgets;
+using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System.Collections.Generic;
 
 namespace Naukri.InspectorMaid.Editor.Extensions
 {
     public static class IBuildContextExtensions
     {
-        // Get all contexts that belong to the the target.
-        // if target is the closest ancestor MemberWidget of the context, the context is belong to the target.
+        // If context and target context have the same ancestor MemberWidget, they are considered family.
         internal static Context[] GetFamilyContexts(this IBuildContext context)
         {
             var memberContext = context.GetContextOfAncestorWidget<MemberWidget>();
@@ -16,7 +15,7 @@ namespace Naukri.InspectorMaid.Editor.Extensions
 
             void GetFamily(IBuildContext ctx)
             {
-                ctx.VisitChildVisualContexts(child =>
+                ctx.VisitChildContexts(child =>
                 {
                     if (child.Widget is not MemberWidget)
                     {
