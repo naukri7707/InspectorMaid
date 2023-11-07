@@ -3,12 +3,12 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class DividerWidget : WidgetOf<DividerAttribute>
+    public class DividerWidget : VisualWidgetOf<DividerAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
             return new Divider(
-                text: model.text
+                text: attribute.text
                 );
         }
     }

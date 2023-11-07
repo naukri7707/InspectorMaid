@@ -4,11 +4,11 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class CardScopeWidget : WidgetOf<CardScopeAttribute>
+    public class CardScopeWidget : VisualWidgetOf<CardScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var styleColor = model.color;
+            var styleColor = attribute.color;
 
             var card = styleColor.HasValue switch
             {

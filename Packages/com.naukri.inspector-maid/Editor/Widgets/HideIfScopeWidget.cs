@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class HideIfScopeWidget : WidgetOf<HideIfScopeAttribute>
+    public class HideIfScopeWidget : VisualWidgetOf<HideIfScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

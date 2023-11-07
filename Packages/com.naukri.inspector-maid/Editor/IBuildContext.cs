@@ -1,52 +1,30 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
+﻿using Naukri.InspectorMaid.Editor.Contexts;
+using Naukri.InspectorMaid.Editor.Contexts.Core;
+using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Widgets;
+using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 
 namespace Naukri.InspectorMaid.Editor
 {
     public interface IBuildContext
     {
-        public Widget Widget { get; }
+        public IWidget Widget { get; }
 
-        public T GetAncestorWidget<T>() where T : Widget;
+        public T GetAncestorWidget<T>() where T : IWidget;
 
-        public Element GetElementOfAncestorWidget<T>() where T : Widget;
+        public Context GetContextOfAncestorWidget<T>() where T : IWidget;
 
-        public void VisitAncestorElements(Predicate<Element> visitor);
+        public void VisitAncestorContexts(Predicate<Context> visitor);
 
-        public void VisitChildElements(Action<Element> visitor);
+        public void VisitChildContexts(Action<Context> visitor);
+
+        public void VisitChildVisualContexts(Action<VisualContext> visitor);
 
         public T GetService<T>()
         {
             var provider = GetAncestorWidget<ServiceWidget>();
             return provider.GetService<T>();
-        }
-    }
-
-    internal static class IBuildContextExtension
-    {
-        public static Element AsElement(this IBuildContext context)
-        {
-            return context as Element;
-        }
-
-        public static T GetModel<T>(this IBuildContext context)
-        {
-            if (context.Widget is IModelProvider modelProvider)
-            {
-                if (modelProvider.Model is T tModel)
-                {
-                    return tModel;
-                }
-                else
-                {
-                    throw new Exception($"{nameof(IModelProvider.Model)} type mismatch.");
-                }
-            }
-            else
-            {
-                throw new Exception($"{nameof(IBuildContext.Widget)} is not {nameof(IModelProvider)}.");
-            }
         }
     }
 }

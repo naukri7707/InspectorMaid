@@ -34,10 +34,13 @@ namespace Naukri.InspectorMaid.Editor
 
             var root = new ClassWidget(target, serializedObject);
 
-            var serviceWidgetElement = serviceWidget.CreateElementTree(null);
-            var element = root.CreateElementTree(serviceWidgetElement);
+            var serviceContext = serviceWidget.CreateContext();
 
-            return element.Build();
+            var rootContext = root.CreateContext();
+
+            rootContext.AttachParent(serviceContext);
+
+            return rootContext.Build();
         }
 
         protected virtual void OnSceneGUI()

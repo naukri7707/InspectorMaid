@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class ContainerScopeWidget : WidgetOf<ContainerScopeAttribute>
+    public class ContainerScopeWidget : VisualWidgetOf<ContainerScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

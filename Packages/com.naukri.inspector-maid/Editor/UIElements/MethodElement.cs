@@ -97,13 +97,13 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                     args[i] = Activator.CreateInstance(pType);
                 }
 
-                var pElement = PropertyBuilder.Build(
+                var propertyElement = PropertyBuilder.Build(
                     pType, $"{pInfo.Name} ({pType.Name}) ", target,
                     () => args[idx],
                     v => args[idx] = v
                     );
 
-                foldout.Add(pElement);
+                foldout.Add(propertyElement);
             }
 
             Add(foldout);

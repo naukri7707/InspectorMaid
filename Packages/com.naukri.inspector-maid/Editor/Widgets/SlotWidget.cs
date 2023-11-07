@@ -1,10 +1,11 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
+﻿using Naukri.InspectorMaid.Editor.Contexts;
+using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Services;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class SlotWidget : WidgetOf<SlotAttribute>
+    public class SlotWidget : VisualWidgetOf<SlotAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
@@ -18,28 +19,27 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             return container;
         }
 
-        public override Element CreateElementTree(Element parent)
+        internal override void OnContextAttached(VisualContext context)
         {
-            var element = base.CreateElementTree(parent);
-            var templateService = IMemberWidgetTemplates.Of(parent);
-            var widget = templateService.Create(model.templateName);
+            var templateService = IMemberWidgetTemplates.Of(context);
+            var templateWidget = templateService.Create(attribute.templateName);
 
             // Prevent endless recursion
-            element.VisitAncestorElements(ance =>
+            context.VisitAncestorContexts(ance =>
             {
                 if (ance.Widget is MemberWidget anceWidget)
                 {
-                    if (anceWidget.info == widget.info)
+                    if (anceWidget.info == templateWidget.info)
                     {
-                        throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{widget.info.Name}'.");
+                        throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{templateWidget.info.Name}'.");
                     }
                 }
                 return false;
             });
 
-            widget.CreateElementTree(element);
+            var templateContext = templateWidget.CreateContext();
 
-            return element;
+            templateContext.AttachParent(context);
         }
     }
 }

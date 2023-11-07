@@ -35,16 +35,22 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static void ListenBindingValue<T>(this IBuildContext context, Action<T> callback)
         {
-            var bindingData = context.GetModel<IBindingDataProvider>();
-            var bindingInfo = context.GetBindingInfo();
+            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                var bindingInfo = context.GetBindingInfo();
 
-            if (bindingInfo is FieldInfo or PropertyInfo)
-            {
-                context.ListenValue(bindingData.binding, callback);
+                if (bindingInfo is FieldInfo or PropertyInfo)
+                {
+                    context.ListenValue(bindingData.binding, callback);
+                }
+                else if (bindingInfo is MethodInfo)
+                {
+                    context.ListenFunc(bindingData.binding, bindingData.args, callback);
+                }
             }
-            else if (bindingInfo is MethodInfo)
+            else
             {
-                context.ListenFunc(bindingData.binding, bindingData.args, callback);
+                throw new Exception($"Can not listen binding value, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
             }
         }
     }

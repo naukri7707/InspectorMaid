@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Contexts;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
@@ -10,7 +11,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public partial class ClassWidget : Widget
+    public partial class ClassWidget : VisualWidget
     {
         public ClassWidget(UObject target, SerializedObject serializedObject)
         {
@@ -38,11 +39,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             return element;
         }
 
-        public override Element CreateElementTree(Element parent)
+        internal override void OnContextAttached(VisualContext context)
         {
-            var templateService = IMemberWidgetTemplates.Of(parent);
+            var templateService = IMemberWidgetTemplates.Of(context);
 
-            var element = new Element(this, parent);
             var type = target.GetType();
             var scriptFieldWidget = new ScriptFieldWidget(serializedObject.FindProperty("m_Script"));
             var memberWidgets = new List<MemberWidget>();
@@ -66,7 +66,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             }
 
             // properties
-            var propertyInfos = type.GetPropertiesFromBase(InspectorMaidUtility.BaseType);
+            var propertyInfos = type.GetPropertiesFromBase(InspectorMaidUtility.kBaseType);
 
             foreach (var propertyInfo in propertyInfos)
             {
@@ -78,7 +78,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             }
 
             // methods
-            var methodInfos = type.GetMethodsFromBase(InspectorMaidUtility.BaseType);
+            var methodInfos = type.GetMethodsFromBase(InspectorMaidUtility.kBaseType);
 
             foreach (var methodInfo in methodInfos)
             {
@@ -97,7 +97,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets
             }
 
             // create script field widget
-            scriptFieldWidget.CreateElementTree(element);
+            var scriptFieldContext = scriptFieldWidget.CreateContext();
+            scriptFieldContext.AttachParent(context);
 
             // create member widgets
             foreach (var memberWidget in memberWidgets)
@@ -107,10 +108,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets
                 {
                     continue;
                 }
-                memberWidget.CreateElementTree(element);
+                var memberContext = memberWidget.CreateContext();
+                memberContext.AttachParent(context);
             }
-
-            return element;
         }
     }
 

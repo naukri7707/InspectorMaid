@@ -1,12 +1,10 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Contexts;
+using Naukri.InspectorMaid.Editor.Widgets.Core;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public abstract class LogicWidget : Widget
+    public abstract class LogicWidget : WidgetOf<LogicContext>
     {
-        public override VisualElement Build(IBuildContext context)
-        {
-            return null;
-        }
+        public override LogicContext CreateContext() => new(this);
     }
 }

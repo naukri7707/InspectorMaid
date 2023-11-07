@@ -3,14 +3,14 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public class FoldoutScopeWidget : WidgetOf<FoldoutScopeAttribute>
+    public class FoldoutScopeWidget : VisualWidgetOf<FoldoutScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
             return new Foldout
             {
-                text = model.text,
-                value = model.expend
+                text = attribute.text,
+                value = attribute.expend
             }.AddChildrenOf(context);
         }
     }
