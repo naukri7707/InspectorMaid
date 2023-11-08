@@ -4,7 +4,7 @@ using IBindingDataProvider = Naukri.InspectorMaid.Core.IBindingDataProvider;
 
 namespace Naukri.InspectorMaid
 {
-    public class HelpBoxAttribute : WidgetAttribute, IBindingDataProvider
+    public class HelpBoxAttribute : ItemAttribute, IBindingDataProvider
     {
         public HelpBoxAttribute(
             string message = "",

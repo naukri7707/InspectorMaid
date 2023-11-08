@@ -3,7 +3,6 @@ using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
-using Naukri.InspectorMaid.Editor.Widgets.Stylers;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -64,7 +63,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             var iteractor = attrs.GetEnumerator();
 
-            var lastBuildableContext = context;
+            var lastVisualContext = context;
 
             void BuildContextTree(Context parent)
             {
@@ -103,28 +102,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                         {
                             var stylerWidget = WidgetTemplates.Create(widgetAttr);
 
-                    var childWidget = WidgetTemplates.Create(widgetAttr);
-
-                    if (childWidget is ItemWidget itemWidget)
-                    {
-                        var itemContext = itemWidget.CreateContext();
-                        itemContext.AttachParent(parent);
-
-                        lastBuildableContext = itemContext;
-                    }
-                    else if (childWidget is ScopeWidget scopeWidget)
-                    {
-                        var scopeContext = scopeWidget.CreateContext();
-                        scopeContext.AttachParent(parent);
-
-                        lastBuildableContext = scopeContext;
-
-                        BuildContextTree(scopeContext);
-                    }
-                    else if (childWidget is StylerWidget stylerWidget)
-                    {
-                        var stylerContext = stylerWidget.CreateContext();
-                        stylerContext.AttachParent(lastBuildableContext);
+                            var stylerContext = stylerWidget.CreateContext();
+                            stylerContext.AttachParent(lastVisualContext);
+                        }
                     }
                 }
             }

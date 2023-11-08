@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Naukri.InspectorMaid.Editor
 {
     public abstract class StylerWidgetOf<TAttribute> : StylerWidget, IAttributeProvider, IWidgetProvider
-        where TAttribute : WidgetAttribute
+        where TAttribute : StylerAttribute
     {
         private TAttribute _attribute;
 

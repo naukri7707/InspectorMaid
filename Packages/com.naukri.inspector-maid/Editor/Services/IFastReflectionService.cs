@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Naukri.InspectorMaid.Editor.Services
 {
-    internal partial interface IFastReflectionService
+    public partial interface IFastReflectionService
     {
         public object GetValue(MemberInfo memberInfo);
 
