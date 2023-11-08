@@ -4,7 +4,7 @@ using System.ComponentModel.Design;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Logic
 {
-    public class ServiceWidget : SingleChildWidget, IServiceContainer, IServiceProvider
+    public partial class ServiceWidget : SingleChildWidget, IServiceContainer, IServiceProvider
     {
         public ServiceWidget()
         {
@@ -26,5 +26,13 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Logic
         public void RemoveService(Type serviceType, bool promote) => services.RemoveService(serviceType, promote);
 
         public object GetService(Type serviceType) => services.GetService(serviceType);
+    }
+
+    partial class ServiceWidget
+    {
+        public static ServiceWidget Of(IBuildContext context)
+        {
+            return context.GetAncestorWidget<ServiceWidget>();
+        }
     }
 }

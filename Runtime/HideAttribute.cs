@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class HideAttribute : WidgetAttribute
+    public class HideAttribute : StylerAttribute
     {
     }
 }

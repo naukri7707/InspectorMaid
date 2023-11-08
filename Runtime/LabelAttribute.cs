@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : WidgetAttribute, IBindingDataProvider
+    public class LabelAttribute : StylerAttribute, IBindingDataProvider
     {
         public LabelAttribute(
             string label = "",

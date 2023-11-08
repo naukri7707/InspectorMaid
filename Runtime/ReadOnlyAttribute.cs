@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ReadOnlyAttribute : WidgetAttribute
+    public class ReadOnlyAttribute : StylerAttribute
     {
     }
 }

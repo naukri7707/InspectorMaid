@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Naukri.InspectorMaid.Editor
 {
     public abstract class ScopeWidgetOf<TAttribute> : ScopeWidget, IAttributeProvider, IWidgetProvider
-        where TAttribute : WidgetAttribute
+        where TAttribute : ScopeAttribute
     {
         private TAttribute _attribute;
 

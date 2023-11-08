@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid
 {
-    public sealed class StyleAttribute : WidgetAttribute
+    public sealed class StyleAttribute : StylerAttribute
     {
         public StyleAttribute(
             // Class
