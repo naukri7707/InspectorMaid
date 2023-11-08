@@ -1,7 +1,7 @@
 ﻿using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.Services.Common;
-using Naukri.InspectorMaid.Editor.Widgets;
+using Naukri.InspectorMaid.Editor.Services.Default;
+using Naukri.InspectorMaid.Editor.Widgets.Logic;
 using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using UnityEditor;
 using UnityEngine;

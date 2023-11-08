@@ -20,7 +20,7 @@ namespace Naukri.InspectorMaid.Editor.Services
         }
     }
 
-    public static class IChangedNotifierServiceExtensions
+    public static partial class IBuildContextExtensions
     {
         public static void ListenValue<T>(this IBuildContext context, string bindingPath, Action<T> callback)
         {
@@ -36,7 +36,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static void ListenBindingValue<T>(this IBuildContext context, Action<T> callback)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 var bindingInfo = context.GetBindingInfo();
 

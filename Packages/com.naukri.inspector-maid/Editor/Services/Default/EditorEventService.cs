@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Naukri.InspectorMaid.Editor.Services.Common
+namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal sealed class EditorEventService : IEditorEventService
     {

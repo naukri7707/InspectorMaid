@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Editor.Services.Common
+namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal partial class InspectorMaidSettings : ScriptableObject, IInspectorMaidSettings
     {

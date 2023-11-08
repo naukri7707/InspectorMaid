@@ -1,6 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Receivers;
-using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Reflection;
 using UnityEditor.UIElements;
@@ -19,7 +17,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         {
             var memberContext = context.GetContextOfAncestorWidget<MemberWidget>();
             var memberWidget = (MemberWidget)memberContext.Widget;
-            var familyContexts = context.GetFamilyContexts();
 
             VisualElement targetElement = memberWidget.info switch
             {
@@ -37,14 +34,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             else if (targetElement is MethodElement methodElement)
             {
                 methodElement.Build();
-            }
-
-            foreach (var ctx in familyContexts)
-            {
-                if (ctx.Widget is ITargetBuildedReceiver receiver)
-                {
-                    receiver.OnTargetBuilded(ctx, targetElement);
-                }
             }
 
             return targetElement;

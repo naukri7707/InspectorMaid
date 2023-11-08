@@ -1,18 +1,13 @@
-﻿using Naukri.InspectorMaid.Editor.Receivers;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
-    public class HideWidget : StylerWidgetOf<HideAttribute>, ITargetBuildedReceiver
+    public class HideWidget : StylerWidgetOf<HideAttribute>
     {
-        public override void OnStyling(IStyle style)
+        public override void OnStyling(IBuildContext context, VisualElement stylingElement)
         {
-        }
-
-        public void OnTargetBuilded(IBuildContext context, VisualElement targetElement)
-        {
-            targetElement.style.display = DisplayStyle.None;
-            targetElement.style.visibility = Visibility.Hidden;
+            stylingElement.style.display = DisplayStyle.None;
+            stylingElement.style.visibility = Visibility.Hidden;
         }
     }
 }

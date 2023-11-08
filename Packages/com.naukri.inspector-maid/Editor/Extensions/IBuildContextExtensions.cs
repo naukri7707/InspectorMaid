@@ -1,33 +1,29 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Visual;
-using System.Collections.Generic;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Logic;
 
 namespace Naukri.InspectorMaid.Editor.Extensions
 {
     public static class IBuildContextExtensions
     {
-        // If context and target context have the same ancestor MemberWidget, they are considered family.
-        internal static Context[] GetFamilyContexts(this IBuildContext context)
+        public static T GetService<T>(this IBuildContext context)
         {
-            var memberContext = context.GetContextOfAncestorWidget<MemberWidget>();
+            var provider = context.GetAncestorWidget<ServiceWidget>();
+            return provider.GetService<T>();
+        }
 
-            var contexts = new List<Context>();
-
-            void GetFamily(IBuildContext ctx)
+        internal static bool TryGetAttribute<T>(this IBuildContext context, out T attribute)
+        {
+            if (context.Widget is IAttributeProvider attributeProvider)
             {
-                ctx.VisitChildContexts(child =>
+                if (attributeProvider.Attribute is T tAttribute)
                 {
-                    if (child.Widget is not MemberWidget)
-                    {
-                        contexts.Add(child);
-                        GetFamily(child);
-                    }
-                });
+                    attribute = tAttribute;
+                    return true;
+                }
             }
 
-            GetFamily(memberContext);
-
-            return contexts.ToArray();
+            attribute = default;
+            return false;
         }
     }
 }
