@@ -7,7 +7,7 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
     {
         [HelpBox(
 @"[EnableIfScope] will disable the scope if the binded value is 'false'.
-This is helpful when you want to make some element readonly.", HelpBoxMessageType.Info)]
+This is helpful when you want to make some widgets readonly for some reason.", HelpBoxMessageType.Info)]
         public bool enable;
 
         [CardScope(color: kSectionBGColor)]

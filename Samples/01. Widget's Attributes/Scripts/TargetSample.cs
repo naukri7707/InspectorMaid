@@ -5,7 +5,7 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
     public class TargetSample : AttributeSampleBehaviour
     {
         [HelpBox(@"
-[Target] is a special attribute used to mark the location where the field/property/method element should be drawn.
+[Target] is a special attribute used to mark the location where the field, property or method widget should be drawn.
 This is particularly useful when defining the target location or setting the target style.
 ", HelpBoxMessageType.Info)]
         [CardScope(color: kSectionBGColor)]
