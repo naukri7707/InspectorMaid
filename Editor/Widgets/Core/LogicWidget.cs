@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Core
 {
-    public abstract class Widget : IWidget
+    public abstract class LogicWidget : IWidget
     {
         public abstract Context CreateContext();
     }

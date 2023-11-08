@@ -1,8 +1,8 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
 
-namespace Naukri.InspectorMaid.Editor.Receivers
+namespace Naukri.InspectorMaid.Editor.Widgets.Receivers
 {
-    public interface IContextAttachedReceiver
+    public interface IContextAttachedReceiver : IReceiver
     {
         public void OnContextAttached(Context context);
     }

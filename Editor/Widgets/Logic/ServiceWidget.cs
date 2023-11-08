@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.Design;
 
-namespace Naukri.InspectorMaid.Editor.Widgets
+namespace Naukri.InspectorMaid.Editor.Widgets.Logic
 {
     public class ServiceWidget : SingleChildWidget, IServiceContainer, IServiceProvider
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Naukri.InspectorMaid.Editor.Services.Common
+namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal class MemberWidgetTemplates : IMemberWidgetTemplates
     {

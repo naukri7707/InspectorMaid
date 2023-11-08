@@ -1,6 +1,4 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Widgets;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 
@@ -17,11 +15,5 @@ namespace Naukri.InspectorMaid.Editor
         public void VisitAncestorContexts(Predicate<Context> visitor);
 
         public void VisitChildContexts(Action<Context> visitor);
-
-        public T GetService<T>()
-        {
-            var provider = GetAncestorWidget<ServiceWidget>();
-            return provider.GetService<T>();
-        }
     }
 }

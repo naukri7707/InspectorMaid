@@ -1,6 +1,6 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual

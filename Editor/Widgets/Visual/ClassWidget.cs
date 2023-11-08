@@ -2,9 +2,9 @@
 using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
-using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -64,8 +64,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                     {
                         // wrap all field with MemberWidget, even if it is not a widget
                         // so we can inject any target to slot as widget
-                        var widgetTree = new MemberWidget(target, fieldInfo, iterator);
-                        memberWidgets.Add(widgetTree);
+                        var memberWidget = new MemberWidget(target, fieldInfo, iterator);
+                        memberWidgets.Add(memberWidget);
                     }
                 }
                 while (iterator.NextVisible(false));
@@ -78,8 +78,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             {
                 if (propertyInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var widgetTree = new MemberWidget(target, propertyInfo);
-                    memberWidgets.Add(widgetTree);
+                    var memberWidget = new MemberWidget(target, propertyInfo);
+                    memberWidgets.Add(memberWidget);
                 }
             }
 
@@ -90,8 +90,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             {
                 if (methodInfo.HasAttribute<WidgetAttribute>())
                 {
-                    var widgetTree = new MemberWidget(target, methodInfo);
-                    memberWidgets.Add(widgetTree);
+                    var memberWidget = new MemberWidget(target, methodInfo);
+                    memberWidgets.Add(memberWidget);
                 }
             }
 

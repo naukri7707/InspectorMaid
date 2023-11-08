@@ -1,8 +1,8 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Helpers;
-using Naukri.InspectorMaid.Editor.Receivers;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Editor.Widgets.Stylers;
 using System.Linq;
 using System.Reflection;
@@ -72,16 +72,36 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 {
                     var widgetAttr = iteractor.Current;
 
-                    // Skip logic attribute
-                    if (widgetAttr is LogicAttribute)
+                    if (widgetAttr is VisualAttribute)
                     {
+                        var childWidget = WidgetTemplates.Create(widgetAttr);
+                        var childContext = childWidget.CreateContext();
+                        childContext.AttachParent(parent);
+
+                        lastVisualContext = childContext;
+
+                        if (childWidget is ItemWidget)
+                        {
+                            // Do nothing
+                        }
+                        else if (childWidget is ScopeWidget)
+                        {
+                            BuildContextTree(childContext);
+                        }
+                    }
+                    else if (widgetAttr is LogicAttribute)
+                    {
+                        // Terminate the loop at the EndScopeAttribute
+                        // to exit building from the parent scope.
                         if (widgetAttr is EndScopeAttribute)
                         {
                             break;
                         }
 
-                        continue;
-                    }
+                        // Create and attach the styler widget to last VisualContext.
+                        if (widgetAttr is StylerAttribute)
+                        {
+                            var stylerWidget = WidgetTemplates.Create(widgetAttr);
 
                     var childWidget = WidgetTemplates.Create(widgetAttr);
 

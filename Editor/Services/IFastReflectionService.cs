@@ -41,7 +41,7 @@ namespace Naukri.InspectorMaid.Editor.Services
         }
     }
 
-    public static class IFastReflectionServiceExtension
+    public static partial class IBuildContextExtensions
     {
         public static object GetValue(this IBuildContext context, string bindingPath)
         {
@@ -80,7 +80,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static bool IsBinding(this IBuildContext context)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 return bindingData.binding != null;
             }
@@ -94,7 +94,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static object GetBindingValue(this IBuildContext context)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 var bindingInfo = context.GetBindingInfo();
 
@@ -114,7 +114,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static void SetBindingValue<T>(this IBuildContext context, T value)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 context.SetValue(bindingData.binding, value);
             }
@@ -126,7 +126,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static void InvokeBindingAction(this IBuildContext context)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 context.InvokeAction(bindingData.binding, bindingData.args);
             }
@@ -143,7 +143,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         public static object InvokeBindingFunc(this IBuildContext context)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 return context.InvokeFunc(bindingData.binding, bindingData.args);
             }
@@ -155,7 +155,7 @@ namespace Naukri.InspectorMaid.Editor.Services
 
         internal static MemberInfo GetBindingInfo(this IBuildContext context)
         {
-            if (context.Widget.TryGetAttribute(out IBindingDataProvider bindingData))
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
                 var memberWidget = MemberWidget.Of(context);
                 var targetType = memberWidget.target.GetType();

@@ -1,17 +1,12 @@
-﻿using Naukri.InspectorMaid.Editor.Receivers;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
-    public class ReadOnlyWidget : StylerWidgetOf<ReadOnlyAttribute>, ITargetBuildedReceiver
+    public class ReadOnlyWidget : StylerWidgetOf<ReadOnlyAttribute>
     {
-        public override void OnStyling(IStyle style)
+        public override void OnStyling(IBuildContext context, VisualElement stylingElement)
         {
-        }
-
-        public void OnTargetBuilded(IBuildContext context, VisualElement targetElement)
-        {
-            targetElement.SetEnabled(false);
+            stylingElement.SetEnabled(false);
         }
     }
 }

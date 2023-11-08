@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Naukri.InspectorMaid.Editor.Services.Common
+namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal sealed class ChangedNotifierService : IChangedNotifierService
     {

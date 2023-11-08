@@ -1,5 +1,6 @@
-﻿using Naukri.InspectorMaid.Editor.Receivers;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System;
 
 namespace Naukri.InspectorMaid.Editor.Contexts.Core
@@ -84,10 +85,7 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
             _parent = parent;
             _parent?.OnChildAttached(this);
 
-            if (Widget is IContextAttachedReceiver reciver)
-            {
-                reciver.OnContextAttached(this);
-            }
+            this.VisitReceiver<IContextAttachedReceiver>((ctx, r) => r.OnContextAttached(ctx));
         }
 
         protected abstract void OnChildAttached(Context child);

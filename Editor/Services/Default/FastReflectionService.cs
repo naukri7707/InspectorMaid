@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Naukri.InspectorMaid.Editor.Services.Common
+namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal sealed class FastReflectionService : IFastReflectionService
     {

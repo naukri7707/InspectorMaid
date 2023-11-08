@@ -1,13 +1,19 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Receivers;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
-    public class StyleWidget : StylerWidgetOf<StyleAttribute>, IParentBuildedReceiver
+    public class StyleWidget : StylerWidgetOf<StyleAttribute>
     {
-        public override void OnStyling(IStyle style)
+        public override void OnStyling(IBuildContext context, VisualElement stylingElement)
         {
+            // add class
+            foreach (var className in attribute.classList)
+            {
+                stylingElement.AddToClassList(className);
+            }
+
+            // inline style
+            var style = stylingElement.style;
             style.alignContent = attribute.alignContent ?? style.alignContent;
             style.alignItems = attribute.alignItems ?? style.alignItems;
             style.alignSelf = attribute.alignSelf ?? style.alignSelf;
@@ -89,25 +95,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
             style.whiteSpace = attribute.whiteSpace ?? style.whiteSpace;
             style.width = attribute.width ?? style.width;
             style.wordSpacing = attribute.wordSpacing ?? style.wordSpacing;
-        }
-
-        public override void OnParentBuilded(IBuildContext context)
-        {
-            // import class
-            context.VisitAncestorContexts(ctx =>
-            {
-                if (ctx is VisualContext visualContext && visualContext.renderedElement != null)
-                {
-                    foreach (var className in attribute.classList)
-                    {
-                        visualContext.renderedElement.AddToClassList(className);
-                    }
-                    return true;
-                }
-                return false;
-            });
-
-            base.OnParentBuilded(context);
         }
     }
 }

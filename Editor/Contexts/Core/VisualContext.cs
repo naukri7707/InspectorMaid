@@ -1,5 +1,6 @@
-﻿using Naukri.InspectorMaid.Editor.Receivers;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Contexts.Core
@@ -20,12 +21,10 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
         public VisualElement Build()
         {
             renderedElement = widget.Build(this);
-            VisitChildContexts(ctx =>
+
+            this.VisitChildReceivers<IStylingReceiver>((ctx, r) =>
             {
-                if (ctx.Widget is IParentBuildedReceiver reciver)
-                {
-                    reciver.OnParentBuilded(ctx);
-                }
+                r.OnStyling(ctx, renderedElement);
             });
 
             return renderedElement;
