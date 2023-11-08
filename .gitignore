@@ -13,6 +13,8 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Ignore obsidian's workspace setting
+/.obsidian/workspace.json
 
 # NPM logs
 npm-debug.log

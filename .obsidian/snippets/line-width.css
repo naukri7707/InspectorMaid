@@ -1,0 +1,12 @@
+/* save this as wider-note.css in your snippet */
+body {
+    /*  Set the width of your desire here  */
+    --user-custom-width: 60rem !important;
+
+    /*  Code for edit view  */
+    --file-line-width: var(--user-custom-width);
+
+    /*  Code for live read view  */
+    --content-max-width: 100rem !important;
+    --content-base-width: var(--user-custom-width);
+}
