@@ -1,18 +1,32 @@
 # Changelog
 
+## [2.0.0] - 2023-11-09
+
+### 新增
+
+- `IChangedNotifierService` : 用以註冊監聽成員資料、並在資料變更時發出通知。
+
+### 更動
+
+- 調整 `ReadOnly`、`Hide`、`Label` 運作邏輯，現在他們被歸類為一種 `Styler`，不再只服務於 `Target`。
+
+### 重構
+
+- 使用 `Widget`-`Context`-`VisualElement` 架構重寫、使職責更明確。
+
 ## [1.3.1] - 2023-11-05
 
-## 修正
+### 修正
 
 - `GetBindingValue` 判斷目標錯誤問題。
 
 ## [1.3.0] - 2023-11-05
 
-## 新增
+### 新增
 
 - `FastReflectionService` : 利用快速反射存取指定欄位。
 
-## 重構
+### 重構
 
 - 使用 `FastReflectionService` 重構與資料綁定相關的功能，以提升存取效能。
 
