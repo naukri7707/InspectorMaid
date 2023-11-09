@@ -2,24 +2,20 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : StylerAttribute, IBindingDataProvider
+    public class LabelAttribute : ItemAttribute, IBindingDataProvider
     {
         public LabelAttribute(
-            string label = "",
-            bool useNicifyName = false,
+            string text = "",
             string binding = null,
-            params object[] args
+            object[] args = null
             )
         {
-            this.label = label;
-            this.useNicifyName = useNicifyName;
+            this.text = text;
             this.binding = binding;
             this.args = args;
         }
 
-        public readonly string label;
-
-        public readonly bool useNicifyName;
+        public readonly string text;
 
         public object[] args { get; }
 
