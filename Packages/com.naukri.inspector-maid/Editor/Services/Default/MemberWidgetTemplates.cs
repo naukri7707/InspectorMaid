@@ -16,6 +16,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
         public MemberWidgetTemplates(UObject target, SerializedObject serializedObject)
         {
             this.target = target;
+            this.serializedObject = serializedObject;
 
             var type = target.GetType();
 
@@ -63,6 +64,8 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         private readonly UObject target;
 
+        private readonly SerializedObject serializedObject;
+
         public MemberWidget CreateMemberWidget(string memberName)
         {
             var (info, serializedProperty) = _widgetTemplates[memberName];
@@ -75,21 +78,6 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
                 .Where(it => filter?.Invoke(it.info) ?? true)
                 .Select(it => new MemberWidget(target, it.info, it.serializedProperty?.Copy()))
                 .ToArray();
-        }
-
-        public MemberWidget[] CreateFieldWidgets()
-        {
-            return CreateMemberWidgets(it => it.MemberType == MemberTypes.Field);
-        }
-
-        public MemberWidget[] CreatePropertyWidgets()
-        {
-            return CreateMemberWidgets(it => it.MemberType == MemberTypes.Property);
-        }
-
-        public MemberWidget[] CreateMethodWidgets()
-        {
-            return CreateMemberWidgets(it => it.MemberType == MemberTypes.Method);
         }
 
         private void Regisiter(MemberInfo info, SerializedProperty serializedProperty = null)

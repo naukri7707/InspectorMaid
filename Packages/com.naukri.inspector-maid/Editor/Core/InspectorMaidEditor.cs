@@ -33,7 +33,7 @@ namespace Naukri.InspectorMaid.Editor.Core
             serviceWidget.AddService<IMemberWidgetTemplates>(memberWidgetTemplateService);
             serviceWidget.AddService<IChangedNotifierService>(valueChangedListenerService);
 
-            var rootWidget = new ObjectWidget(target, serializedObject);
+            var rootWidget = new ClassWidget(target, serializedObject);
 
             var serviceContext = serviceWidget.CreateContext();
 

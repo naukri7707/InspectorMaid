@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class SlotWidget : ScopeWidgetOf<SlotAttribute>, IContextAttachedReceiver
+    public class SlotWidget : ItemWidgetOf<SlotAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {
