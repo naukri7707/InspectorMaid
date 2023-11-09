@@ -2,7 +2,8 @@
     "name": "Naukri.InspectorMaid.Samples",
     "rootNamespace": "Naukri.InspectorMaid.Samples",
     "references": [
-        "Naukri.InspectorMaid"
+        "Naukri.InspectorMaid",
+        "Naukri.InspectorMaid.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

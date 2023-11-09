@@ -2,21 +2,31 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    public class DividerSample : AttributeSampleBehaviour
+    public partial class DividerSample : AttributeSampleBehaviour
     {
-        [HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info)]
-        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Target]
         [Divider]
         [HelpBox("My UI", HelpBoxMessageType.Info)]
-        public int SimpleDivider;
+        public int simpleDivider;
 
-        [CardScope(color: kSectionBGColor)]
         // Sample 2
         [Target]
         [Divider("Text Divider")]
         [HelpBox("My UI", HelpBoxMessageType.Info)]
-        public int TextDivider;
+        public int textDivider;
     }
+
+    [
+    HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info),
+    // Sample 1
+    GroupScope("01. Divider", true),
+        CardSlot(nameof(simpleDivider)),
+    EndScope,
+    // Sample 2
+    GroupScope("02. Divider with text", true),
+        CardSlot(nameof(textDivider)),
+    EndScope,
+    ]
+    partial class DividerSample { }
 }

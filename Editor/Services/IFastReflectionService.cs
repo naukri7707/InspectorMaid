@@ -1,7 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Helpers;
-using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
 using System.Reflection;
 
@@ -9,29 +7,21 @@ namespace Naukri.InspectorMaid.Editor.Services
 {
     public partial interface IFastReflectionService
     {
-        public object GetValue(MemberInfo memberInfo);
-
         public object GetValue(string bindingPath);
 
-        public T GetValue<T>(MemberInfo memberInfo);
+        public object GetValue(MemberInfo memberInfo);
 
-        public T GetValue<T>(string bindingPath);
+        public void SetValue(string bindingPath, object value);
 
-        public void InvokeAction(MethodInfo methodInfo, params object[] args);
+        public void SetValue(MemberInfo memberInfo, object value);
 
         public void InvokeAction(string bindingPath, params object[] args);
 
-        public object InvokeFunc(MethodInfo methodInfo, params object[] args);
+        public void InvokeAction(MethodInfo methodInfo, params object[] args);
 
         public object InvokeFunc(string bindingPath, params object[] args);
 
-        public T InvokeFunc<T>(MethodInfo methodInfo, params object[] args);
-
-        public T InvokeFunc<T>(string bindingPath, params object[] args);
-
-        public void SetValue<T>(MemberInfo memberInfo, T value);
-
-        public void SetValue<T>(string bindingPath, T value);
+        public object InvokeFunc(MethodInfo methodInfo, params object[] args);
     }
 
     partial interface IFastReflectionService
@@ -53,10 +43,10 @@ namespace Naukri.InspectorMaid.Editor.Services
         public static T GetValue<T>(this IBuildContext context, string bindingPath)
         {
             var service = IFastReflectionService.Of(context);
-            return service.GetValue<T>(bindingPath);
+            return (T)service.GetValue(bindingPath);
         }
 
-        public static void SetValue<T>(this IBuildContext context, string bindingPath, T value)
+        public static void SetValue(this IBuildContext context, string bindingPath, object value)
         {
             var service = IFastReflectionService.Of(context);
             service.SetValue(bindingPath, value);
@@ -77,15 +67,6 @@ namespace Naukri.InspectorMaid.Editor.Services
         {
             var service = IFastReflectionService.Of(context);
             return service.InvokeFunc(bindingPath, args);
-        }
-
-        public static bool IsBinding(this IBuildContext context)
-        {
-            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
-            {
-                return bindingData.binding != null;
-            }
-            return false;
         }
 
         public static T GetBindingValue<T>(this IBuildContext context)
@@ -113,7 +94,7 @@ namespace Naukri.InspectorMaid.Editor.Services
             }
         }
 
-        public static void SetBindingValue<T>(this IBuildContext context, T value)
+        public static void SetBindingValue(this IBuildContext context, object value)
         {
             if (context.TryGetAttribute(out IBindingDataProvider bindingData))
             {
@@ -152,17 +133,6 @@ namespace Naukri.InspectorMaid.Editor.Services
             {
                 throw new Exception($"Can not invoke binding function, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
             }
-        }
-
-        internal static MemberInfo GetBindingInfo(this IBuildContext context)
-        {
-            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
-            {
-                var memberWidget = MemberWidget.Of(context);
-                var targetType = memberWidget.target.GetType();
-                return targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingData.binding);
-            }
-            return null;
         }
     }
 }

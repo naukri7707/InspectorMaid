@@ -1,11 +1,12 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Contexts;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
-using System.Collections.Generic;
+using Naukri.InspectorMaid.Layout;
+using System;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -13,111 +14,85 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public partial class ClassWidget : ScopeWidget, IContextAttachedReceiver
+    public partial class ClassWidget : Widget, IContextAttachedReceiver
     {
-        public ClassWidget(UObject target, SerializedObject serializedObject)
+        public ClassWidget(object target, SerializedProperty serializedProperty)
         {
             this.target = target;
-            this.serializedObject = serializedObject;
+            targetType = target.GetType();
+            serializedObject = serializedProperty.serializedObject;
+            serializedObjectType = serializedObject.GetType();
+            serializedTarget = serializedObject.targetObject;
+            this.serializedProperty = serializedProperty;
         }
 
-        public UObject target;
+        public readonly object target;
 
-        public SerializedObject serializedObject;
+        public readonly Type targetType;
+
+        public readonly SerializedObject serializedObject;
+
+        public readonly Type serializedObjectType;
+
+        public readonly UObject serializedTarget;
+
+        private readonly SerializedProperty serializedProperty;
+
+        public override Context CreateContext() => new MultiChildContext(this);
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement();
+            var classElement = new Class();
 
-            BuildChildren(context, (ctx, e) =>
+            new ComposerOf(classElement)
             {
-                container.Add(e);
-            });
+                name = $"class:{targetType.Name}",
+                children = context.BuildChildren(),
+            };
 
             var settings = IInspectorMaidSettings.Of(context);
             var styleSheets = settings.ImportStyleSheets;
 
             foreach (var sheet in styleSheets)
             {
-                container.styleSheets.Add(sheet);
+                classElement.styleSheets.Add(sheet);
             }
 
-            return container;
+            return classElement;
+        }
+
+        public SerializedProperty GetSerializedProperty()
+        {
+            return serializedProperty.Copy();
         }
 
         public void OnContextAttached(Context context)
         {
-            var templateService = IMemberWidgetTemplates.Of(context);
+            var attrs = targetType.GetCustomAttributes<WidgetAttribute>(false).ToList();
 
-            var type = target.GetType();
-            var scriptFieldWidget = new ScriptFieldWidget(serializedObject.FindProperty("m_Script"));
-            var memberWidgets = new List<MemberWidget>();
-
-            // fields
-            var iterator = serializedObject.GetIterator();
-            if (iterator.NextVisible(true))
+            if (!attrs.Any())
             {
-                do
+                if (target is UObject uTarget && uTarget == serializedTarget)
                 {
-                    // we need to skip unsupported serialized property like m_Script
-                    if (iterator.TryGetFieldInfo(out FieldInfo fieldInfo))
-                    {
-                        // wrap all field with MemberWidget, even if it is not a widget
-                        // so we can inject any target to slot as widget
-                        var memberWidget = new MemberWidget(target, fieldInfo, iterator);
-                        memberWidgets.Add(memberWidget);
-                    }
+                    attrs.Add(new ScriptFieldAttribute());
                 }
-                while (iterator.NextVisible(false));
+
+                attrs.Add(new BaseAttribute());
+                attrs.Add(new MembersAttribute());
             }
 
-            // properties
-            var propertyInfos = type.GetPropertiesFromBase(InspectorMaidUtility.kBaseType);
-
-            foreach (var propertyInfo in propertyInfos)
+            foreach (var attr in attrs)
             {
-                if (propertyInfo.HasAttribute<WidgetAttribute>())
+                if (attr is IDeclaredTypeProvider declaredTypeProvider)
                 {
-                    var memberWidget = new MemberWidget(target, propertyInfo);
-                    memberWidgets.Add(memberWidget);
+                    declaredTypeProvider.DeclaredType = targetType;
                 }
             }
 
-            // methods
-            var methodInfos = type.GetMethodsFromBase(InspectorMaidUtility.kBaseType);
-
-            foreach (var methodInfo in methodInfos)
-            {
-                if (methodInfo.HasAttribute<WidgetAttribute>())
-                {
-                    var memberWidget = new MemberWidget(target, methodInfo);
-                    memberWidgets.Add(memberWidget);
-                }
-            }
-
-            // we need to add all member widgets to template service first,
-            // so that we can use them in slot
-            foreach (var memberWidget in memberWidgets)
-            {
-                templateService.Register(memberWidget);
-            }
-
-            // create script field widget
-            var scriptFieldContext = scriptFieldWidget.CreateContext();
-            scriptFieldContext.AttachParent(context);
-
-            // create member widgets
-            foreach (var memberWidget in memberWidgets)
-            {
-                // don't create template widget
-                if (memberWidget.IsTemplate)
-                {
-                    continue;
-                }
-                var memberContext = memberWidget.CreateContext();
-                memberContext.AttachParent(context);
-            }
+            InspectorMaidUtility.CreateWidgetContextsAndAttach(context, attrs);
         }
+
+        private class Class : VisualElement { }
     }
 
     partial class ClassWidget

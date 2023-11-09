@@ -8,7 +8,7 @@ namespace Naukri.InspectorMaid
     {
         public CardScopeAttribute(string color = null)
         {
-            this.color = StringConverter.ToStyleColor(color);
+            this.color = StyleStringConverter.ToStyleColor(color);
         }
 
         public readonly StyleColor? color;

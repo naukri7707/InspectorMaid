@@ -1,9 +1,10 @@
 ﻿using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class CardScopeWidget : ScopeWidgetOf<CardScopeAttribute>
+    public class CardScopeWidget : VisualWidgetOf<CardScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
@@ -15,10 +16,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 false => new Card(),
             };
 
-            BuildChildren(context, (ctx, e) =>
+            new ComposerOf(card)
             {
-                card.Add(e);
-            });
+                children = context.BuildChildren(),
+            };
 
             return card;
         }
