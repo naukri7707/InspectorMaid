@@ -1,8 +1,10 @@
-﻿using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -67,7 +69,12 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             if (info.CanWrite)
             {
                 var frSetter = FastReflection.Polymorphism.CreateSetter<object, object>(info, target.GetType());
-                setter = value => frSetter(target, value);
+                setter = value =>
+                {
+                    Undo.RecordObject(target, "Set Value");
+                    frSetter(target, value);
+                    EditorUtility.SetDirty(target);
+                };
             }
 
             return Build(propertyType, label, target, getter, setter);
