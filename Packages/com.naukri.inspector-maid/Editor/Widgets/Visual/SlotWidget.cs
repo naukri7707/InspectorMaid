@@ -25,7 +25,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public void OnContextAttached(Context context)
         {
             var templateService = IMemberWidgetTemplates.Of(context);
-            var templateWidget = templateService.Create(attribute.templateName);
+            var templateWidget = templateService.CreateMemberWidget(attribute.templateName);
 
             // Prevent endless recursion
             context.VisitAncestorContexts(ance =>
