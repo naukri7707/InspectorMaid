@@ -1,23 +1,24 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements.Compose;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class FoldoutScopeWidget : ScopeWidgetOf<FoldoutScopeAttribute>
+    public class FoldoutScopeWidget : VisualWidgetOf<FoldoutScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Foldout
+            var foldout = new Foldout
             {
                 text = attribute.text,
                 value = attribute.expend
             };
 
-            BuildChildren(context, (ctx, e) =>
+            new ComposerOf(foldout)
             {
-                container.Add(e);
-            });
+                children = context.BuildChildren(),
+            };
 
-            return container;
+            return foldout;
         }
     }
 }

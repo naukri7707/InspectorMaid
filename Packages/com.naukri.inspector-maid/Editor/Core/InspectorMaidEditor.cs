@@ -1,61 +1,25 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.Services.Default;
-using Naukri.InspectorMaid.Editor.Widgets.Logic;
-using Naukri.InspectorMaid.Editor.Widgets.Visual;
-using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Core
 {
-    [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
-    internal class InspectorMaidEditor : UnityEditor.Editor
+    public abstract class InspectorMaidEditor : UnityEditor.Editor
     {
-        EditorEventService editorEventService;
+        private ICallbackService editorEventService;
 
         public override VisualElement CreateInspectorGUI()
         {
-            var serviceWidget = new ServiceWidget();
+            var classContext = InspectorMaidUtility.CreateClassContext(target, serializedObject.GetIterator());
 
-            editorEventService = new EditorEventService();
+            // Build class element
+            var classElement = classContext.Build();
 
-            EditorApplication.update += editorEventService.InvokeUpdate;
+            // Register callbacks
+            editorEventService = ICallbackService.Of(classContext);
+            editorEventService.RegisterCallback(classElement);
 
-            var settings = InspectorMaidSettings.Instance;
-            var fastReflectionService = new FastReflectionService(target);
-            var memberWidgetTemplateService = new MemberWidgetTemplates();
-            var valueChangedListenerService = new ChangedNotifierService(editorEventService, fastReflectionService);
-
-            serviceWidget.AddService<IInspectorMaidSettings>(settings);
-            serviceWidget.AddService<IEditorEventService>(editorEventService);
-            serviceWidget.AddService<IFastReflectionService>(fastReflectionService);
-            serviceWidget.AddService<IMemberWidgetTemplates>(memberWidgetTemplateService);
-            serviceWidget.AddService<IChangedNotifierService>(valueChangedListenerService);
-
-            var rootWidget = new ClassWidget(target, serializedObject);
-
-            var serviceContext = serviceWidget.CreateContext();
-
-            var rootContext = rootWidget.CreateContext();
-
-            rootContext.AttachParent(serviceContext);
-
-            return rootContext.Build();
-        }
-
-        protected virtual void OnSceneGUI()
-        {
-            editorEventService?.InvokeSceneGUI();
-        }
-
-        protected virtual void OnDestroy()
-        {
-            if (editorEventService != null)
-            {
-                EditorApplication.update -= editorEventService.InvokeUpdate;
-                editorEventService.InvokeDestroy();
-            }
+            return classElement;
         }
     }
 }

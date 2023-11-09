@@ -1,13 +1,23 @@
-﻿using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Services;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ButtonWidget : ItemWidgetOf<ButtonAttribute>
+    public class ButtonWidget : VisualWidgetOf<ButtonAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var button = new Button(context.InvokeBindingAction)
+            void buttonAction()
+            {
+                if (attribute.setDirty)
+                {
+                    context.RecordAndSetDirty("Button Pressed");
+                }
+                context.InvokeBindingAction();
+            }
+
+            var button = new Button(buttonAction)
             {
                 text = attribute.text
             };

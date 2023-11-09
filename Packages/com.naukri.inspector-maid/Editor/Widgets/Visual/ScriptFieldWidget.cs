@@ -1,23 +1,18 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
-using UnityEditor;
-using UnityEditor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Layout;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ScriptFieldWidget : ItemWidget
+    public class ScriptFieldWidget : VisualWidgetOf<ScriptFieldAttribute>
     {
-        public ScriptFieldWidget(SerializedProperty serializedProperty)
-        {
-            this.serializedProperty = serializedProperty;
-        }
-
-        private readonly SerializedProperty serializedProperty;
-
         public override VisualElement Build(IBuildContext context)
         {
-            var scriptField = new PropertyField(serializedProperty.Copy()) { name = $"PropertyField:m_Script" };
-            scriptField.SetEnabled(false);
+            var classWidget = ClassWidget.Of(context);
+            var serializedProperty = classWidget.GetSerializedProperty();
+
+            var scriptField = new ScriptField(serializedProperty.serializedObject);
+
             return scriptField;
         }
     }

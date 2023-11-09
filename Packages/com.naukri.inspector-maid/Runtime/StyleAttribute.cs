@@ -24,6 +24,10 @@ namespace Naukri.InspectorMaid
             string borderWidthAll = null,
             string borderWidthVertical = null,
             string borderWidthHorizontal = null,
+            // - BorderColor
+            string borderColorAll = null,
+            string borderColorVertical = null,
+            string borderColorHorizontal = null,
             // - Margin
             string margin = null,
             string marginAll = null,
@@ -124,7 +128,7 @@ namespace Naukri.InspectorMaid
 
             if (borderRadius != null)
             {
-                var borderRadiusValues = StringConverter.ToStyleLengths(borderRadius);
+                var borderRadiusValues = StyleStringConverter.ToStyleLengths(borderRadius);
                 ConvertedValueSetter.ByCorner(
                     borderRadiusValues,
                     ref this.borderTopLeftRadius,
@@ -135,7 +139,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusAll != null)
             {
-                var borderRadiusAllValue = StringConverter.ToStyleLength(borderRadiusTop);
+                var borderRadiusAllValue = StyleStringConverter.ToStyleLength(borderRadiusAll);
                 this.borderTopLeftRadius = borderRadiusAllValue;
                 this.borderTopRightRadius = borderRadiusAllValue;
                 this.borderBottomLeftRadius = borderRadiusAllValue;
@@ -143,7 +147,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusTop != null)
             {
-                var borderRadiusTopValue = StringConverter.ToStyleLength(borderRadiusTop);
+                var borderRadiusTopValue = StyleStringConverter.ToStyleLength(borderRadiusTop);
                 if (borderRadiusTopValue != null)
                 {
                     this.borderTopLeftRadius = borderRadiusTopValue;
@@ -152,7 +156,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusRight != null)
             {
-                var borderRadiusRightValue = StringConverter.ToStyleLength(borderRadiusRight);
+                var borderRadiusRightValue = StyleStringConverter.ToStyleLength(borderRadiusRight);
                 if (borderRadiusRightValue != null)
                 {
                     this.borderTopRightRadius = borderRadiusRightValue;
@@ -161,7 +165,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusBottom != null)
             {
-                var borderRadiusBottomValue = StringConverter.ToStyleLength(borderRadiusBottom);
+                var borderRadiusBottomValue = StyleStringConverter.ToStyleLength(borderRadiusBottom);
                 if (borderRadiusBottomValue != null)
                 {
                     this.borderBottomLeftRadius = borderRadiusBottomValue;
@@ -170,7 +174,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusLeft != null)
             {
-                var borderRadiusLeftValue = StringConverter.ToStyleLength(borderRadiusLeft);
+                var borderRadiusLeftValue = StyleStringConverter.ToStyleLength(borderRadiusLeft);
                 if (borderRadiusLeftValue != null)
                 {
                     this.borderTopLeftRadius = borderRadiusLeftValue;
@@ -184,7 +188,7 @@ namespace Naukri.InspectorMaid
 
             if (borderWidth != null)
             {
-                var borderWidthValues = StringConverter.ToStyleFloats(borderWidth);
+                var borderWidthValues = StyleStringConverter.ToStyleFloats(borderWidth);
                 ConvertedValueSetter.ByDirection(
                     borderWidthValues,
                     ref this.borderTopWidth,
@@ -195,7 +199,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderWidthAll != null)
             {
-                var borderWidthllValue = StringConverter.ToStyleFloat(borderWidthAll);
+                var borderWidthllValue = StyleStringConverter.ToStyleFloat(borderWidthAll);
                 this.borderTopWidth = borderWidthllValue;
                 this.borderRightWidth = borderWidthllValue;
                 this.borderBottomWidth = borderWidthllValue;
@@ -203,7 +207,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderWidthVertical != null)
             {
-                var borderWidthVerticalValue = StringConverter.ToStyleFloat(borderWidthVertical);
+                var borderWidthVerticalValue = StyleStringConverter.ToStyleFloat(borderWidthVertical);
                 if (borderWidthVerticalValue != null)
                 {
                     this.borderTopWidth = borderWidthVerticalValue;
@@ -212,7 +216,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderWidthHorizontal != null)
             {
-                var borderWidthHorizontalValue = StringConverter.ToStyleFloat(borderWidthVertical);
+                var borderWidthHorizontalValue = StyleStringConverter.ToStyleFloat(borderWidthHorizontal);
                 if (borderWidthHorizontalValue != null)
                 {
                     this.borderLeftWidth = borderWidthHorizontalValue;
@@ -222,11 +226,42 @@ namespace Naukri.InspectorMaid
 
             #endregion -- BorderWidth --
 
+            #region -- BorderColor --
+
+            if (borderColorAll != null)
+            {
+                var borderColorAllValue = StyleStringConverter.ToStyleColor(borderColorAll);
+                this.borderTopColor = borderColorAllValue;
+                this.borderRightColor = borderColorAllValue;
+                this.borderBottomColor = borderColorAllValue;
+                this.borderLeftColor = borderColorAllValue;
+            }
+            if (borderColorVertical != null)
+            {
+                var borderColorVerticalValue = StyleStringConverter.ToStyleColor(borderColorVertical);
+                if (borderColorVerticalValue != null)
+                {
+                    this.borderTopColor = borderColorVerticalValue;
+                    this.borderBottomColor = borderColorVerticalValue;
+                }
+            }
+            if (borderColorHorizontal != null)
+            {
+                var borderColorHorizontalValue = StyleStringConverter.ToStyleColor(borderColorHorizontal);
+                if (borderColorHorizontalValue != null)
+                {
+                    this.borderLeftColor = borderColorHorizontalValue;
+                    this.borderRightColor = borderColorHorizontalValue;
+                }
+            }
+
+            #endregion -- BorderColor --
+
             #region -- Margin --
 
             if (margin != null)
             {
-                var marginValues = StringConverter.ToStyleLengths(margin);
+                var marginValues = StyleStringConverter.ToStyleLengths(margin);
                 ConvertedValueSetter.ByDirection(
                     marginValues,
                     ref this.marginTop,
@@ -237,7 +272,7 @@ namespace Naukri.InspectorMaid
             }
             if (marginAll != null)
             {
-                var marginAllValues = StringConverter.ToStyleLength(marginAll);
+                var marginAllValues = StyleStringConverter.ToStyleLength(marginAll);
                 this.marginTop = marginAllValues;
                 this.marginRight = marginAllValues;
                 this.marginBottom = marginAllValues;
@@ -245,7 +280,7 @@ namespace Naukri.InspectorMaid
             }
             if (marginVertical != null)
             {
-                var marginVerticalValue = StringConverter.ToStyleLength(marginVertical);
+                var marginVerticalValue = StyleStringConverter.ToStyleLength(marginVertical);
                 if (marginVerticalValue != null)
                 {
                     this.marginTop = marginVerticalValue;
@@ -254,7 +289,7 @@ namespace Naukri.InspectorMaid
             }
             if (marginHorizontal != null)
             {
-                var marginHorizontalValue = StringConverter.ToStyleLength(marginVertical);
+                var marginHorizontalValue = StyleStringConverter.ToStyleLength(marginHorizontal);
                 if (marginHorizontalValue != null)
                 {
                     this.marginLeft = marginHorizontalValue;
@@ -268,7 +303,7 @@ namespace Naukri.InspectorMaid
 
             if (padding != null)
             {
-                var paddingValues = StringConverter.ToStyleLengths(padding);
+                var paddingValues = StyleStringConverter.ToStyleLengths(padding);
                 ConvertedValueSetter.ByDirection(
                     paddingValues,
                     ref this.paddingTop,
@@ -279,7 +314,7 @@ namespace Naukri.InspectorMaid
             }
             if (paddingAll != null)
             {
-                var paddingAllValues = StringConverter.ToStyleLength(paddingAll);
+                var paddingAllValues = StyleStringConverter.ToStyleLength(paddingAll);
                 this.paddingTop = paddingAllValues;
                 this.paddingRight = paddingAllValues;
                 this.paddingBottom = paddingAllValues;
@@ -287,7 +322,7 @@ namespace Naukri.InspectorMaid
             }
             if (paddingVertical != null)
             {
-                var paddingVerticalValue = StringConverter.ToStyleLength(paddingVertical);
+                var paddingVerticalValue = StyleStringConverter.ToStyleLength(paddingVertical);
                 if (paddingVerticalValue != null)
                 {
                     this.paddingTop = paddingVerticalValue;
@@ -296,7 +331,7 @@ namespace Naukri.InspectorMaid
             }
             if (paddingHorizontal != null)
             {
-                var paddingHorizontalValue = StringConverter.ToStyleLength(paddingVertical);
+                var paddingHorizontalValue = StyleStringConverter.ToStyleLength(paddingHorizontal);
                 if (paddingHorizontalValue != null)
                 {
                     this.paddingLeft = paddingHorizontalValue;
@@ -308,87 +343,87 @@ namespace Naukri.InspectorMaid
 
             #region -- Direct Setter --
 
-            this.alignContent = StringConverter.ToStyleEnum<Align>(alignContent) ?? this.alignContent;
-            this.alignItems = StringConverter.ToStyleEnum<Align>(alignItems) ?? this.alignItems;
-            this.alignSelf = StringConverter.ToStyleEnum<Align>(alignSelf) ?? this.alignSelf;
-            this.backgroundColor = StringConverter.ToStyleColor(backgroundColor) ?? this.backgroundColor;
+            this.alignContent = StyleStringConverter.ToStyleEnum<Align>(alignContent) ?? this.alignContent;
+            this.alignItems = StyleStringConverter.ToStyleEnum<Align>(alignItems) ?? this.alignItems;
+            this.alignSelf = StyleStringConverter.ToStyleEnum<Align>(alignSelf) ?? this.alignSelf;
+            this.backgroundColor = StyleStringConverter.ToStyleColor(backgroundColor) ?? this.backgroundColor;
             this.backgroundImage = null;
             this.backgroundPositionX = null;
             this.backgroundPositionY = null;
             this.backgroundRepeat = null;
             this.backgroundSize = null;
-            this.borderBottomColor = StringConverter.ToStyleColor(borderBottomColor) ?? this.borderBottomColor;
-            this.borderBottomLeftRadius = StringConverter.ToStyleLength(borderBottomLeftRadius) ?? this.borderBottomLeftRadius;
-            this.borderBottomRightRadius = StringConverter.ToStyleLength(borderBottomRightRadius) ?? this.borderBottomRightRadius;
-            this.borderBottomWidth = StringConverter.ToStyleFloat(borderBottomWidth) ?? this.borderBottomWidth;
-            this.borderLeftColor = StringConverter.ToStyleColor(borderLeftColor) ?? this.borderLeftColor;
-            this.borderLeftWidth = StringConverter.ToStyleFloat(borderLeftWidth) ?? this.borderLeftWidth;
-            this.borderRightColor = StringConverter.ToStyleColor(borderRightColor) ?? this.borderRightColor;
-            this.borderRightWidth = StringConverter.ToStyleFloat(borderRightWidth) ?? this.borderRightWidth;
-            this.borderTopColor = StringConverter.ToStyleColor(borderTopColor) ?? this.borderTopColor;
-            this.borderTopLeftRadius = StringConverter.ToStyleLength(borderTopLeftRadius) ?? this.borderTopLeftRadius;
-            this.borderTopRightRadius = StringConverter.ToStyleLength(borderTopRightRadius) ?? this.borderTopRightRadius;
-            this.borderTopWidth = StringConverter.ToStyleFloat(borderTopWidth) ?? this.borderTopWidth;
-            this.bottom = StringConverter.ToStyleLength(bottom) ?? this.bottom;
-            this.color = StringConverter.ToStyleColor(color) ?? this.color;
+            this.borderBottomColor = StyleStringConverter.ToStyleColor(borderBottomColor) ?? this.borderBottomColor;
+            this.borderBottomLeftRadius = StyleStringConverter.ToStyleLength(borderBottomLeftRadius) ?? this.borderBottomLeftRadius;
+            this.borderBottomRightRadius = StyleStringConverter.ToStyleLength(borderBottomRightRadius) ?? this.borderBottomRightRadius;
+            this.borderBottomWidth = StyleStringConverter.ToStyleFloat(borderBottomWidth) ?? this.borderBottomWidth;
+            this.borderLeftColor = StyleStringConverter.ToStyleColor(borderLeftColor) ?? this.borderLeftColor;
+            this.borderLeftWidth = StyleStringConverter.ToStyleFloat(borderLeftWidth) ?? this.borderLeftWidth;
+            this.borderRightColor = StyleStringConverter.ToStyleColor(borderRightColor) ?? this.borderRightColor;
+            this.borderRightWidth = StyleStringConverter.ToStyleFloat(borderRightWidth) ?? this.borderRightWidth;
+            this.borderTopColor = StyleStringConverter.ToStyleColor(borderTopColor) ?? this.borderTopColor;
+            this.borderTopLeftRadius = StyleStringConverter.ToStyleLength(borderTopLeftRadius) ?? this.borderTopLeftRadius;
+            this.borderTopRightRadius = StyleStringConverter.ToStyleLength(borderTopRightRadius) ?? this.borderTopRightRadius;
+            this.borderTopWidth = StyleStringConverter.ToStyleFloat(borderTopWidth) ?? this.borderTopWidth;
+            this.bottom = StyleStringConverter.ToStyleLength(bottom) ?? this.bottom;
+            this.color = StyleStringConverter.ToStyleColor(color) ?? this.color;
             this.cursor = null;
-            this.display = StringConverter.ToStyleEnum<DisplayStyle>(display) ?? this.display;
-            this.flexBasis = StringConverter.ToStyleLength(flexBasis) ?? this.flexBasis;
-            this.flexDirection = StringConverter.ToStyleEnum<FlexDirection>(flexDirection) ?? this.flexDirection;
-            this.flexGrow = StringConverter.ToStyleFloat(flexGrow) ?? this.flexGrow;
-            this.flexShrink = StringConverter.ToStyleFloat(flexShrink) ?? this.flexShrink;
-            this.flexWrap = StringConverter.ToStyleEnum<Wrap>(flexWrap) ?? this.flexWrap;
-            this.fontSize = StringConverter.ToStyleLength(fontSize) ?? this.fontSize;
-            this.height = StringConverter.ToStyleLength(height) ?? this.height;
-            this.justifyContent = StringConverter.ToStyleEnum<Justify>(justifyContent) ?? this.justifyContent;
-            this.left = StringConverter.ToStyleLength(left) ?? this.left;
-            this.letterSpacing = StringConverter.ToStyleLength(letterSpacing) ?? this.letterSpacing;
-            this.marginBottom = StringConverter.ToStyleLength(marginBottom) ?? this.marginBottom;
-            this.marginLeft = StringConverter.ToStyleLength(marginLeft) ?? this.marginLeft;
-            this.marginRight = StringConverter.ToStyleLength(marginRight) ?? this.marginRight;
-            this.marginTop = StringConverter.ToStyleLength(marginTop) ?? this.marginTop;
-            this.maxHeight = StringConverter.ToStyleLength(maxHeight) ?? this.maxHeight;
-            this.maxWidth = StringConverter.ToStyleLength(maxWidth) ?? this.maxWidth;
-            this.minHeight = StringConverter.ToStyleLength(minHeight) ?? this.minHeight;
-            this.minWidth = StringConverter.ToStyleLength(minWidth) ?? this.minWidth;
-            this.opacity = StringConverter.ToStyleFloat(opacity) ?? this.opacity;
-            this.overflow = StringConverter.ToStyleEnum<Overflow>(overflow) ?? this.overflow;
-            this.paddingBottom = StringConverter.ToStyleLength(paddingBottom) ?? this.paddingBottom;
-            this.paddingLeft = StringConverter.ToStyleLength(paddingLeft) ?? this.paddingLeft;
-            this.paddingRight = StringConverter.ToStyleLength(paddingRight) ?? this.paddingRight;
-            this.paddingTop = StringConverter.ToStyleLength(paddingTop) ?? this.paddingTop;
-            this.position = StringConverter.ToStyleEnum<Position>(position) ?? this.position;
-            this.right = StringConverter.ToStyleLength(right) ?? this.right;
+            this.display = StyleStringConverter.ToStyleEnum<DisplayStyle>(display) ?? this.display;
+            this.flexBasis = StyleStringConverter.ToStyleLength(flexBasis) ?? this.flexBasis;
+            this.flexDirection = StyleStringConverter.ToStyleEnum<FlexDirection>(flexDirection) ?? this.flexDirection;
+            this.flexGrow = StyleStringConverter.ToStyleFloat(flexGrow) ?? this.flexGrow;
+            this.flexShrink = StyleStringConverter.ToStyleFloat(flexShrink) ?? this.flexShrink;
+            this.flexWrap = StyleStringConverter.ToStyleEnum<Wrap>(flexWrap) ?? this.flexWrap;
+            this.fontSize = StyleStringConverter.ToStyleLength(fontSize) ?? this.fontSize;
+            this.height = StyleStringConverter.ToStyleLength(height) ?? this.height;
+            this.justifyContent = StyleStringConverter.ToStyleEnum<Justify>(justifyContent) ?? this.justifyContent;
+            this.left = StyleStringConverter.ToStyleLength(left) ?? this.left;
+            this.letterSpacing = StyleStringConverter.ToStyleLength(letterSpacing) ?? this.letterSpacing;
+            this.marginBottom = StyleStringConverter.ToStyleLength(marginBottom) ?? this.marginBottom;
+            this.marginLeft = StyleStringConverter.ToStyleLength(marginLeft) ?? this.marginLeft;
+            this.marginRight = StyleStringConverter.ToStyleLength(marginRight) ?? this.marginRight;
+            this.marginTop = StyleStringConverter.ToStyleLength(marginTop) ?? this.marginTop;
+            this.maxHeight = StyleStringConverter.ToStyleLength(maxHeight) ?? this.maxHeight;
+            this.maxWidth = StyleStringConverter.ToStyleLength(maxWidth) ?? this.maxWidth;
+            this.minHeight = StyleStringConverter.ToStyleLength(minHeight) ?? this.minHeight;
+            this.minWidth = StyleStringConverter.ToStyleLength(minWidth) ?? this.minWidth;
+            this.opacity = StyleStringConverter.ToStyleFloat(opacity) ?? this.opacity;
+            this.overflow = StyleStringConverter.ToStyleEnum<Overflow>(overflow) ?? this.overflow;
+            this.paddingBottom = StyleStringConverter.ToStyleLength(paddingBottom) ?? this.paddingBottom;
+            this.paddingLeft = StyleStringConverter.ToStyleLength(paddingLeft) ?? this.paddingLeft;
+            this.paddingRight = StyleStringConverter.ToStyleLength(paddingRight) ?? this.paddingRight;
+            this.paddingTop = StyleStringConverter.ToStyleLength(paddingTop) ?? this.paddingTop;
+            this.position = StyleStringConverter.ToStyleEnum<Position>(position) ?? this.position;
+            this.right = StyleStringConverter.ToStyleLength(right) ?? this.right;
             this.rotate = null;
             this.scale = null;
-            this.textOverflow = StringConverter.ToStyleEnum<TextOverflow>(textOverflow) ?? this.textOverflow;
+            this.textOverflow = StyleStringConverter.ToStyleEnum<TextOverflow>(textOverflow) ?? this.textOverflow;
             this.textShadow = null;
-            this.top = StringConverter.ToStyleLength(top) ?? this.top;
+            this.top = StyleStringConverter.ToStyleLength(top) ?? this.top;
             this.transformOrigin = null;
             this.transitionDelay = null;
             this.transitionDuration = null;
             this.transitionProperty = null;
             this.transitionTimingFunction = null;
             this.translate = null;
-            this.unityBackgroundImageTintColor = StringConverter.ToStyleColor(unityBackgroundImageTintColor) ?? this.unityBackgroundImageTintColor;
+            this.unityBackgroundImageTintColor = StyleStringConverter.ToStyleColor(unityBackgroundImageTintColor) ?? this.unityBackgroundImageTintColor;
             this.unityFont = null;
             this.unityFontDefinition = null;
-            this.unityFontStyleAndWeight = StringConverter.ToStyleEnum<FontStyle>(unityFontStyleAndWeight) ?? this.unityFontStyleAndWeight;
-            this.unityOverflowClipBox = StringConverter.ToStyleEnum<OverflowClipBox>(unityOverflowClipBox) ?? this.unityOverflowClipBox;
-            this.unityParagraphSpacing = StringConverter.ToStyleLength(unityParagraphSpacing) ?? this.unityParagraphSpacing;
-            this.unitySliceBottom = StringConverter.ToStyleInt(unitySliceBottom) ?? this.unitySliceBottom;
-            this.unitySliceLeft = StringConverter.ToStyleInt(unitySliceLeft) ?? this.unitySliceLeft;
-            this.unitySliceRight = StringConverter.ToStyleInt(unitySliceRight) ?? this.unitySliceRight;
-            this.unitySliceScale = StringConverter.ToStyleFloat(unitySliceScale) ?? this.unitySliceScale;
-            this.unitySliceTop = StringConverter.ToStyleInt(unitySliceTop) ?? this.unitySliceTop;
-            this.unityTextAlign = StringConverter.ToStyleEnum<TextAnchor>(unityTextAlign) ?? this.unityTextAlign;
-            this.unityTextOutlineColor = StringConverter.ToStyleColor(unityTextOutlineColor) ?? this.unityTextOutlineColor;
-            this.unityTextOutlineWidth = StringConverter.ToStyleFloat(unityTextOutlineWidth) ?? this.unityTextOutlineWidth;
-            this.unityTextOverflowPosition = StringConverter.ToStyleEnum<TextOverflowPosition>(unityTextOverflowPosition) ?? this.unityTextOverflowPosition;
-            this.visibility = StringConverter.ToStyleEnum<Visibility>(visibility) ?? this.visibility;
-            this.whiteSpace = StringConverter.ToStyleEnum<WhiteSpace>(whiteSpace) ?? this.whiteSpace;
-            this.width = StringConverter.ToStyleLength(width) ?? this.width;
-            this.wordSpacing = StringConverter.ToStyleLength(wordSpacing) ?? this.wordSpacing;
+            this.unityFontStyleAndWeight = StyleStringConverter.ToStyleEnum<FontStyle>(unityFontStyleAndWeight) ?? this.unityFontStyleAndWeight;
+            this.unityOverflowClipBox = StyleStringConverter.ToStyleEnum<OverflowClipBox>(unityOverflowClipBox) ?? this.unityOverflowClipBox;
+            this.unityParagraphSpacing = StyleStringConverter.ToStyleLength(unityParagraphSpacing) ?? this.unityParagraphSpacing;
+            this.unitySliceBottom = StyleStringConverter.ToStyleInt(unitySliceBottom) ?? this.unitySliceBottom;
+            this.unitySliceLeft = StyleStringConverter.ToStyleInt(unitySliceLeft) ?? this.unitySliceLeft;
+            this.unitySliceRight = StyleStringConverter.ToStyleInt(unitySliceRight) ?? this.unitySliceRight;
+            this.unitySliceScale = StyleStringConverter.ToStyleFloat(unitySliceScale) ?? this.unitySliceScale;
+            this.unitySliceTop = StyleStringConverter.ToStyleInt(unitySliceTop) ?? this.unitySliceTop;
+            this.unityTextAlign = StyleStringConverter.ToStyleEnum<TextAnchor>(unityTextAlign) ?? this.unityTextAlign;
+            this.unityTextOutlineColor = StyleStringConverter.ToStyleColor(unityTextOutlineColor) ?? this.unityTextOutlineColor;
+            this.unityTextOutlineWidth = StyleStringConverter.ToStyleFloat(unityTextOutlineWidth) ?? this.unityTextOutlineWidth;
+            this.unityTextOverflowPosition = StyleStringConverter.ToStyleEnum<TextOverflowPosition>(unityTextOverflowPosition) ?? this.unityTextOverflowPosition;
+            this.visibility = StyleStringConverter.ToStyleEnum<Visibility>(visibility) ?? this.visibility;
+            this.whiteSpace = StyleStringConverter.ToStyleEnum<WhiteSpace>(whiteSpace) ?? this.whiteSpace;
+            this.width = StyleStringConverter.ToStyleLength(width) ?? this.width;
+            this.wordSpacing = StyleStringConverter.ToStyleLength(wordSpacing) ?? this.wordSpacing;
 
             #endregion -- Direct Setter --
         }

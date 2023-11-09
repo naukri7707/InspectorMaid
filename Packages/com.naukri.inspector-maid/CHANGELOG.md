@@ -1,5 +1,223 @@
 # Changelog
 
+## [2.12.2] - 2024-01-29
+
+### 修正
+
+- 修正 `Style` 的 `borderRadiusAll` 使用到 `borderRadiusTop` 值錯誤。
+
+## [2.12.1] - 2024-01-29
+
+### 更新
+
+- 更新 `Widget` 範例場景。
+
+## [2.12.0] - 2024-01-29
+
+### 新增
+
+- `Style` 新增 `BorderColorAll`、`borderColorVertical`、`borderColorHorizontal` 三種快捷屬性。
+- 新增 `Label` 用以在 Inspector 上顯示文字。
+
+
+### 更新
+
+- `Label` 更名為 `Rename` 避免與 `Label` 元素產生混淆。
+
+### 修正
+
+- 修正 `Style` 部分 Horizontal 快捷屬性使用到 Vertical 值錯誤。
+
+
+## [2.11.0] - 2024-01-23
+
+### 新增
+
+- `Slot` 現在可以同時插入多個成員。
+
+### 重構
+
+- 調整 `Group` 風格，現在會固定在末元素的底部。
+
+## [2.10.1] - 2024-01-16
+
+### 重構
+
+- 移除 `IfStyler` 使用 `object[]` 設定匹配值的方式，避免單 `null` 參數時產生的邏輯誤謬。
+
+## [2.10.0] - 2024-01-16
+
+### 新增
+
+- `Label` 新增透過 `replaceText` 重新命名、使用 `minWidth` 定義最小寬度。
+
+### 修正
+
+- 修正無法正確渲染非 `MonoBehaviour` 類別錯誤。
+
+## [2.9.0] - 2024-01-14
+
+### 新增
+
+- 新增 `Base` 小部件，用以指定在哪裡渲染基底類別的 GUI。
+
+### 調整
+
+- `Members`、`Fields`、`Properties` 及`Methods` 現在只會渲染該類別本身的成員而不包含基底類別成員。
+
+## [2.8.0] - 2024-01-12
+
+### 更新
+
+- 調整 `Group` 線條計算邏輯，使其與內容更匹配。
+
+### 修正
+
+- 修正自訂義 class 無法展開錯誤。
+
+## [2.7.1] - 2023-11-25
+
+### 修正
+
+- 修正 `MemberWidget` 沒有 `VisualElement` 錯誤。
+
+## [2.7.0] - 2023-11-25
+
+### 修正
+
+- 修正 `Group` 在極端情況下線段斷裂問題。
+
+### 重構
+
+- 重新設計 `Composer` 使其更視覺化。
+- 將 `IfScope` 系列 `Widget` 改為 `IfStyler`，這能減少產生不必要的元素。
+- 範例腳本使用 `Group` 分組使各單元可以摺疊。
+
+## [2.6.0] - 2023-11-24
+
+### 新增
+
+- `Group` 繪製一個可以摺疊的群組。
+
+### 修正
+
+- 修正由於無法對 `struct` 使用快速反射而導致無法繪製問題。 (但由於無法取得參考，仍無法使用 `PropertyField` 以外的方式 `struct` 欄位進行修改)
+
+### 重構
+
+- 調整 `ComposerOf` 架構使其適用於更多情境。
+- 將 `BuildChildren()` 移至 `IBuildContext` 以統一使用邏輯。
+
+## [2.5.0] - 2023-11-21
+
+### 新增
+
+- `OnChanged` 用以監聽成員變化，並調用目標函式。
+
+### 重構
+
+- 統一 `VisualWidget` 及 `LogicWidget`，以簡化過於複雜的繼承結構。
+
+## [2.4.4] - 2023-11-18
+
+### 修正
+
+- 反轉 `IfScope` 無參數邏輯，使其更符合直覺。
+
+## [2.4.3] - 2023-11-17
+
+### 修正
+
+- 修正 `v2.4.2` 未合併更新錯誤。
+
+## [2.4.2] - 2023-11-17
+
+### 修正
+
+- 修正 `IfScope` 無法判斷 `UObject` 問題。
+
+## [2.4.1] - 2023-11-16
+
+### 新增
+
+- MIT 授權檔案。
+
+### 修正
+
+- 使用 `class` 定義 `Widget` 時無法隱藏 `ScriptField` 錯誤。
+
+## [2.4.0] - 2023-11-16
+
+### 新增
+
+- 支援序列化類別、結構使用 InspectorMaid 自定義 (需繼承自 `IInspectorMaidTarget`)。
+- `Compose` 增加一些有關 `VisualElement` 的 setter。
+- 為每個 `Widget` 新增一個對應的 `VisualElement` 類別，這能讓 debug 面板更清晰。
+
+### 更新
+
+- `MethodElement` 現在如果沒有參數會自動將 CheckMark 隱藏。
+- 範例類別預設使用 InspectorMaid Editor，使效果不需通過 Project Settings 安裝便可完整展示。
+
+### 修正
+
+- 修正使用 `Button`, `MethodElement` 產生的變更無法正常儲存錯誤。
+
+### 重構
+
+- 簡化與快速反射相關的底層 API。
+- 取消綁定約定以減少設計限制。
+- 部分 `Widget` 使用 `Compose` 模組重寫，使其更具結構性。
+- 調整 Attach 邏輯以支援 PropertyDrawer。
+
+## [2.3.0] - 2023-11-14
+
+### 新增
+
+- `IfScpoe` 系列小部件新增預設比較方法，減少產生不必要的判斷函式。
+
+### 重構
+
+- 簡化與快速反射相關的底層 API。
+- 取消綁定約定以減少設計限制。
+- 部分 `Widget` 使用 `Compose` 模組重寫，使其更具結構性。
+
+## [2.2.0] - 2023-11-12
+
+### 新增
+
+- `UIElements.Compose` 使命令式 UI 設計更具結構性。
+- `Spacer` 小部件 : 用以填滿容器空隙。
+- Project Setting 新增快速建立特定 CustomEditor 選項，以幫助使用者啟用 InspectorMaid 服務。
+
+### 更新
+
+- 使用 Inspector-Maid 自舉建立 Project Setting 頁面。
+
+### 修正
+
+- 快速反射無法存取靜態成員錯誤。
+- 監聽帶參數 `Func` 會時因綁定目標已註冊而導致參數錯誤的問題。
+
+## [2.1.0] - 2023-11-10
+
+### 新增
+
+- `Widget` 現在可以透過在 `Class` 上定義 `WidgetAttribute` 的方式深度自定義布局方式。
+- `StyleStringConverter` : 用於將 `StyleString` 格式的 `string` 轉換為 `StyleValue` 的工具函式。
+
+### 更新
+
+- Sample Script 基於 Class Attribute 重寫，減少對 Sample 欄位的干擾並美化介面。
+### 修正
+
+- 修正 Slot 參數名稱錯誤。
+
+### 重構
+- `Context` 連結方式改為由父 `Context` 主動 `Attach()` 子 `Context`。
+- 廢棄 `ContainerScope` 改為使用 `ColumnScope` 及 `RowScope`，這能讓語意更明確。
+- 將初始化模板邏輯轉移到 `MemberWidgetTemplates` ，使 `ClassWidget` 職責單一化。
+
 ## [2.0.0] - 2023-11-09
 
 ### 新增

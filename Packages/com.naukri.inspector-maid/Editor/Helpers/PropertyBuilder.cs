@@ -1,8 +1,10 @@
-﻿using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,7 +14,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 {
     internal static class PropertyBuilder
     {
-        public delegate BindableElement BuilderFunc(string label, UObject target, Func<object> getter, Action<object> setter);
+        public delegate BindableElement BuilderFunc(string label, object target, Func<object> getter, Action<object> setter);
 
         private static Dictionary<Type, BuilderFunc> _builderDict = null;
 
@@ -51,7 +53,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                 });
         }
 
-        internal static BindableElement Build(string label, UObject target, PropertyInfo info)
+        internal static BindableElement Build(string label, object target, PropertyInfo info, SerializedObject serializedObject)
         {
             var propertyType = info.PropertyType;
 
@@ -67,13 +69,19 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             if (info.CanWrite)
             {
                 var frSetter = FastReflection.Polymorphism.CreateSetter<object, object>(info, target.GetType());
-                setter = value => frSetter(target, value);
+                setter = value =>
+                {
+                    // Todo multi-object editing check
+                    Undo.RecordObject(serializedObject.targetObject, "Set Value");
+                    frSetter(target, value);
+                    EditorUtility.SetDirty(serializedObject.targetObject);
+                };
             }
 
             return Build(propertyType, label, target, getter, setter);
         }
 
-        internal static BindableElement Build(Type type, string label, UObject target, Func<object> getter, Action<object> setter)
+        internal static BindableElement Build(Type type, string label, object target, Func<object> getter, Action<object> setter)
         {
             if (type.IsEnum)
             {

@@ -4,7 +4,9 @@
       "version": "file:com.naukri.inspector-maid",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.unity.modules.uielements": ""
+      }
     },
     "com.unity.ai.navigation": {
       "version": "1.1.5",

@@ -1,48 +1,50 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class SlotWidget : ScopeWidgetOf<SlotAttribute>, IContextAttachedReceiver
+    public class SlotWidget : VisualWidgetOf<SlotAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement()
+            var slot = new ComposerOf(new Slot())
             {
-                name = "Slot"
+                name = $"slot:{attribute.templateNames}",
+                children = context.BuildChildren(),
             };
 
-            BuildChildren(context, (ctx, e) =>
-            {
-                container.Add(e);
-            });
-
-            return container;
+            return slot;
         }
 
         public void OnContextAttached(Context context)
         {
             var templateService = IMemberWidgetTemplates.Of(context);
-            var templateWidget = templateService.Create(attribute.templateName);
 
-            // Prevent endless recursion
-            context.VisitAncestorContexts(ance =>
+            foreach (var templateName in attribute.templateNames)
             {
-                if (ance.Widget is MemberWidget anceWidget)
+                var templateWidget = templateService.CreateMemberWidget(templateName);
+
+                // Prevent endless recursion
+                context.VisitAncestorContexts(ancestor =>
                 {
-                    if (anceWidget.info == templateWidget.info)
+                    if (ancestor.Widget is MemberWidget ancestorWidget)
                     {
-                        throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{templateWidget.info.Name}'.");
+                        if (ancestorWidget.info == templateWidget.info)
+                        {
+                            throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{templateWidget.info.Name}'.");
+                        }
                     }
-                }
-                return false;
-            });
+                    return false;
+                });
 
-            var templateContext = templateWidget.CreateContext();
+                var templateContext = templateWidget.CreateContext();
 
-            templateContext.AttachParent(context);
+                context.Attach(templateContext);
+            }
         }
+
+        private class Slot : VisualElement { }
     }
 }

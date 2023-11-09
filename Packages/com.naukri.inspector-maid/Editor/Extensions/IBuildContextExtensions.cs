@@ -1,5 +1,11 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
+﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Core;
+using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Widgets.Logic;
+using Naukri.InspectorMaid.Editor.Widgets.Visual;
+using System;
+using System.Reflection;
+using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor.Extensions
 {
@@ -9,6 +15,53 @@ namespace Naukri.InspectorMaid.Editor.Extensions
         {
             var provider = context.GetAncestorWidget<ServiceWidget>();
             return provider.GetService<T>();
+        }
+
+        public static Type GetBindingValueType(this IBuildContext context)
+        {
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                return GetValueType(context, bindingData.binding);
+            }
+            return null;
+        }
+
+        public static Type GetValueType(this IBuildContext context, string memberName)
+        {
+            var memberInfo = context.GetInfo(memberName);
+
+            return memberInfo.MemberType switch
+            {
+                MemberTypes.Field => (memberInfo as FieldInfo).FieldType,
+                MemberTypes.Property => (memberInfo as PropertyInfo).PropertyType,
+                MemberTypes.Method => (memberInfo as MethodInfo).ReturnType,
+                _ => null
+            };
+        }
+
+        public static MemberInfo GetBindingInfo(this IBuildContext context)
+        {
+            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
+            {
+                return GetInfo(context, bindingData.binding);
+            }
+            return null;
+        }
+
+        public static MemberInfo GetInfo(this IBuildContext context, string memberName)
+        {
+            var classWidget = ClassWidget.Of(context) ?? throw new Exception($"[{nameof(ClassWidget)}] not found in context.");
+            var targetType = classWidget.target.GetType();
+            return targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, memberName);
+        }
+
+        public static void RecordAndSetDirty(this IBuildContext context, string changeEventName)
+        {
+            var classWidget = ClassWidget.Of(context) ?? throw new Exception($"[{nameof(ClassWidget)}] not found in context.");
+            var serializedTarget = classWidget.serializedTarget;
+
+            Undo.RecordObject(serializedTarget, changeEventName);
+            EditorUtility.SetDirty(serializedTarget);
         }
 
         internal static bool TryGetAttribute<T>(this IBuildContext context, out T attribute)

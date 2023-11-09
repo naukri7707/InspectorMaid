@@ -1,5 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Receivers;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System;
 
 namespace Naukri.InspectorMaid.Editor.Extensions

@@ -1,0 +1,19 @@
+﻿using UnityEditor;
+using UnityEngine;
+#if UNITY_EDITOR
+using Naukri.InspectorMaid.Editor.Core;
+
+[CanEditMultipleObjects]
+[CustomEditor(typeof(#SCRIPTNAME#), true, isFallback = true)]
+public class #SCRIPTNAME#Editor : InspectorMaidEditor
+{
+	#NOTRIM#
+}
+#endif
+
+// You can change [MonoBehaviour] to any type you want.
+// e.g. [ScriptableObject], [BoxCollider], or any class that can be displayed in the Inspector.
+public abstract class #SCRIPTNAME# : MonoBehaviour
+{
+	#NOTRIM#
+}
