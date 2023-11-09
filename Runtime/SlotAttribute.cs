@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class SlotAttribute : ScopeAttribute
+    public class SlotAttribute : ItemAttribute
     {
         public SlotAttribute(string template)
         {

@@ -3,7 +3,7 @@ using System;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Core
 {
-    internal interface IWidgetProvider
+    internal interface IWidgetProvider : IAttributeProvider
     {
         public Type RegisterType { get; }
 

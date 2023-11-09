@@ -6,23 +6,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
 {
     public abstract class ScopeWidget : VisualWidget
     {
-        public override VisualContext CreateContext() => new MultiChildVisualContext(this);
-
-        public void BuildChildren(IBuildContext context, ChildBuildedCallback callback)
-        {
-            context.VisitChildContexts(child =>
-            {
-                if (child is VisualContext visualContext)
-                {
-                    var childElement = visualContext.Build();
-
-                    if (childElement != null)
-                    {
-                        callback(child, childElement);
-                    }
-                }
-            });
-        }
+        public sealed override VisualContext CreateContext() => new MultiChildVisualContext(this);
 
         public delegate void ChildBuildedCallback(Context ctx, VisualElement e);
     }

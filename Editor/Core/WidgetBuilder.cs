@@ -1,16 +1,17 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 
-namespace Naukri.InspectorMaid.Editor.Widgets.Core
+namespace Naukri.InspectorMaid.Editor.Core
 {
-    internal static class WidgetTemplates
+    public static class WidgetBuilder
     {
         private static Dictionary<Type, IWidgetProvider> _templates;
 
-        internal static IWidget Create<T>(T attribute) where T : WidgetAttribute
+        public static IWidget Create<T>(T attribute) where T : WidgetAttribute
         {
             var template = GetTemplate(attribute.GetType());
             var inst = template.CloneWith(attribute);

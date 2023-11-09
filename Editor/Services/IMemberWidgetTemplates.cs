@@ -10,12 +10,6 @@ namespace Naukri.InspectorMaid.Editor.Services
         public MemberWidget CreateMemberWidget(string memberName);
 
         public MemberWidget[] CreateMemberWidgets(Predicate<MemberInfo> filter = null);
-
-        public MemberWidget[] CreateFieldWidgets();
-
-        public MemberWidget[] CreatePropertyWidgets();
-
-        public MemberWidget[] CreateMethodWidgets();
     }
 
     partial interface IMemberWidgetTemplates

@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Contexts.Core;
+using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
                     if (widgetAttr is VisualAttribute)
                     {
-                        var childWidget = WidgetTemplates.Create(widgetAttr);
+                        var childWidget = WidgetBuilder.Create(widgetAttr);
                         var childContext = childWidget.CreateContext();
                         childContext.AttachParent(parent);
 
@@ -58,7 +59,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                         // Create and attach the styler widget to last VisualContext.
                         if (widgetAttr is StylerAttribute)
                         {
-                            var stylerWidget = WidgetTemplates.Create(widgetAttr);
+                            var stylerWidget = WidgetBuilder.Create(widgetAttr);
 
                             var stylerContext = stylerWidget.CreateContext();
                             stylerContext.AttachParent(lastVisualContext);

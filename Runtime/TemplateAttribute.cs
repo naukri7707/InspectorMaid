@@ -1,8 +1,10 @@
 ﻿using Naukri.InspectorMaid.Core;
+using System;
 
 namespace Naukri.InspectorMaid
 {
-    public class TemplateAttribute : LogicAttribute
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public sealed class TemplateAttribute : LogicAttribute
     {
     }
 }
