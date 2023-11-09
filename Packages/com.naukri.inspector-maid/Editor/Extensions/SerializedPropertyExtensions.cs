@@ -10,9 +10,18 @@ namespace Naukri.InspectorMaid.Editor.Extensions
         {
             var target = property.serializedObject.targetObject;
             var type = target.GetType();
-            var fieldInfo = type.GetField(property.propertyPath, Utility.AllAccessFlags);
+            var fieldInfo = type.GetFieldToBase(InspectorMaidUtility.kBaseType, property.propertyPath);
 
             return fieldInfo;
+        }
+
+        public static bool TryGetFieldInfo(this SerializedProperty property, out FieldInfo fieldInfo)
+        {
+            var target = property.serializedObject.targetObject;
+            var type = target.GetType();
+            fieldInfo = type.GetFieldToBase(typeof(object), property.propertyPath);
+
+            return fieldInfo != null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Core;
+﻿using Naukri.InspectorMaid.Editor.Helpers;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -9,7 +9,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class MethodElement : VisualElement, IBuildable
+    public partial class MethodElement : VisualElement
     {
         public MethodElement(UObject target, MethodInfo info)
         {
@@ -17,8 +17,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             this.info = info;
             label = ObjectNames.NicifyVariableName(info.Name);
         }
-
-        private static readonly StyleColor kHoverColor = new(new Color32(69, 69, 69, 255));
 
         private readonly MethodInfo info;
 
@@ -33,13 +31,14 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         public event Action OnInvoke = () => { };
 
-        void IBuildable.Build()
+        public void Build()
         {
             style.flexDirection = FlexDirection.Column;
 
-            var foldout = new Foldout()
+            var foldout = new Foldout
             {
-                text = label
+                text = label,
+                value = false
             };
 
             // style toggle
@@ -54,10 +53,12 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 toggle.style.backgroundColor = new StyleColor(StyleKeyword.Undefined);
             });
 
+            var action = FastReflection.Polymorphism.CreateAction<object>(info, target.GetType());
+
             // style button
             void buttonAction()
             {
-                info.Invoke(target, args);
+                action(target, args);
                 OnInvoke.Invoke();
             }
 
@@ -96,17 +97,22 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                     args[i] = Activator.CreateInstance(pType);
                 }
 
-                var pElement = PropertyBuilder.Build(
+                var propertyElement = PropertyBuilder.Build(
                     pType, $"{pInfo.Name} ({pType.Name}) ", target,
                     () => args[idx],
                     v => args[idx] = v
                     );
 
-                foldout.Add(pElement);
+                foldout.Add(propertyElement);
             }
 
             Add(foldout);
             Add(button);
         }
+    }
+
+    partial class MethodElement
+    {
+        private static readonly StyleColor kHoverColor = new(new Color32(69, 69, 69, 255));
     }
 }

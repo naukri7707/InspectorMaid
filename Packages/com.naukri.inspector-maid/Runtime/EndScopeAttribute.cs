@@ -2,7 +2,7 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class EndScopeAttribute : DrawerAttribute
+    public class EndScopeAttribute : LogicAttribute
     {
     }
 }

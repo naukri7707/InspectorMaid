@@ -1,12 +1,13 @@
 # 功能入門
 
-## 透過 `WidgetAttribute` 描述裝 `WidgetTree` 來繪製 UI
+## 透過 `WidgetAttribute` 描述 `WidgetTree` 來繪製 UI
 
 Inspector Maid 繪製的 UI 主要透過利用由以下 3 種 `WidgetAttribute` 描述對應的功能，並互相協作組合而成。
 
-1. `Item` : 沒有子元素的小部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`
-2. `Scope` : 可以容納有子元素的小部件，例如 `Container` 和 `Foldout`
-3. `Styler` : 用於描述小部件風格，例如 `margin`、`padding` 及 `color`。
+1. `Item` : 沒有子元素的小部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`。
+2. `Scope` : 可以容納有子元素的小部件，例如 `Container` 和 `Foldout`。
+3. `Styler` : 用於設計小部件風格，例如 `Style` 、 `ReadOnly` 及 `Label`。
+4. `Logic` : 用於標註特殊行為，例如 `EndScope` 及 `Template`。
 
 Inspector Maid 會為每一個目標建立一棵 `WidgetTree`，並根據不同的 `WidgetAttribute` 產生對應的 `Widget` 進行組合。最終組成類似於下圖的結構：
 
@@ -42,12 +43,13 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
 <summary>2. 將按鈕放到目標欄位之下</summary>
 
-![intro-step-2](./Images/intro-step-2.png) 
+![intro-step-2](./Images/intro-step-2.png)
 
 一般情況下目標欄位會在所有的 `Widget` 繪製完畢後進行繪製，如果想要提前進行繪製，我們需要使用 `TargetAttribute` 來標註它應該在哪裡繪製。
 
@@ -61,6 +63,7 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
@@ -84,12 +87,13 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
 <summary>4. 加入一些幫助資訊</summary>
 
-![intro-step-4](./Images/intro-step-4.png) 
+![intro-step-4](./Images/intro-step-4.png)
 
 我們可以使用 `HelpBox` 來顯示想呈現的幫助資訊。
 
@@ -108,12 +112,13 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 <details>
 <summary>5. 強調幫助訊息</summary>
 
-![intro-step-5](./Images/intro-step-5.png) 
+![intro-step-5](./Images/intro-step-5.png)
 
 為了強調幫助訊息我們可以使用 `ContainerScope` (一個空的 Scope) 來將它們包裝起來。並利用 `Style` 來調整它的風格。
 
@@ -138,13 +143,14 @@ public void ResetValue()
     myInt = 0;
 }
 ```
+
 </details>
 
 ## 如何使用 `Style` 定義 `Widget` 的風格
 
 ### 設定風格的屬性
 
-任何型態的屬性都使用 `string` 來進行設定，Inspector Maid 會自動將其轉換成目標數值，如果要調整改屬性請依該屬性的型態作出如下調整：
+任何型態的屬性都使用 `string` 來進行設定，Inspector Maid 會自動將其轉換成目標數值，如果要調整屬性，請依該屬性的型態作出如下調整：
 
 - `StyleInt` : 使用整數字串 e.g. `"0"`, `"10"`
 - `StyleFloat` : 使用浮點字串 e.g. `"0.5"`, `"11.7"`
@@ -167,7 +173,7 @@ public int shorthandProperty = 0;
 
 ### 使用具名指定要指派的參數
 
-在 Style 的建構子中有數十個參數可以指派，依序填入 `null` 直到目標欄位顯然是不明智的；我們可以使用具名參數來直接對該參數進行設定，也可以讓程式碼更具可讀性。
+在 `Style` 的建構子中有數十個參數可以指派，依序填入 `null` 直到目標欄位顯然是不明智的；我們可以使用具名參數來直接對該參數進行設定，也可以讓程式碼更具可讀性。
 
 ```cs
 [Target, Style(null, null, null, null, null, "30")] // Don't do this
@@ -190,23 +196,24 @@ public int good;
         width: 50%;
     }
 
-    .height-30-px {
-        height: 30px;
+    .height-50-px {
+        height: 50px;
     }
     ```
+
 3. 再來我們需要讓 Inspector Maid 知道有哪些 `uss` 可以參考。你可以在 Project Settings 視窗中的 Inspector Maid 分頁中找到 `Import Style Sheets` 欄位，並將目標 `uss` 拖曳至該欄位中以新增參考。
 
 4. 最後我們找到想要引用預定義風格的欄位，並使用 `Style` 中的 `classList` 參數新增目標 class 名稱即可。注意：如果有多個 class 要引用需使用空格進行分隔。
-    
+
     ```cs
-    [Target, Style(classList: "width-50-percent height-30-px")]
+    [Target, Style(classList: "width-50-percent height-50-px")]
     public int styleTest;
     ```
 
 5. 你也可以將 `classList` 與其他屬性混合使用，不過要注意 `classList` 的優先度是最低的，類似於 `HTML` 中 `class` 與 `inline-style` 的關係。
 
     ```cs
-    [Target, Style(classList: "width-50-percent height-30-px", justifyContent: nameof(Align.Center))]
+    [Target, Style(classList: "width-50-percent height-50-px", justifyContent: nameof(Align.Center))]
     public int styleTest;
     ```
 
@@ -277,7 +284,7 @@ public void MyMethod()
 
 部分 `WidgetAttribute` 可以與指定特定欄位讓對應的 `Widget` 與其進行資料綁定，用以完成一些特殊功能。綁定的目標可以是該腳本的物件本身或是該物件下的任何成員。
 
-- 如果要綁定成員，將` binding` 指派為該成員的名稱以進行綁定。你可以使用 `nameof` 運算式來使程式碼更容易維護。
+- 如果要綁定成員，將 `binding` 指派為該成員的名稱以進行綁定。你可以使用 `nameof` 運算式來使程式碼更容易維護。
 
     ```cs
     [HelpBox(binding: "message")] // Bad
@@ -292,6 +299,7 @@ public void MyMethod()
     1. 欄位：該欄位的數值。
     2. 屬性：該屬性 `getMethod` 的回傳值，如果該屬性沒有 `getMethod` 則無法運行。
     3. 函式：該函式調用後的回傳值，如果該函式有參數則需使用 `args` 定義參數。
+
         ```cs
         // 如果只有一個參數，可以利用 params 關鍵字的特性，省略 new object[] { ... }
         [HelpBox(binding: nameof(HelloMessage), args: "world")]
@@ -312,7 +320,9 @@ public void MyMethod()
 
 ### 注意事項
 
-- 和傳統 MVVM 模式中使用觀察者模式實作的綁定不同，為了能夠綁定欄位及函式 Inspector Maid 的綁定方式是在該 `Widget` 需要的時候 (通常是在 `OnSceneGUI()` 中) 主動獲得並比較綁定資料，因此會浪費一些效能在處理無效的事件上，且資料更新會有輕微的滯後性 (需等候 `OnSceneGUI()` 被調用或主動使用 `Repaint()` 重繪)。但考慮到本工具只會在 Unity Editor 上運行、以及不需額外的程式碼即可進行資料綁定，我們認為這點缺陷是完全能夠接受的。
+- 與傳統的 MVVM 模式使用觀察者模式實作綁定不同，Inspector Maid 會在每次 EditorUpdate 時主動獲取已綁定成員的當前值，然後將其與舊值進行比較，並在需要時發出通知以處理變更。
+
+- 儘管這種特殊的實作方式在處理資料更新方面可能會消耗一些效能，但由於資料存取部分使用快速反射進行優化，實際的效能損耗不會太高。考慮到本工具僅在 Unity Editor 上運行，並且無需額外的程式碼即可實現資料綁定，我們認為這個犧牲是完全可以接受的。
 
 ## 自訂小部件
 
@@ -320,7 +330,10 @@ public void MyMethod()
 
 ### 建立 `WidgetAttribute`
 
+`WidgetAttribute` 用來將一些資訊從腳本傳遞給 `Widget`，
+
 1. 首先我們需要建立用來定義 `Widget` 位置及屬性的 `WidgetAttribute`。要注意根據目標功能不同，你需要繼承的類別也有所不同。
+
     ```cs
     // Item : 單一個小部件
     public class MyItemAttribute : ItemAttribute { }
@@ -343,7 +356,9 @@ public void MyMethod()
         public readonly string myString;
     }
     ```
+
 3. 有些參數可能是選擇性的，我們建議使用預設引數來定義預設值，因為它能夠被 IDE 偵測到並顯示。
+
     ```cs
     public class MyItemAttribute : ItemAttribute
     {
@@ -387,88 +402,90 @@ public void MyMethod()
     }
     ```
 
-### 建立 Drawer / Styler
+### 建立 `Widget`
 
 根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
 
-#### 繪製器 `WidgetDrawerOf<TAttribute>`
+- `ItemAttribute` : `ItemWidgetOf<T>`
+- `ScopeAttribute` : `ScopeWidgetOf<T>`
+- `StylerAttribute` : `StylerWidgetOf<T>`
 
-如果你的 `WidgetAttribute` 為 `ItemAttribute` 或是 `ScopeAttribute` 你需要使用 `WidgetDrawerOf<TAttribute>` 進行設計。
+> 由於 Widget 在實作中可能會使用到 UnityEditor 中的函式。所以建議新增在 Editor 資料夾中，使 unity 不在建置時編譯該腳本。否則專案將無法建置。
+
+#### `VisualWidget` : 實作 `Build()`
+
+當你的目標是 `ItemWidget` 或是 `ScopeWidget` 時，你需要實作 `Build()` 函式來描述 `Widget` 的 UI。
 
 ```cs
-using Naukri.InspectorMaid.Editor.Core;
-using Naukri.InspectorMaid.Editor.UIElements;
-using UnityEditor.UIElements;
-
-public class MyItemDrawer : WidgetDrawerOf<MyItemAttribute>
+public class MyScopeWidget : ScopeWidgetOf<MyScopeAttribute>
 {
-    public override void OnStart(IWidget widget)
+    public override VisualElement Build(IBuildContext context)
     {
-        // 當 Widget 甦醒後，首次 OnSceneGUI() 之前調用此函式
-    }
+        // 建立一個容器來存放要產生的 UI
+        var container = new VisualElement();
 
-    public override void OnSceneGUI(IWidget widget)
-    {
-        // 當 Widget 甦醒後，每次 SceneGUI 時調用此函式
-    }
+        // 假設我們想要一個 Label
+        var label = new Label("Hello World!");
+        container.Add(label);
 
-    public override void OnDestroy(IWidget widget)
-    {
-        // 當 Widget 被刪除時調用此函式 (一般為該 component 從 inspector 中消失的時候)
+        // 如果是 Scope，我們還需要使用 BuildChildren 
+        // 來建立子 Widget 並將其加入到 container 之中
+        BuildChildren(context, (ctx, e) =>
+        {
+            // ctx 是子 Widget 的 Context
+            // e 是子 Widget 在 Build() 之後產生的 VisualElement
+            // 我們產生的 VisualElement 簡單的加入到 container 之中
+            container.Add(e);
+        });
+
+        return container;
     }
 }
 ```
 
-你可以使用以下屬性及函式來輔助你建立 Drawer
+#### `StylerWidget` : 實作 `OnStyling()`
 
-- `attribute` : 用來存取對應的屬性資料
-- `memberInfo` : 取得目標的 `MemberInfo`
-- `fieldInfo` : 取得目標的 `FieldInfo` ，如果目標不是 field 會拋出錯誤
-- `propertyInfo` : 取得目標的 `PropertyInfo` ，如果目標不是 property 會拋出錯誤
-- `methodInfo` : 取得目標的 `MethodInfo` ，如果目標不是 method 會拋出錯誤
-- `IsBinding` : 判斷該 `Widget` 有綁定欄位
-- `GetBindingValue()` : 取得綁定資料，如果取得失敗會拋出對應的錯誤。
-- `CreateBindingMethodAction()` : 如果綁定目標是函式，可以使用此函式建立一個會傳入 `args` 參數給綁定函式的委派，這在製作按鈕等需要在特定情境中調用方法的時後很有用。
+當你的目標是 `StylerWidget` 時，你需要實作 `OnStyling()` 函式來描述如何調整目標 `VisualElement` 的風格。
 
-以 `DisableIfScope` 為例：
 ```cs
-public class DisableIfScopeDrawer : WidgetDrawerOf<DisableIfScopeAttribute>
+public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 {
-    // 為了擴展功能及封閉一些不常用的函式，我們選擇通過 IWidget 來間接操作 VisualElement，
-    // 它包含了絕大部分 VisualElement 常用的函式所以你可以像使用 VisualElement 一般使用它。
-    // 如果有函式不包含在內你可以簡單的將它轉型 (widget as VisualElement) 這是絕對安全的。
-    public override void OnSceneGUI(IWidget widget)
+    // OnStyling 會在 stylingElement 被 Build() 後呼叫
+    // stylingElement 會是該 Styler 之前最接近的 VisualWidget 所產生的 VisualElement
+    public override void OnStyling(IBuildContext context, VisualElement stylingElement)
     {
-        // 使用 GetBindingValue 取得綁定資料
-        var disable = GetBindingValue<bool>();
-        // 如果綁定資料為 true 將 widget 禁用，使其與其子元素無法被操作。
-        widget.SetEnabled(!disable);
+        // 這裡可以對 stylingElement 做任何事情，例如將其禁用
+        stylingElement.SetEnabled(false);
+
+        // 或是設定他的 style
+        stylingElement.style.backgroundColor = Color.red;
     }
 }
 ```
 
-#### Styler
+### `IBuildContext`
 
-```cs
-using Naukri.InspectorMaid.Editor.Core;
-using UnityEngine.UIElements;
+- 你可以使用 `Context` 來訪問上下文的資源，例如：`Context`、`Widget`、`WidgetAttribute` 或是 `Service`。
+- 為了提高程式碼的簡潔性，接口中使用 `IBuilderContext` 來間接操作 `Context`。實際上，`IBuilderContext` 僅由 `Context` (及其衍生類別) 實作。因此如果你需要使用到 `Context` 的特性，你可以將 `IBuilderContext` 轉型為 `Context`來使用，這是絕對安全的。
 
-public class MyStyler : CustomStylerOf<MyStylerAttribute>
-{
-    // style 是目標 Widget 的 style 參考
-    public override void OnStyling(IStyle style)
-    {
-        // 當 Widget 創建完成，且 MyStyler 被建立時調用此函式
-    }
-}
-```
+### `Service`
 
-你可以使用以下屬性及函式來輔助你建立 Styler
+通用功能將以服務的形式提供。您可以使用 `GetService()` 方法來獲取相應的服務。不過這些服務所提供的功能多會以擴展方法的方式整合到 `IBuildContext` 中。因此在大多數情況下您無需直接訪問服務，僅需透過擴展方法來調用這些功能即可。
 
-- `attribute` : 用來存取對應的屬性資料
+#### 內置 `Service`
 
-> 由於 Drawer 和 Styler 會使用到 UnityEditor 中的函式，所以要新增在 Editor 資料夾中使其不再建置時被編譯，否則會專案程式建置。
+- `IEditorEventService`：取得 Editor 事件的回調 e.g. `OnUpdate`、`OnSceneGUI`、`OnDestroy`。
+- `IInspectorMaidSettings`：取得 Inspector Maid 在 Project Setting 中的設定資料。
+- `IFastReflectionService`：使用快速反射存來取目標成員。
+- `IChangedNotifierService`：監聽目標成員，在該成員產生變更時發送通知。
 
-# 内置小部件
+### `Receiver`
+
+你可以在 `Widget` 上實作目標 `Receiver` 來接收系統事件，這能幫助你在除了 Build 之外的特定階段建立邏輯。
+
+#### 內置 `Receiver`
+
+- `IContextAttachedReceiver`：當該 `Widget` 的 `Context` 被附加到 `Context Tree` 時。
+## 内置小部件
 
 你可以在 package 中的 Sample 中找到所有内置小部件的 demo 以及詳細的說明。
