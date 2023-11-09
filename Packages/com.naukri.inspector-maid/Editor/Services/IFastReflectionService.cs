@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
 using System.Reflection;
@@ -159,7 +160,7 @@ namespace Naukri.InspectorMaid.Editor.Services
             {
                 var memberWidget = MemberWidget.Of(context);
                 var targetType = memberWidget.target.GetType();
-                return targetType.GetMember(bindingData.binding)[0];
+                return targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingData.binding);
             }
             return null;
         }
