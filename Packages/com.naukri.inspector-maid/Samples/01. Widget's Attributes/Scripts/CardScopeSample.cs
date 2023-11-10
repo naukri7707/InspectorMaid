@@ -2,16 +2,17 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    public class CardScopeSample : AttributeSampleBehaviour
-    {
-        [HelpBox(
+    [HelpBox(
 @"[CardScope] will create a card style widget to wrap the content,
 this is useful for highlighting some content.", HelpBoxMessageType.Info)]
-        [CardScope(color: kSectionBGColor)]
+    [Divider("01. CardScope")]
+    [CardSlot(nameof(cardScope))]
+    public class CardScopeSample : AttributeSampleBehaviour
+    {
         // Sample 1
         [CardScope]
         [Target]
         [EndScope]
-        public int Sample1;
+        public int cardScope;
     }
 }
