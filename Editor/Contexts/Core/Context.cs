@@ -62,6 +62,19 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
 
         public abstract void VisitChildContexts(Action<Context> visitor);
 
+        public void Attach(Context child)
+        {
+            if (child == null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            child._parent = this;
+            OnChildAttached(child);
+
+            child.VisitReceiver<IContextAttachedReceiver>((ctx, r) => r.OnContextAttached(ctx));
+        }
+
         internal T GetAncestorContext<T>() where T : Context
         {
             T res = null;
@@ -78,14 +91,6 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
             });
 
             return res;
-        }
-
-        internal void AttachParent(Context parent)
-        {
-            _parent = parent;
-            _parent?.OnChildAttached(this);
-
-            this.VisitReceiver<IContextAttachedReceiver>((ctx, r) => r.OnContextAttached(ctx));
         }
 
         protected abstract void OnChildAttached(Context child);

@@ -37,7 +37,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
                     continue;
                 }
                 var memberContext = widget.CreateContext();
-                memberContext.AttachParent(context);
+                context.Attach(memberContext);
             }
         }
     }
