@@ -12,7 +12,10 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             this.editorEventService.OnUpdate += EditorEventService_OnUpdate;
         }
 
-        public Dictionary<string, IListener> listeners = new();
+        public Dictionary<string, IListener> valueListeners = new();
+
+        // we can't use Dictionary because func args might be different at different binding event.
+        public List<IListener> funcListeners = new();
 
         private readonly IEditorEventService editorEventService;
 
@@ -20,33 +23,31 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         public void ListenValue<T>(string bindingPath, Action<T> callback)
         {
-            if (listeners.TryGetValue(bindingPath, out var listener))
+            if (valueListeners.TryGetValue(bindingPath, out var listener))
             {
                 ((ValueListener<T>)listener).callback += callback;
             }
             else
             {
                 listener = new ValueListener<T>(bindingPath, callback);
-                listeners.Add(bindingPath, listener);
+                valueListeners.Add(bindingPath, listener);
             }
         }
 
         public void ListenFunc<T>(string bindingPath, object[] args, Action<T> callback)
         {
-            if (listeners.TryGetValue(bindingPath, out var listener))
-            {
-                ((FuncListener<T>)listener).callback += callback;
-            }
-            else
-            {
-                listener = new FuncListener<T>(bindingPath, args, callback);
-                listeners.Add(bindingPath, listener);
-            }
+            var listener = new FuncListener<T>(bindingPath, args, callback);
+            funcListeners.Add(listener);
         }
 
         private void EditorEventService_OnUpdate()
         {
-            foreach (var listener in listeners.Values)
+            foreach (var listener in valueListeners.Values)
+            {
+                listener.CheckValueChanged(fastReflectionService);
+            }
+
+            foreach (var listener in funcListeners)
             {
                 listener.CheckValueChanged(fastReflectionService);
             }
