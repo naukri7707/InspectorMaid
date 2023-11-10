@@ -39,7 +39,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var rootContext = rootWidget.CreateContext();
 
-            rootContext.AttachParent(serviceContext);
+            serviceContext.Attach(rootContext);
 
             return rootContext.Build();
         }

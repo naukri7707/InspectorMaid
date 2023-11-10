@@ -34,7 +34,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                     {
                         var childWidget = WidgetBuilder.Create(widgetAttr);
                         var childContext = childWidget.CreateContext();
-                        childContext.AttachParent(parent);
+                        parent.Attach(childContext);
 
                         lastVisualContext = childContext;
 
@@ -62,7 +62,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                             var stylerWidget = WidgetBuilder.Create(widgetAttr);
 
                             var stylerContext = stylerWidget.CreateContext();
-                            stylerContext.AttachParent(lastVisualContext);
+                            lastVisualContext.Attach(stylerContext);
                         }
                     }
                 }

@@ -42,7 +42,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             var templateContext = templateWidget.CreateContext();
 
-            templateContext.AttachParent(context);
+            context.Attach(templateContext);
         }
     }
 }

@@ -57,4 +57,12 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             return container;
         }
     }
+
+    partial class ClassWidget
+    {
+        public static ClassWidget Of(IBuildContext context)
+        {
+            return context.GetAncestorWidget<ClassWidget>();
+        }
+    }
 }

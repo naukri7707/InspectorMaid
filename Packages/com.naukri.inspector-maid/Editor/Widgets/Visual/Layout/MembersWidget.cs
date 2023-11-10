@@ -34,7 +34,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
             {
                 var scriptFieldWidget = WidgetBuilder.Create(new ScriptFieldAttribute());
                 var scriptFieldContext = scriptFieldWidget.CreateContext();
-                scriptFieldContext.AttachParent(context);
+                context.Attach(scriptFieldContext);
             }
 
             foreach (var widget in widgets)
@@ -44,7 +44,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
                     continue;
                 }
                 var memberContext = widget.CreateContext();
-                memberContext.AttachParent(context);
+                context.Attach(memberContext);
             }
         }
     }

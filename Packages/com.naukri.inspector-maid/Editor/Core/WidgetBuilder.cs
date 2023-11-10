@@ -11,7 +11,7 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         private static Dictionary<Type, IWidgetProvider> _templates;
 
-        public static IWidget Create<T>(T attribute) where T : WidgetAttribute
+        public static IWidget Create(WidgetAttribute attribute)
         {
             var template = GetTemplate(attribute.GetType());
             var inst = template.CloneWith(attribute);
