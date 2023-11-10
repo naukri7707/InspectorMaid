@@ -1,19 +1,20 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ContainerScopeWidget : ScopeWidgetOf<ContainerScopeAttribute>
+    public class RowScopeWidget : ScopeWidgetOf<RowScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement();
+            var row = new Row();
 
             BuildChildren(context, (ctx, e) =>
             {
-                container.Add(e);
+                row.Add(e);
             });
 
-            return container;
+            return row;
         }
     }
 }

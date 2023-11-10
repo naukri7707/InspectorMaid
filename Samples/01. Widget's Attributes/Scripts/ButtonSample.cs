@@ -21,15 +21,15 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         [CardScope(color: kSectionBGColor)]
         // Sample 3
         // In order to place the Button and Target on the same line,
-        // we need to create a Container first, change the layout direction to row, and put them in it.
-        [ContainerScope, Style(flexDirection: nameof(FlexDirection.Row))]
+        // we can use row to wrap them inside.
+        [RowScope]
         [Button("Click", binding: nameof(MyMethod))]
         [Target, Style(flexGrow: "1")] // In this case we need to set flexGrow to 1 to let Target fill the remaining space.
         public int ButtonBeforeTargetInRow = 0;
 
         [CardScope(color: kSectionBGColor)]
         // Sample 4
-        [ContainerScope, Style(flexDirection: nameof(FlexDirection.Row))]
+        [RowScope]
         [Target, Style(flexGrow: "1")]
         [Button("Click", binding: nameof(MyMethod))]
         public int ButtonAfterTargetInRow = 0;
