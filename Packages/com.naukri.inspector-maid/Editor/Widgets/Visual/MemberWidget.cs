@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Contexts.Core;
+using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
@@ -13,10 +14,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
     public partial class MemberWidget : ScopeWidget, IContextAttachedReceiver
     {
-        public MemberWidget(MemberWidget template)
-            : this(template.target, template.info, template.serializedProperty)
-        { }
-
         public MemberWidget(UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
         {
             this.target = target;
@@ -61,55 +58,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 attrs.Add(new TargetAttribute());
             }
 
-            var iteractor = attrs.GetEnumerator();
-
-            var lastVisualContext = context;
-
-            void BuildContextTree(Context parent)
-            {
-                while (iteractor.MoveNext())
-                {
-                    var widgetAttr = iteractor.Current;
-
-                    if (widgetAttr is VisualAttribute)
-                    {
-                        var childWidget = WidgetTemplates.Create(widgetAttr);
-                        var childContext = childWidget.CreateContext();
-                        childContext.AttachParent(parent);
-
-                        lastVisualContext = childContext;
-
-                        if (childWidget is ItemWidget)
-                        {
-                            // Do nothing
-                        }
-                        else if (childWidget is ScopeWidget)
-                        {
-                            BuildContextTree(childContext);
-                        }
-                    }
-                    else if (widgetAttr is LogicAttribute)
-                    {
-                        // Terminate the loop at the EndScopeAttribute
-                        // to exit building from the parent scope.
-                        if (widgetAttr is EndScopeAttribute)
-                        {
-                            break;
-                        }
-
-                        // Create and attach the styler widget to last VisualContext.
-                        if (widgetAttr is StylerAttribute)
-                        {
-                            var stylerWidget = WidgetTemplates.Create(widgetAttr);
-
-                            var stylerContext = stylerWidget.CreateContext();
-                            stylerContext.AttachParent(lastVisualContext);
-                        }
-                    }
-                }
-            }
-
-            BuildContextTree(context);
+            InspectorMaidUtility.AttachContextOfWidgetsToTree(context, attrs);
         }
     }
 

@@ -2,16 +2,27 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
+    [HelpBox("[ColumnScope] and [RowScope] can help you to wrapping your UI vertically or horizontally.", HelpBoxMessageType.Info)]
+    [Divider("01. Column")]
+    [CardSlot(nameof(column))]
+    [Divider("02. Row")]
+    [CardSlot(nameof(row))]
     public class ContainerScopeSample : AttributeSampleBehaviour
     {
-        [HelpBox("[ContainerScope] can help you to wrap your UI and add some custom styles.", HelpBoxMessageType.Info)]
-        [CardScope(color: kSectionBGColor)]
         // Sample 1
         [Target]
-        [ContainerScope, Style(margin: "10 0", padding: "5", backgroundColor: "#404040", flexDirection: nameof(FlexDirection.Row))]
-        [HelpBox("My UI1", HelpBoxMessageType.Info), Style(flexGrow: "0.5")]
-        [HelpBox("My UI2", HelpBoxMessageType.Warning), Style(flexGrow: "0.2")]
-        [HelpBox("My UI3", HelpBoxMessageType.Error), Style(flexGrow: "0.3")]
-        public int Sample1;
+        [ColumnScope]
+        [HelpBox("My UI1", HelpBoxMessageType.Info)]
+        [HelpBox("My UI2", HelpBoxMessageType.Warning)]
+        [HelpBox("My UI3", HelpBoxMessageType.Error)]
+        public int column;
+
+        // Sample 2
+        [Target]
+        [RowScope]
+        [HelpBox("My UI1", HelpBoxMessageType.Info), Style(flexGrow: "1")] // we can use grow to let element fill the remaining space
+        [HelpBox("My UI2", HelpBoxMessageType.Warning), Style(flexGrow: "1")]
+        [HelpBox("My UI3", HelpBoxMessageType.Error), Style(flexGrow: "1")]
+        public int row;
     }
 }

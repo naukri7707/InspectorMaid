@@ -2,11 +2,11 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class SlotAttribute : ScopeAttribute
+    public class SlotAttribute : ItemAttribute
     {
-        public SlotAttribute(string template)
+        public SlotAttribute(string templateName)
         {
-            this.templateName = template;
+            this.templateName = templateName;
         }
 
         public readonly string templateName;

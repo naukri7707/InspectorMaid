@@ -18,7 +18,7 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
 
         public override IWidget Widget => widget;
 
-        public VisualElement Build()
+        internal VisualElement Build()
         {
             renderedElement = widget.Build(this);
 

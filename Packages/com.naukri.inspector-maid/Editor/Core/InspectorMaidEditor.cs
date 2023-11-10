@@ -24,7 +24,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var settings = InspectorMaidSettings.Instance;
             var fastReflectionService = new FastReflectionService(target);
-            var memberWidgetTemplateService = new MemberWidgetTemplates();
+            var memberWidgetTemplateService = new MemberWidgetTemplates(target, serializedObject);
             var valueChangedListenerService = new ChangedNotifierService(editorEventService, fastReflectionService);
 
             serviceWidget.AddService<IInspectorMaidSettings>(settings);
@@ -39,7 +39,7 @@ namespace Naukri.InspectorMaid.Editor.Core
 
             var rootContext = rootWidget.CreateContext();
 
-            rootContext.AttachParent(serviceContext);
+            serviceContext.Attach(rootContext);
 
             return rootContext.Build();
         }

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class SlotWidget : ScopeWidgetOf<SlotAttribute>, IContextAttachedReceiver
+    public class SlotWidget : ItemWidgetOf<SlotAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {
@@ -25,7 +25,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public void OnContextAttached(Context context)
         {
             var templateService = IMemberWidgetTemplates.Of(context);
-            var templateWidget = templateService.Create(attribute.templateName);
+            var templateWidget = templateService.CreateMemberWidget(attribute.templateName);
 
             // Prevent endless recursion
             context.VisitAncestorContexts(ance =>
@@ -42,7 +42,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             var templateContext = templateWidget.CreateContext();
 
-            templateContext.AttachParent(context);
+            context.Attach(templateContext);
         }
     }
 }

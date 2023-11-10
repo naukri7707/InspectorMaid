@@ -1,7 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Helpers;
-using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
 using System.Reflection;
 
@@ -152,17 +150,6 @@ namespace Naukri.InspectorMaid.Editor.Services
             {
                 throw new Exception($"Can not invoke binding function, because {context.Widget.GetType().Name} is not {nameof(IBindingDataProvider)}.");
             }
-        }
-
-        internal static MemberInfo GetBindingInfo(this IBuildContext context)
-        {
-            if (context.TryGetAttribute(out IBindingDataProvider bindingData))
-            {
-                var memberWidget = MemberWidget.Of(context);
-                var targetType = memberWidget.target.GetType();
-                return targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingData.binding);
-            }
-            return null;
         }
     }
 }
