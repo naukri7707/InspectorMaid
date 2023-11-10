@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.1.0] - 2023-11-10
+
+### 新增
+
+- `Widget` 現在可以透過在 `Class` 上定義 `WidgetAttribute` 的方式深度自定義布局方式。
+- `StyleStringConverter` : 用於將 `StyleString` 格式的 `string` 轉換為 `StyleValue` 的工具函式。
+
+### 更新
+
+- Sample Script 基於 Class Attribute 重寫，減少對 Sample 欄位的干擾並美化介面。
+### 修正
+
+- 修正 Slot 參數名稱錯誤
+
+### 重構
+- `Context` 連結方式改為由父 `Context` 主動 `Attach()` 子 `Context`。
+- 廢棄 `ContainerScope` 改為使用 `ColumnScope` 及 `RowScope`，這能讓語意更明確。
+- 將初始化模板邏輯轉移到 `MemberWidgetTemplates` ，使 `ClassWidget` 職責單一化。
+
 ## [2.0.0] - 2023-11-09
 
 ### 新增
