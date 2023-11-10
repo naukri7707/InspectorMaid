@@ -434,7 +434,7 @@ public class MyScopeWidget : ScopeWidgetOf<MyScopeAttribute>
         {
             // ctx 是子 Widget 的 Context
             // e 是子 Widget 在 Build() 之後產生的 VisualElement
-            // 我們產生的 VisualElement 簡單的加入到 container 之中
+            // 我們將產生的 VisualElement 簡單的加入到 container 之中
             container.Add(e);
         });
 
