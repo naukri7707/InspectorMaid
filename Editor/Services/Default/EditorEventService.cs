@@ -10,10 +10,10 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         public event Action OnDestroy = () => { };
 
-        internal void InvokeUpdate() => OnUpdate.Invoke();
+        public void InvokeUpdate() => OnUpdate.Invoke();
 
-        internal void InvokeSceneGUI() => OnSceneGUI.Invoke();
+        public void InvokeSceneGUI() => OnSceneGUI.Invoke();
 
-        internal void InvokeDestroy() => OnDestroy.Invoke();
+        public void InvokeDestroy() => OnDestroy.Invoke();
     }
 }
