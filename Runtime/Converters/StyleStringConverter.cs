@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Converters
 {
-    internal static class StringConverter
+    public static class StyleStringConverter
     {
         public static StyleInt? ToStyleInt(string input)
         {
