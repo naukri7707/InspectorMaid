@@ -1,8 +1,10 @@
 ﻿using Naukri.InspectorMaid.Editor.Core;
+using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.UIElements;
 using Naukri.InspectorMaid.Layout;
-using System.Diagnostics.CodeAnalysis;
+using System;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -10,7 +12,22 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Services.Default
 {
+    // Hide script field at Project Setting Page, but keep it at Inspector.
     [HideIfScope(nameof(isDrawingSettingsProvider)), ScriptField, EndScope]
+    // Add support for custom type
+    [Divider("Working On")]
+    [RowScope]
+    [DisableIfScope(nameof(IsSupported), args: typeof(MonoBehaviour))]
+    [Button("MonoBehaviour", binding: nameof(AddSupport), args: typeof(MonoBehaviour)), Style(height: "24")]
+    [EndScope]
+    [DisableIfScope(nameof(IsSupported), args: typeof(ScriptableObject))]
+    [Button("ScriptableObject", binding: nameof(AddSupport), args: typeof(ScriptableObject)), Style(height: "24")]
+    [EndScope]
+    [Spacer, Style(flexGrow: "1")]
+    [Button("Custom Type", binding: nameof(AddSupportOfCustomType)), Style(height: "24")]
+    [EndScope]
+    // Add pre-defined style sheet
+    [Divider("Style"), Style(marginTop: "10")]
     [Slot(nameof(importStyleSheets))]
     internal partial class InspectorMaidSettings : ScriptableObject, IInspectorMaidSettings
     {
@@ -22,10 +39,6 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
     partial class InspectorMaidSettings
     {
-        // to tell inspector maid that we are drawing settings provider,
-        // so we will skip the script field at Project Setting Page, but keep it at Inspector.
-        private static bool isDrawingSettingsProvider;
-
         public static InspectorMaidSettings Instance => GetOrCreateSettings();
 
         private static InspectorMaidSettings GetOrCreateSettings()
@@ -47,9 +60,43 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             }
             return settings;
         }
+    }
+
+    // UI
+    partial class InspectorMaidSettings
+    {
+        // to tell inspector maid that we are drawing settings provider,
+        // so we will skip the script field at Project Setting Page, but keep it at Inspector.
+        // - we can't make this field private otherwise Unity will display [CS0414] (value never used) error
+        internal static bool isDrawingSettingsProvider;
+
+        private static bool IsSupported(Type supportType)
+        {
+            var imEditors = TypeCache.GetTypesDerivedFrom<InspectorMaidEditor>();
+            foreach (var editor in imEditors)
+            {
+                var attr = editor.GetCustomAttribute<CustomEditor>();
+                var ctype = (Type)attr.GetType().GetField("m_InspectedType", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(attr);
+                if (ctype == supportType)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static void AddSupport(Type supportType)
+        {
+            var supportTypeName = supportType.Name;
+            ScriptFileGenerator.Create($"Assets/Plugins/Naukri/Inspector Maid/Editor/{supportTypeName}CustomEditor.cs", $"Template_{supportTypeName}CustomEditor.cs");
+        }
+
+        private static void AddSupportOfCustomType()
+        {
+            ScriptFileGenerator.CreateByProjectWidnow("MyCustomEditor.cs", "Template_CustomEditor.cs");
+        }
 
         [SettingsProvider]
-        [SuppressMessage("CodeQuality", "IDE0051")]
         private static SettingsProvider CreateProvider()
         {
             var target = Instance;
@@ -62,7 +109,6 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
                 keywords = SettingsProvider.GetSearchKeywordsFromSerializedObject(serializedObject),
                 activateHandler = (searchContext, rootElement) =>
                 {
-                    isDrawingSettingsProvider = true;
                     var classContext = InspectorMaidEditor.CreateContextTree(target);
                     var classElement = classContext.Build();
                     isDrawingSettingsProvider = false;

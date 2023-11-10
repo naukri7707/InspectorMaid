@@ -1,0 +1,10 @@
+﻿using Naukri.InspectorMaid.Editor.Core;
+using UnityEditor;
+using UnityEngine;
+
+[CanEditMultipleObjects]
+[CustomEditor(typeof(/* Target Type */), true, isFallback = true)]
+public class #SCRIPTNAME# : InspectorMaidEditor 
+{
+	#NOTRIM#
+}
