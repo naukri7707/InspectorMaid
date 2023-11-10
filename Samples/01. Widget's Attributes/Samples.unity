@@ -152,11 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e642f0dce33c83409671df3e91e38ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonBeforeTarget: 0
-  ButtonAfterTarget: 0
-  ButtonBeforeTargetInRow: 0
-  ButtonAfterTargetInRow: 0
-  ButtonWithArgs: 0
+  buttonBeforeTarget: 0
+  buttonAfterTarget: 0
+  buttonBeforeTargetInRow: 0
+  buttonAfterTargetInRow: 0
+  buttonWithArgs: 0
 --- !u!4 &144739884
 Transform:
   m_ObjectHideFlags: 0
@@ -477,8 +477,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08198607e90090148a2a7f92c4953c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SimpleDivider: 0
-  TextDivider: 0
+  simpleDivider: 0
+  textDivider: 0
 --- !u!1 &601389281
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 756865177}
   - component: {fileID: 756865176}
   m_Layer: 0
-  m_Name: Container
+  m_Name: Column and Row
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -600,7 +600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d68bde13d55394485467247259f8e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sample1: 0
+  column: 0
+  row: 0
 --- !u!4 &756865177
 Transform:
   m_ObjectHideFlags: 0
@@ -740,14 +741,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94091a1505be8d64ca92e893ca58de78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intro1: 0
   myField: 0
   sample1: 0
-  intro2: 0
   sample2: 0
-  intro3: 0
-  sample3_1: 0
-  sample3_2: 0
+  templatedField: 0
+  sample3: 0
 --- !u!1 &1137871658
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,7 +960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af7dd62dbc0787348aa4d0cfc8a0adac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sample1: 0
+  endScope: 0
 --- !u!4 &1591633825
 Transform:
   m_ObjectHideFlags: 0

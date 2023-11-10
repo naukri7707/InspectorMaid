@@ -1,22 +1,41 @@
-﻿using UnityEngine.UIElements;
+﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
+    [HelpBox("[ReadOnly] will disable lastest declared widget.", HelpBoxMessageType.Info)]
+    [Divider("01. Disable any widget")]
+    [CardSlot(nameof(readonlyWidget))]
+    [Divider("02. Disable [Target]")]
+    [HelpBox(@"Because [ReadOnly] is a styler, so we need add [Target] before it, otherwise it will disable lastest widget: [Button].", HelpBoxMessageType.Warning)]
+    [CardSlot(nameof(bad))]
+    [CardSlot(nameof(good))]
+    [Divider("03. Simpify trick")]
+    [HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets of this member).
+So if you don't have any other widget, and only want to disable [Target], you can simply add [ReadOnly] to the member.", HelpBoxMessageType.Info)]
+    [Slot(nameof(readOnlyMember))]
     public class ReadOnlySample : AttributeSampleBehaviour
     {
-        [HelpBox("[ReadOnly] will disable lastest declared widget.", HelpBoxMessageType.Info)]
-        [CardScope(color: kSectionBGColor)]
         // Sample 1
-        // Because [ReadOnly] is a styler, so we need add [Target] before it.
-        // otherwise it will disable [CardScope].
-        [Target, ReadOnly]
-        public int sample1;
+        [Button("Click me!", binding: nameof(HelloWorld)), ReadOnly]
+        public int readonlyWidget;
 
         // Sample 2
-        // If you only use [ReadOnly],
-        // it will implicitly reference the Member Widget (the container of all widgets of this member) and disable it.
-        // This is useful for cases where you don't want to generate a complex UI but want to simply disable the target.
+        [Button("Click me!", binding: nameof(HelloWorld))]
         [ReadOnly]
-        public int sample2;
+        public int bad;
+
+        [Button("Click me!", binding: nameof(HelloWorld))]
+        [Target, ReadOnly]
+        public int good;
+
+        // Sample 3
+        [ReadOnly]
+        public int readOnlyMember;
+
+        public void HelloWorld()
+        {
+            Debug.Log("Hello world!");
+        }
     }
 }
