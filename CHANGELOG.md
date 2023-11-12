@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.0] - 2023-11-12
+
+### 新增
+
+- `UIElements.Compose` 使命令式 UI 設計更具結構性。
+- `Spacer` 小部件 : 用以填滿容器空隙。
+- Project Setting 新增快速建立特定 CustomEditor 選項，以幫助使用者啟用 InspectorMaid 服務。
+
+### 更新
+
+- 使用 Inspector-Maid 自舉建立 Project Setting 頁面。
+
+### 修正
+
+- 快速反射無法存取靜態成員錯誤。
+- 監聽帶參數 `Func` 會時因綁定目標已註冊而導致參數錯誤的問題。
+
 ## [2.1.0] - 2023-11-10
 
 ### 新增
@@ -12,7 +29,7 @@
 - Sample Script 基於 Class Attribute 重寫，減少對 Sample 欄位的干擾並美化介面。
 ### 修正
 
-- 修正 Slot 參數名稱錯誤
+- 修正 Slot 參數名稱錯誤。
 
 ### 重構
 - `Context` 連結方式改為由父 `Context` 主動 `Attach()` 子 `Context`。
