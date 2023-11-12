@@ -93,7 +93,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         private static void AddSupportOfCustomType()
         {
-            ScriptFileGenerator.CreateByProjectWidnow("MyCustomEditor.cs", "Template_CustomEditor.cs");
+            ScriptFileGenerator.CreateByProjectWidnow("InspectorMaidBehaviour.cs", "Template_CustomEditor.cs");
         }
 
         [SettingsProvider]
