@@ -17,11 +17,14 @@ Inspector Maid 具有以下幾大特色：
 1. 安裝 Unity 2022.3 或以上的版本。
 
 2. 在 PackageManager 中點擊左上角的 + 號並選擇 `Add package form git URL...` 然後貼以下網址。
-
-    ```url
+	```url
     https://github.com/naukri7707/InspectorMaid.git
     ```
 
+3. 安裝完畢後到 `ProjectSettting/Inspector Maid` 選擇要使用 Inspector Maid 的腳本類型。
+	![install](./Documentation/Images/install.png)
+	- 通常使用預設選項即可在對應的類別下正常運作。
+	- 如果使用其他的 Inspector 自定義工具，可能會出現衝突導致其中一方無法正常運作，這時候可以使用 `CustomType` 定義一個類別並繼承該類別來使用。
 ## Usage
 
 1. 為腳本引用 InspectorMaid 的命名空間。
