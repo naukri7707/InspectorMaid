@@ -10,6 +10,12 @@ namespace Naukri.InspectorMaid.Editor.Services
         public event Action OnDestroy;
 
         public event Action OnUpdate;
+
+        public void InvokeUpdate();
+
+        public void InvokeSceneGUI();
+
+        public void InvokeDestroy();
     }
 
     partial interface IEditorEventService

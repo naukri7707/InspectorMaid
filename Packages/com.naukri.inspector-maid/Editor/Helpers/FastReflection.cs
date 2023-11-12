@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -18,7 +19,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         public static FRGetter<TObject, TValue> CreateGetter<TObject, TValue>(this FieldInfo fieldInfo)
         {
             var objectExpr = Expression.Parameter(typeof(TObject));
-            var fieldExpr = Expression.Field(objectExpr, fieldInfo);
+            var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : objectExpr, fieldInfo);
             var convertedFieldExpr = Expression.Convert(fieldExpr, typeof(TValue));
 
             return Expression.Lambda<FRGetter<TObject, TValue>>(
@@ -30,7 +31,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         public static FRSetter<TObject, TValue> CreateSetter<TObject, TValue>(this FieldInfo fieldInfo)
         {
             var objectExpr = Expression.Parameter(typeof(TObject));
-            var fieldExpr = Expression.Field(objectExpr, fieldInfo);
+            var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : objectExpr, fieldInfo);
             var valueExpr = Expression.Parameter(typeof(TValue));
             var convertedValueExpr = Expression.Convert(valueExpr, fieldInfo.FieldType);
             var assignExpr = Expression.Assign(fieldExpr, convertedValueExpr);
@@ -45,7 +46,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         public static FRGetter<TObject, TValue> CreateGetter<TObject, TValue>(this PropertyInfo propertyInfo)
         {
             var objectExpr = Expression.Parameter(typeof(TObject));
-            var propertyExpr = Expression.Property(objectExpr, propertyInfo);
+            var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : objectExpr, propertyInfo);
             var convertPropertyExpr = Expression.Convert(propertyExpr, typeof(TValue));
 
             return Expression.Lambda<FRGetter<TObject, TValue>>(
@@ -57,10 +58,10 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         public static FRSetter<TObject, TValue> CreateSetter<TObject, TValue>(this PropertyInfo propertyInfo)
         {
             var objectExpr = Expression.Parameter(typeof(TObject));
-            var fieldExpr = Expression.Property(objectExpr, propertyInfo);
+            var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : objectExpr, propertyInfo);
             var valueExpr = Expression.Parameter(typeof(TValue));
             var convertedValueExpr = Expression.Convert(valueExpr, propertyInfo.PropertyType);
-            var assignExpr = Expression.Assign(fieldExpr, convertedValueExpr);
+            var assignExpr = Expression.Assign(propertyExpr, convertedValueExpr);
 
             return Expression.Lambda<FRSetter<TObject, TValue>>(
                 assignExpr,
@@ -82,7 +83,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                     p.ParameterType)
                 ).ToArray();
 
-            var call = Expression.Call(objectExpr, methodInfo, convertedArgExprs);
+            var call = Expression.Call(methodInfo.IsStatic ? null : objectExpr, methodInfo, convertedArgExprs);
 
             return Expression.Lambda<FRAction<TObject>>(
                 call,
@@ -104,7 +105,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                     p.ParameterType)
                 ).ToArray();
 
-            var call = Expression.Call(objectExpr, methodInfo, convertedArgExprs);
+            var call = Expression.Call(methodInfo.IsStatic ? null : objectExpr, methodInfo, convertedArgExprs);
             var convertedCallExpr = Expression.Convert(call, typeof(TResult));
 
             return Expression.Lambda<FRFunc<TObject, TResult>>(
@@ -120,7 +121,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
                 var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
-                var fieldExpr = Expression.Field(instanceExpr, fieldInfo);
+                var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : instanceExpr, fieldInfo);
                 var convertedFieldExpr = Expression.Convert(fieldExpr, typeof(TValue));
 
                 return Expression.Lambda<FRGetter<TObject, TValue>>(
@@ -133,7 +134,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
                 var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
-                var fieldExpr = Expression.Field(instanceExpr, fieldInfo);
+                var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : instanceExpr, fieldInfo);
                 var valueExpr = Expression.Parameter(typeof(TValue));
                 var convertedValueExpr = Expression.Convert(valueExpr, fieldInfo.FieldType);
                 var assignExpr = Expression.Assign(fieldExpr, convertedValueExpr);
@@ -149,7 +150,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
                 var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
-                var propertyExpr = Expression.Property(instanceExpr, propertyInfo);
+                var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : instanceExpr, propertyInfo);
                 var convertPropertyExpr = Expression.Convert(propertyExpr, typeof(TValue));
 
                 return Expression.Lambda<FRGetter<TObject, TValue>>(
@@ -162,10 +163,10 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
                 var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
-                var fieldExpr = Expression.Property(instanceExpr, propertyInfo);
+                var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : instanceExpr, propertyInfo);
                 var valueExpr = Expression.Parameter(typeof(TValue));
                 var convertedValueExpr = Expression.Convert(valueExpr, propertyInfo.PropertyType);
-                var assignExpr = Expression.Assign(fieldExpr, convertedValueExpr);
+                var assignExpr = Expression.Assign(propertyExpr, convertedValueExpr);
 
                 return Expression.Lambda<FRSetter<TObject, TValue>>(
                     assignExpr,
@@ -188,7 +189,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                         p.ParameterType)
                     ).ToArray();
 
-                var call = Expression.Call(instanceExpr, methodInfo, convertedArgExprs);
+                var call = Expression.Call(methodInfo.IsStatic ? null : instanceExpr, methodInfo, convertedArgExprs);
 
                 return Expression.Lambda<FRAction<TObject>>(
                     call,
@@ -211,7 +212,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                         p.ParameterType)
                     ).ToArray();
 
-                var call = Expression.Call(instanceExpr, methodInfo, convertedArgExprs);
+                var call = Expression.Call(methodInfo.IsStatic ? null : instanceExpr, methodInfo, convertedArgExprs);
                 var convertedCallExpr = Expression.Convert(call, typeof(TResult));
 
                 return Expression.Lambda<FRFunc<TObject, TResult>>(
