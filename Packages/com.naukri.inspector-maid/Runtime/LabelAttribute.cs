@@ -8,7 +8,7 @@ namespace Naukri.InspectorMaid
             string label = "",
             bool useNicifyName = false,
             string binding = null,
-            params object[] args
+            object[] args = null
             )
         {
             this.label = label;

@@ -1,6 +1,5 @@
 ﻿using Naukri.InspectorMaid.Core;
 using UnityEngine.UIElements;
-using IBindingDataProvider = Naukri.InspectorMaid.Core.IBindingDataProvider;
 
 namespace Naukri.InspectorMaid
 {
@@ -10,7 +9,7 @@ namespace Naukri.InspectorMaid
             string message = "",
             HelpBoxMessageType messageType = HelpBoxMessageType.None,
             string binding = null,
-            params object[] args
+            object[] args = null
             )
         {
             this.message = message;

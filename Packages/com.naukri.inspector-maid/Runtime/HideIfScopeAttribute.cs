@@ -2,19 +2,30 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class HideIfScopeAttribute : ScopeAttribute, IBindingDataProvider
+    public class HideIfScopeAttribute : IfScopeAttribute
     {
-        public HideIfScopeAttribute(
-            string binding = null,
-            params object[] args
-            )
+        public HideIfScopeAttribute(string binding, object[] args = null) : base(binding, args)
         {
-            this.binding = binding;
-            this.args = args;
         }
 
-        public object[] args { get; }
+        public HideIfScopeAttribute(string binding, object value, ConditionLogic conditionLogic = ConditionLogic.Value, object[] args = null) : base(binding, value, conditionLogic, args)
+        {
+        }
 
-        public string binding { get; }
+        public HideIfScopeAttribute(string binding, object[] values, ConditionLogic conditionLogic = ConditionLogic.Value, object[] args = null) : base(binding, values, conditionLogic, args)
+        {
+        }
+
+        public HideIfScopeAttribute(string binding, object value1, object value2, ConditionLogic conditionLogic = ConditionLogic.Value, object[] args = null) : base(binding, value1, value2, conditionLogic, args)
+        {
+        }
+
+        public HideIfScopeAttribute(string binding, object value1, object value2, object value3, ConditionLogic conditionLogic = ConditionLogic.Value, object[] args = null) : base(binding, value1, value2, value3, conditionLogic, args)
+        {
+        }
+
+        public HideIfScopeAttribute(string binding, object value1, object value2, object value3, object value4, ConditionLogic conditionLogic = ConditionLogic.Value, object[] args = null) : base(binding, value1, value2, value3, value4, conditionLogic, args)
+        {
+        }
     }
 }
