@@ -36,10 +36,8 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int buttonAfterTargetInRow = 0;
 
         // Sample 5
-        // The 'args' parameter is of type object[], so when passing arguments, you typically declare an object[] when there are multiple arguments.
-        // However, when you have only one argument, because of 'params' keyword, you can pass that argument without declaring an object[].
-        [Button("One Parameter", binding: nameof(MyMethodWithOnlyOneParameter), args: "my message")]
-        [Button("Multi Parameters", binding: nameof(MyMethodWithParameters), args: new object[] { "hello", "world" })]
+        // The 'args' parameter is of type object[], so when passing arguments, you declare an object[].
+        [Button("With Parameters", binding: nameof(MyMethodWithParameters), args: new object[] { "hello", "world" })]
         public int buttonWithArgs = 0;
 
         public void MyMethod()

@@ -7,7 +7,7 @@ namespace Naukri.InspectorMaid
         public ButtonAttribute(
             string text = "",
             string binding = null,
-            params object[] args
+            object[] args = null
             )
         {
             this.text = text;

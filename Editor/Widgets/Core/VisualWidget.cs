@@ -1,6 +1,6 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
-using static Naukri.InspectorMaid.Editor.Widgets.Core.ScopeWidget;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Core
 {
@@ -13,8 +13,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
         // We must keep BuildChildren() in [VisualWidget] instead of [ScopeWidget].
         // Because [ItemWidget] may create child context through [IContextAttachedReceiver],
         // in this case, we still need to use BuildChildren() to create child elements.
-        public void BuildChildren(IBuildContext context, ChildBuildedCallback callback)
+        public VisualElement[] BuildChildren(IBuildContext context, ChildBuildedCallback callback = null)
         {
+            var children = new List<VisualElement>();
             context.VisitChildContexts(child =>
             {
                 if (child is VisualContext visualContext)
@@ -23,12 +24,17 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
 
                     if (childElement != null)
                     {
-                        callback(child, childElement);
+                        callback?.Invoke(child, childElement);
+                        children.Add(childElement);
                     }
                 }
             });
+
+            return children.ToArray();
         }
 
         Context IWidget.CreateContext() => CreateContext();
+
+        public delegate void ChildBuildedCallback(Context ctx, VisualElement e);
     }
 }
