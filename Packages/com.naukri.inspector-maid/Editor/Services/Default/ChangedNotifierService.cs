@@ -21,22 +21,22 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         private readonly IFastReflectionService fastReflectionService;
 
-        public void ListenValue<T>(string bindingPath, Action<T> callback)
+        public void ListenValue(string bindingPath, Action<object> callback)
         {
             if (valueListeners.TryGetValue(bindingPath, out var listener))
             {
-                ((ValueListener<T>)listener).callback += callback;
+                ((ValueListener)listener).callback += callback;
             }
             else
             {
-                listener = new ValueListener<T>(bindingPath, callback);
+                listener = new ValueListener(bindingPath, callback);
                 valueListeners.Add(bindingPath, listener);
             }
         }
 
-        public void ListenFunc<T>(string bindingPath, object[] args, Action<T> callback)
+        public void ListenFunc(string bindingPath, object[] args, Action<object> callback)
         {
-            var listener = new FuncListener<T>(bindingPath, args, callback);
+            var listener = new FuncListener(bindingPath, args, callback);
             funcListeners.Add(listener);
         }
 
@@ -58,9 +58,9 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             public void CheckValueChanged(IFastReflectionService fastReflectionService);
         }
 
-        public class FuncListener<T> : ValueListener<T>
+        public class FuncListener : ValueListener
         {
-            public FuncListener(string bindingPath, object[] args, Action<T> callback) : base(bindingPath, callback)
+            public FuncListener(string bindingPath, object[] args, Action<object> callback) : base(bindingPath, callback)
             {
                 this.args = args;
             }
@@ -69,7 +69,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
             public override void CheckValueChanged(IFastReflectionService fastReflectionService)
             {
-                var newValue = fastReflectionService.InvokeFunc<T>(bindingPath, args);
+                var newValue = fastReflectionService.InvokeFunc(bindingPath, args);
 
                 if (newValue == null)
                 {
@@ -90,9 +90,9 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             }
         }
 
-        public class ValueListener<T> : IListener
+        public class ValueListener : IListener
         {
-            public ValueListener(string bindingPath, Action<T> callback)
+            public ValueListener(string bindingPath, Action<object> callback)
             {
                 this.bindingPath = bindingPath;
                 this.callback = callback;
@@ -100,13 +100,13 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
             public string bindingPath;
 
-            public Action<T> callback;
+            public Action<object> callback;
 
-            protected T previousValue;
+            protected object previousValue;
 
             public virtual void CheckValueChanged(IFastReflectionService fastReflectionService)
             {
-                var newValue = fastReflectionService.GetValue<T>(bindingPath);
+                var newValue = fastReflectionService.GetValue(bindingPath);
 
                 if (newValue == null)
                 {
