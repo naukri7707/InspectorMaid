@@ -292,8 +292,6 @@ public void MyMethod()
     public string message = "Hello World!";
     ```
 
-- 如果要綁定物件本身請使用預先定義的關鍵字 `"this"`
-
 - 依據綁定的成員類型不同，會有不同的回傳邏輯
 
     1. 欄位：該欄位的數值。
@@ -301,20 +299,13 @@ public void MyMethod()
     3. 函式：該函式調用後的回傳值，如果該函式有參數則需使用 `args` 定義參數。
 
         ```cs
-        // 如果只有一個參數，可以利用 params 關鍵字的特性，省略 new object[] { ... }
-        [HelpBox(binding: nameof(HelloMessage), args: "world")]
-        // 如果有多個參數，則必須使用 new object[] { ... } 來包裹
-        [HelpBox(binding: nameof(HelloTwoMessage), args: new object[] { "world", "you" })]
+		// 如果目標是帶參數函式，使用 new object[] { ... } 來包裹參數
+        [HelpBox(binding: nameof(HelloTwoMessage), args: new object[] { "Hello", "world" })]
         public string message = "";
-
-        public string HelloMessage(string message)
+        
+        public string CombineMessage(string message1, string message2)
         {
-            return $"Hello {message}!";
-        }
-
-        public string HelloTwoMessage(string message1, string message2)
-        {
-            return $"Hello {message1} and {message2}!";
+            return $"{message1} {message2}!";
         }
         ```
 
@@ -377,31 +368,6 @@ public void MyMethod()
     ```
 
     ![optional-variable-compare](Images/optional-variable-compare.png)
-
-4. 如果想要支援資料綁定，你需要讓該 `WidgetAttribute` 繼承 `IBindable` 介面。為了統一綁定邏輯，我們約定永遠使 `binding` 及 `args` 作為最後兩個參數且 `args` 需使用 `params` 關鍵字。
-
-    ```cs
-    public class MyItemAttribute : ItemAttribute, IBindable
-    {
-        public MyItemAttribute(
-            string myString,
-            string binding = null,
-            params object[] args
-            )
-        {
-            this.myString = myString;
-            this.binding = binding;
-            this.args = args;
-        }
-
-        public readonly string myString;
-
-        public string binding { get; }
-
-        public object[] args { get; }
-    }
-    ```
-
 ### 建立 `Widget`
 
 根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
@@ -486,6 +452,58 @@ public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 #### 內置 `Receiver`
 
 - `IContextAttachedReceiver`：當該 `Widget` 的 `Context` 被附加到 `Context Tree` 時。
+
+### 資料綁定
+
+如果想要支援資料綁定，你可以在 `WidgetAttribute` 上實作 `IBindable` 介面使 `Widget` 可以使用包裝好的綁定函式，或者你也可以在 `Widget` 上直接使用 `GetValue()` 等函式來存取目標成員。
+
+`MyItemAttribute.cs`
+```cs
+public class MyItemAttribute : ItemAttribute, IBindable
+{
+    public MyItemAttribute(
+        string myString,
+        string binding = null,
+        params object[] args
+        )
+    {
+        this.myString = myString;
+        this.binding = binding;
+        this.args = args;
+    }
+
+    public readonly string myString;
+
+    public string binding { get; }
+
+    public object[] args { get; }
+}
+```
+
+`MyItemWidget.cs`
+```cs
+    public class MyItemWidget : ItemWidgetOf<MyItemAttribute>
+    {
+        public override VisualElement Build(IBuildContext context)
+        {
+	        // 獲取綁定成員的值
+            var bindingValue = context.GetBindingValue();
+            // 監聽綁定成員的值
+            context.ListenBindingValue(value =>
+            {
+               // Do something on value changed
+            });
+            
+	        // 你也可以直接指定成員名稱來存取
+		    var a = context.GetValue("memberName");
+		    context.ListenValue("memberName" ,value =>
+			{
+			    // Do something
+			});
+        }
+    }
+```
+
 ## 内置小部件
 
 你可以在 package 中的 Sample 中找到所有内置小部件的 demo 以及詳細的說明。
