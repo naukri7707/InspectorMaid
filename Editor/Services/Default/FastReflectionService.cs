@@ -26,32 +26,28 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 
         private readonly Dictionary<string, FRFunc<object, object>> functions = new();
 
-        public object GetValue(MemberInfo memberInfo)
-        {
-            var getter = GetOrCreateGetter(memberInfo);
-            return getter(target);
-        }
-
         public object GetValue(string bindingPath)
         {
             var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingPath);
             return GetValue(memberInfo);
         }
 
-        public T GetValue<T>(MemberInfo memberInfo)
+        public object GetValue(MemberInfo memberInfo)
         {
-            return (T)GetValue(memberInfo);
+            var getter = GetOrCreateGetter(memberInfo);
+            return getter(target);
         }
 
-        public T GetValue<T>(string bindingPath)
+        public void SetValue(string bindingPath, object value)
         {
-            return (T)GetValue(bindingPath);
+            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingPath);
+            SetValue(memberInfo, value);
         }
 
-        public void InvokeAction(MethodInfo methodInfo, params object[] args)
+        public void SetValue(MemberInfo memberInfo, object value)
         {
-            var action = GetOrCreateAction(methodInfo);
-            action(target, args);
+            var setter = GetOrCreateSetter(memberInfo);
+            setter(target, value);
         }
 
         public void InvokeAction(string bindingPath, params object[] args)
@@ -60,10 +56,10 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             InvokeAction(methodInfo, args);
         }
 
-        public object InvokeFunc(MethodInfo methodInfo, params object[] args)
+        public void InvokeAction(MethodInfo methodInfo, params object[] args)
         {
-            var func = GetOrCreateFunc(methodInfo);
-            return func(target, args);
+            var action = GetOrCreateAction(methodInfo);
+            action(target, args);
         }
 
         public object InvokeFunc(string bindingPath, params object[] args)
@@ -72,54 +68,10 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             return InvokeFunc(methodInfo, args);
         }
 
-        public T InvokeFunc<T>(MethodInfo methodInfo, params object[] args)
+        public object InvokeFunc(MethodInfo methodInfo, params object[] args)
         {
-            return (T)InvokeFunc(methodInfo, args);
-        }
-
-        public T InvokeFunc<T>(string bindingPath, params object[] args)
-        {
-            return (T)InvokeFunc(bindingPath, args);
-        }
-
-        public void SetValue<T>(MemberInfo memberInfo, T value)
-        {
-            var setter = GetOrCreateSetter(memberInfo);
-            setter(target, value);
-        }
-
-        public void SetValue<T>(string bindingPath, T value)
-        {
-            var memberInfo = targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, bindingPath);
-            SetValue(memberInfo, value);
-        }
-
-        private FRAction<object> GetOrCreateAction(MethodInfo methodInfo)
-        {
-            var methodName = methodInfo.Name;
-
-            if (!actions.TryGetValue(methodName, out var action))
-            {
-                action = FastReflection.Polymorphism.CreateAction<object>(methodInfo, targetType);
-
-                actions.Add(methodName, action);
-            }
-
-            return action;
-        }
-
-        private FRFunc<object, object> GetOrCreateFunc(MethodInfo methodInfo)
-        {
-            var methodName = methodInfo.Name;
-
-            if (!functions.TryGetValue(methodName, out var func))
-            {
-                func = FastReflection.Polymorphism.CreateFunc<object, object>(methodInfo, targetType);
-
-                functions.Add(methodName, func);
-            }
-
-            return func;
+            var func = GetOrCreateFunc(methodInfo);
+            return func(target, args);
         }
 
         private FRGetter<object, object> GetOrCreateGetter(MemberInfo memberInfo)
@@ -160,6 +112,34 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             }
 
             return setter;
+        }
+
+        private FRAction<object> GetOrCreateAction(MethodInfo methodInfo)
+        {
+            var methodName = methodInfo.Name;
+
+            if (!actions.TryGetValue(methodName, out var action))
+            {
+                action = FastReflection.Polymorphism.CreateAction<object>(methodInfo, targetType);
+
+                actions.Add(methodName, action);
+            }
+
+            return action;
+        }
+
+        private FRFunc<object, object> GetOrCreateFunc(MethodInfo methodInfo)
+        {
+            var methodName = methodInfo.Name;
+
+            if (!functions.TryGetValue(methodName, out var func))
+            {
+                func = FastReflection.Polymorphism.CreateFunc<object, object>(methodInfo, targetType);
+
+                functions.Add(methodName, func);
+            }
+
+            return func;
         }
     }
 }
