@@ -5,8 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public abstract class ScopeWidgetOf<TAttribute> : ScopeWidget, IWidgetProvider
-        where TAttribute : ScopeAttribute
+    public abstract class LogicWidgetOf<TAttribute> : LogicWidget, IWidgetProvider
+        where TAttribute : LogicAttribute
     {
         private TAttribute _attribute;
 
@@ -19,7 +19,7 @@ namespace Naukri.InspectorMaid.Editor
 
         IWidget IWidgetProvider.CloneWith(WidgetAttribute attribute)
         {
-            var cloned = (ScopeWidgetOf<TAttribute>)MemberwiseClone();
+            var cloned = (LogicWidgetOf<TAttribute>)MemberwiseClone();
 
             cloned._attribute = attribute switch
             {
