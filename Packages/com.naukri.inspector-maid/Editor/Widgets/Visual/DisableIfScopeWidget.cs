@@ -1,28 +1,13 @@
-﻿using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class DisableIfScopeWidget : ScopeWidgetOf<DisableIfScopeAttribute>
+    public class DisableIfScopeWidget : IfScopeWidgetOf<DisableIfScopeAttribute>
     {
-        public override VisualElement Build(IBuildContext context)
+        protected override void OnUpdateElement(VisualElement visualElement, bool condition)
         {
-            var disable = context.GetBindingValue<bool>();
-            var container = new VisualElement();
-
-            BuildChildren(context, (ctx, e) =>
-            {
-                container.Add(e);
-            });
-
-            container.SetEnabled(!disable);
-
-            context.ListenBindingValue<bool>(d =>
-            {
-                container.SetEnabled(!d);
-            });
-
-            return container;
+            visualElement.SetEnabled(!condition);
         }
     }
 }

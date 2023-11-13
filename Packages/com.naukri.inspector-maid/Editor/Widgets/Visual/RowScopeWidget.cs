@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
@@ -7,11 +8,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var row = new Row();
-
-            BuildChildren(context, (ctx, e) =>
+            var row = new Row().Compose(c =>
             {
-                row.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return row;

@@ -1,4 +1,5 @@
-﻿using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Services;
 using UnityEditor;
 using UnityEngine.UIElements;
 
@@ -21,7 +22,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 
                     labelElement.text = ActualLabel(labelText);
 
-                    if (context.IsBinding())
+                    if (attribute.IsBinding())
                     {
                         context.ListenBindingValue<string>(message =>
                         {

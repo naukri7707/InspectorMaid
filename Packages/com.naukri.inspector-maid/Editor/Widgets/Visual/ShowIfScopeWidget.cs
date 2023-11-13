@@ -1,47 +1,22 @@
-﻿using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ShowIfScopeWidget : ScopeWidgetOf<ShowIfScopeAttribute>
+    public class ShowIfScopeWidget : IfScopeWidgetOf<ShowIfScopeAttribute>
     {
-        public override VisualElement Build(IBuildContext context)
+        protected override void OnUpdateElement(VisualElement visualElement, bool condition)
         {
-            var show = context.GetBindingValue<bool>();
-
-            var container = new VisualElement();
-
-            BuildChildren(context, (ctx, e) =>
+            if (condition)
             {
-                container.Add(e);
-            });
-
-            if (show)
-            {
-                container.style.display = DisplayStyle.Flex;
-                container.style.visibility = Visibility.Visible;
+                visualElement.style.display = DisplayStyle.Flex;
+                visualElement.style.visibility = Visibility.Visible;
             }
             else
             {
-                container.style.display = DisplayStyle.None;
-                container.style.visibility = Visibility.Hidden;
+                visualElement.style.display = DisplayStyle.None;
+                visualElement.style.visibility = Visibility.Hidden;
             }
-
-            context.ListenBindingValue<bool>(s =>
-            {
-                if (s)
-                {
-                    container.style.display = DisplayStyle.Flex;
-                    container.style.visibility = Visibility.Visible;
-                }
-                else
-                {
-                    container.style.display = DisplayStyle.None;
-                    container.style.visibility = Visibility.Hidden;
-                }
-            });
-
-            return container;
         }
     }
 }
