@@ -16,5 +16,8 @@
       "description": "The usage and samples of how to dispaly property And method",
       "path": "Samples~/02. Property And Method"
     }
-  ]
+  ],
+  "dependencies": {
+    "com.unity.modules.uielements": ""
+  }
 }
