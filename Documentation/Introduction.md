@@ -299,7 +299,7 @@ public void MyMethod()
     3. 函式：該函式調用後的回傳值，如果該函式有參數則需使用 `args` 定義參數。
 
         ```cs
-		// 如果目標是帶參數函式，使用 new object[] { ... } 來包裹參數
+        // 如果目標是帶參數函式，使用 new object[] { ... } 來包裹參數
         [HelpBox(binding: nameof(HelloTwoMessage), args: new object[] { "Hello", "world" })]
         public string message = "";
         
@@ -458,6 +458,7 @@ public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 如果想要支援資料綁定，你可以在 `WidgetAttribute` 上實作 `IBindable` 介面使 `Widget` 可以使用包裝好的綁定函式，或者你也可以在 `Widget` 上直接使用 `GetValue()` 等函式來存取目標成員。
 
 `MyItemAttribute.cs`
+
 ```cs
 public class MyItemAttribute : ItemAttribute, IBindable
 {
@@ -481,12 +482,13 @@ public class MyItemAttribute : ItemAttribute, IBindable
 ```
 
 `MyItemWidget.cs`
+
 ```cs
     public class MyItemWidget : ItemWidgetOf<MyItemAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-	        // 獲取綁定成員的值
+            // 獲取綁定成員的值
             var bindingValue = context.GetBindingValue();
             // 監聽綁定成員的值
             context.ListenBindingValue(value =>
@@ -494,12 +496,12 @@ public class MyItemAttribute : ItemAttribute, IBindable
                // Do something on value changed
             });
             
-	        // 你也可以直接指定成員名稱來存取
-		    var a = context.GetValue("memberName");
-		    context.ListenValue("memberName" ,value =>
-			{
-			    // Do something
-			});
+            // 你也可以直接指定成員名稱來存取
+            var a = context.GetValue("memberName");
+            context.ListenValue("memberName" ,value =>
+            {
+                // Do something
+            });
         }
     }
 ```
