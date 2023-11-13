@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements.Compose;
+using UnityEngine.UIElements;
 using Column = Naukri.InspectorMaid.Editor.UIElements.Column;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
@@ -7,11 +8,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var column = new Column();
-
-            BuildChildren(context, (ctx, e) =>
+            var column = new Column().Compose(c =>
             {
-                column.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return column;

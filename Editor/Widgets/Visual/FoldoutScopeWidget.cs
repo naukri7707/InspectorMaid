@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements.Compose;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
@@ -10,11 +11,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             {
                 text = attribute.text,
                 value = attribute.expend
-            };
-
-            BuildChildren(context, (ctx, e) =>
+            }.Compose(c =>
             {
-                container.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return container;

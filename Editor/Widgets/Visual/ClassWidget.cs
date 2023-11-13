@@ -2,6 +2,7 @@
 using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
@@ -39,11 +40,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement();
-
-            BuildChildren(context, (ctx, e) =>
+            var container = new VisualElement().Compose(c =>
             {
-                container.Add(e);
+                c.children = BuildChildren(context);
             });
 
             var settings = IInspectorMaidSettings.Of(context);

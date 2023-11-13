@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
@@ -15,9 +16,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 false => new Card(),
             };
 
-            BuildChildren(context, (ctx, e) =>
+            card.Compose(c =>
             {
-                card.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return card;

@@ -2,6 +2,7 @@
 using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System.Linq;
@@ -36,11 +37,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             var container = new VisualElement()
             {
                 name = info.Name
-            };
-
-            BuildChildren(context, (ctx, e) =>
+            }.Compose(c =>
             {
-                container.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return container;
