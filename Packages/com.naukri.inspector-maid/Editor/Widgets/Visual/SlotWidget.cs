@@ -1,5 +1,6 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
@@ -12,11 +13,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             var container = new VisualElement()
             {
                 name = "Slot"
-            };
-
-            BuildChildren(context, (ctx, e) =>
+            }.Compose(c =>
             {
-                container.Add(e);
+                c.children = BuildChildren(context);
             });
 
             return container;
