@@ -7,9 +7,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            return new Divider(
-                text: attribute.text
-                );
+            return new Divider(text: attribute.text);
         }
     }
 }
