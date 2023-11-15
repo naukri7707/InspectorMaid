@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.4.0] - 2023-11-16
+
+### 新增
+
+- 支援 序列化類別、結構使用 InspectorMaid 自定義 (需繼承自 `IInspectorMaidTarget`)。
+- `Compose` 增加一些有關 `VisualElement` 的 setter。
+- 為每個 `Widget` 新增一個對應的 `VisualElement` 類別，這能讓 debug 面板更清晰。
+### 更新
+
+- `MethodElement` 現在如果沒有參數會自動將 CheckMark 隱藏。
+- 範例類別預設使用 InspectorMaid Editor，使效果不需通過 Project Settings 安裝便可完整展示。
+
+### 修正
+
+- 修正使用 `Button`, `MethodElement` 產生的變更無法正常儲存錯誤。
+### 重構
+
+- 簡化與快速反射相關的底層 API。
+- 取消綁定約定以減少設計限制。
+- 部分 `Widget` 使用 `Compose` 模組重寫，使其更具結構性。
+- 調整 Attach 邏輯以支援 PropertyDrawer
+
 ## [2.3.0] - 2023-11-14
 
 ### 新增
