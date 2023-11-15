@@ -5,31 +5,33 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
     public partial class MethodElement : VisualElement
     {
-        public MethodElement(UObject target, MethodInfo info)
+        public MethodElement(object target, MethodInfo info, SerializedObject serializedObject)
         {
             this.target = target;
             this.info = info;
+            this.serializedObject = serializedObject;
             label = ObjectNames.NicifyVariableName(info.Name);
         }
 
         private readonly MethodInfo info;
 
-        private readonly UObject target;
+        private readonly SerializedObject serializedObject;
+
+        private readonly object target;
 
         private string _label;
 
         private object[] args;
 
+        public event Action OnInvoke = () => { };
+
         [SuppressMessage("Style", "IDE1006")]
         public string label { get => _label; set => _label = value; }
-
-        public event Action OnInvoke = () => { };
 
         public void Build()
         {
@@ -59,8 +61,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             // style button
             void buttonAction()
             {
+                Undo.RecordObject(serializedObject.targetObject, "Method Invoke");
                 action(target, args);
                 OnInvoke.Invoke();
+                EditorUtility.SetDirty(serializedObject.targetObject);
             }
 
             var button = new Button(buttonAction)

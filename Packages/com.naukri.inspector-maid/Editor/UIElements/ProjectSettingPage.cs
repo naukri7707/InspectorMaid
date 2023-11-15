@@ -15,7 +15,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 c.children = new[]
                 {
                     // title container
-                    new VisualElement() { name = "titleContainer" }.Compose(c =>
+                    new Row() { name = "titleContainer" }.Compose(c =>
                     {
                         c.children = new[]
                         {
@@ -26,10 +26,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                                 c.padding = EdgeInsets.Only(top: 0, right: 2, bottom: 2, left: 2);
                                 c.fontSize = 19;
                                 c.unityFontStyleAndWeight = FontStyle.Bold;
-                            }),
-                            context
+                            })
                         };
                     }),
+                    context,
                 };
             });
 

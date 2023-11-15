@@ -17,13 +17,14 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         {
             var memberContext = context.GetContextOfAncestorWidget<MemberWidget>();
             var memberWidget = (MemberWidget)memberContext.Widget;
-
+            var serializedProperty = memberWidget.GetSerializedProperty();
+            var serializedObject = serializedProperty.serializedObject;
             VisualElement targetElement = memberWidget.info switch
             {
                 // we need to copy serializedProperty, otherwise the slot may not work correctly.
-                FieldInfo fieldInfo => new PropertyField(memberWidget.serializedProperty?.Copy()),
-                PropertyInfo propertyInfo => new PropertyElement(memberWidget.target, propertyInfo),
-                MethodInfo methodInfo => new MethodElement(memberWidget.target, methodInfo),
+                FieldInfo fieldInfo => new PropertyField(serializedProperty),
+                PropertyInfo propertyInfo => new PropertyElement(memberWidget.target, propertyInfo, serializedObject),
+                MethodInfo methodInfo => new MethodElement(memberWidget.target, methodInfo, serializedObject),
                 _ => throw new InvalidOperationException($"Can not create targetElement because info is not a {nameof(FieldInfo)}, {nameof(PropertyInfo)} or {nameof(MethodInfo)}.")
             };
 
