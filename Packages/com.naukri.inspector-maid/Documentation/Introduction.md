@@ -224,6 +224,29 @@ public int good;
 在這時候遵循「選擇越少、目標越單一，優先度越高」的原則進行處理。因此在這種情況下的各屬性的優先級為：
 > `marginTop` > `marginVertical` > `marginAll` > `margin` > `classList`
 
+## 在序列化類別、結構上繪製 UI
+
+- 在序列化類別、結構上繪製 UI 的邏輯與在一般腳本上無異。但由於 Unity 的限制，如果想要使用 Inspector Maid 的話，你需要使該類別繼承自 `IInspectorMaidTarget` 才可以正常運作。
+
+    ```cs
+    [Serializable]
+    public class MyClass : IInspectorMaidTarget
+    {
+        public int myInt;
+
+        [ReadOnly]
+        public int myString;
+
+        [Target]
+        public void Hello(string message = "World")
+        {
+            Debug.Log($"Hello, {message}!");
+        }
+    }
+    ```
+
+- 目前序列化類別、結構還無法透過 class 進行設計。
+
 ## 在 Inspector 上繪製屬性及函式
 
 ![draw-property-and-method](./Images/draw-property-and-method.png)
@@ -368,6 +391,7 @@ public void MyMethod()
     ```
 
     ![optional-variable-compare](Images/optional-variable-compare.png)
+
 ### 建立 `Widget`
 
 根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
