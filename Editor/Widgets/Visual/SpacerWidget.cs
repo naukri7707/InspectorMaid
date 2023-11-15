@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
@@ -6,9 +7,11 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var spacer = new VisualElement();
-
-            spacer.style.flexGrow = attribute.flexGrow ?? spacer.style.flexGrow;
+            var spacer = attribute.flexGrow.HasValue switch
+            {
+                true => new Spacer(attribute.flexGrow.Value.value),
+                false => new Spacer()
+            };
 
             return spacer;
         }

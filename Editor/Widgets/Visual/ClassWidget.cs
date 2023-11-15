@@ -6,6 +6,7 @@ using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
+using System;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -19,10 +20,13 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public ClassWidget(UObject target, SerializedObject serializedObject)
         {
             this.target = target;
+            targetType = target.GetType();
             this.serializedObject = serializedObject;
         }
 
         public readonly UObject target;
+
+        public readonly Type targetType;
 
         public readonly SerializedObject serializedObject;
 
@@ -40,8 +44,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement().Compose(c =>
+            var container = new Class().Compose(c =>
             {
+                c.name = $"class:{targetType.Name}";
                 c.children = BuildChildren(context);
             });
 
@@ -55,6 +60,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             return container;
         }
+
+        private class Class : VisualElement { }
     }
 
     partial class ClassWidget

@@ -44,6 +44,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             // style toggle
             var toggle = foldout.Q<Toggle>();
             toggle.style.height = 24;
+
             toggle.RegisterCallback<MouseEnterEvent>(evt =>
             {
                 toggle.style.backgroundColor = kHoverColor;
@@ -76,34 +77,43 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             var parameterInfos = info.GetParameters();
             args = new object[parameterInfos.Length];
 
-            for (var i = 0; i < parameterInfos.Length; i++)
+            if (parameterInfos.Length == 0)
             {
-                // We need to cache the value of i,
-                // because if we use i in lambda, it will directly reference the current i reference,
-                // but what we want is the i value at the time of definition.
-                var idx = i;
-                var pInfo = parameterInfos[idx];
-                var pType = pInfo.ParameterType;
-
-                // If the parameter has a default value, set argument to the default value.
-                if (pInfo.HasDefaultValue)
+                // Hide checkMark if the method doesn't have parameter.
+                var checkMark = toggle.Q<VisualElement>(className: Toggle.checkmarkUssClassName);
+                checkMark.visible = false;
+            }
+            else
+            {
+                for (var i = 0; i < parameterInfos.Length; i++)
                 {
-                    args[i] = pInfo.DefaultValue;
-                }
-                // If the parameter doesn't have default value, and it is a value type, we need to create an instance of it.
-                // because the valueType can not be null.
-                else if (pType.IsValueType)
-                {
-                    args[i] = Activator.CreateInstance(pType);
-                }
+                    // We need to cache the value of i,
+                    // because if we use i in lambda, it will directly reference the current i reference,
+                    // but what we want is the i value at the time of definition.
+                    var idx = i;
+                    var pInfo = parameterInfos[idx];
+                    var pType = pInfo.ParameterType;
 
-                var propertyElement = PropertyBuilder.Build(
-                    pType, $"{pInfo.Name} ({pType.Name}) ", target,
-                    () => args[idx],
-                    v => args[idx] = v
-                    );
+                    // If the parameter has a default value, set argument to the default value.
+                    if (pInfo.HasDefaultValue)
+                    {
+                        args[i] = pInfo.DefaultValue;
+                    }
+                    // If the parameter doesn't have default value, and it is a value type, we need to create an instance of it.
+                    // because the valueType can not be null.
+                    else if (pType.IsValueType)
+                    {
+                        args[i] = Activator.CreateInstance(pType);
+                    }
 
-                foldout.Add(propertyElement);
+                    var propertyElement = PropertyBuilder.Build(
+                        pType, $"{pInfo.Name} ({pType.Name}) ", target,
+                        () => args[idx],
+                        v => args[idx] = v
+                        );
+
+                    foldout.Add(propertyElement);
+                }
             }
 
             Add(foldout);
