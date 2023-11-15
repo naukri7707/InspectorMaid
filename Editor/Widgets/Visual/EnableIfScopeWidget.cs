@@ -5,9 +5,13 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
     public class EnableIfScopeWidget : IfScopeWidgetOf<EnableIfScopeAttribute>
     {
-        protected override void OnUpdateElement(VisualElement visualElement, bool condition)
+        protected override VisualElement CreateContainer() => new EnableIf();
+
+        protected override void OnUpdateElement(VisualElement container, bool condition)
         {
-            visualElement.SetEnabled(condition);
+            container.SetEnabled(condition);
         }
+
+        private class EnableIf : VisualElement { }
     }
 }
