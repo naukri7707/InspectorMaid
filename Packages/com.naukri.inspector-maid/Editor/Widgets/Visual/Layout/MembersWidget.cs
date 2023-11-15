@@ -1,5 +1,4 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
@@ -11,10 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement()
-            {
-                name = "Members"
-            };
+            var container = new Members();
 
             BuildChildren(context, (ctx, e) =>
             {
@@ -30,13 +26,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
 
             var widgets = templateService.CreateMemberWidgets();
 
-            if (!attribute.skipScriptField)
-            {
-                var scriptFieldWidget = WidgetBuilder.Create(new ScriptFieldAttribute());
-                var scriptFieldContext = scriptFieldWidget.CreateContext();
-                context.Attach(scriptFieldContext);
-            }
-
             foreach (var widget in widgets)
             {
                 if (attribute.skipTemplate && widget.IsTemplate)
@@ -47,5 +36,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
                 context.Attach(memberContext);
             }
         }
+
+        private class Members : VisualElement { }
     }
 }

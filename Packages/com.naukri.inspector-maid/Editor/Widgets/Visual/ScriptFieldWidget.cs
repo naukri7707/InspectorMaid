@@ -1,5 +1,5 @@
-﻿using Naukri.InspectorMaid.Layout;
-using UnityEditor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Layout;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
@@ -9,11 +9,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public override VisualElement Build(IBuildContext context)
         {
             var classWidget = ClassWidget.Of(context);
+            var serializedProperty = classWidget.GetSerializedProperty();
 
-            var serializedProperty = classWidget.serializedObject.FindProperty("m_Script");
-
-            var scriptField = new PropertyField(serializedProperty.Copy()) { name = $"PropertyField:m_Script" };
-            scriptField.SetEnabled(false);
+            var scriptField = new ScriptField(serializedProperty.serializedObject);
 
             return scriptField;
         }

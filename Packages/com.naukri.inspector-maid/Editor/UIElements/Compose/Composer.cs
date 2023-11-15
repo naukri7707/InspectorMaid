@@ -17,6 +17,41 @@ namespace Naukri.InspectorMaid.Editor.UIElements.Compose
 
         private readonly IStyle style;
 
+        public string name
+        {
+            set
+            {
+                visualElement.name = value;
+            }
+        }
+
+        public bool enabled
+        {
+            set
+            {
+                visualElement.SetEnabled(value);
+            }
+        }
+
+        public string tooltip
+        {
+            set
+            {
+                visualElement.tooltip = value;
+            }
+        }
+
+        public ClassList classList
+        {
+            set
+            {
+                foreach (var className in value.classNames)
+                {
+                    visualElement.AddToClassList(className);
+                }
+            }
+        }
+
         public VisualElement[] children
         {
             set

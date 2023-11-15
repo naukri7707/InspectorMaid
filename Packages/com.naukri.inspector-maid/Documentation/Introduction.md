@@ -224,6 +224,29 @@ public int good;
 在這時候遵循「選擇越少、目標越單一，優先度越高」的原則進行處理。因此在這種情況下的各屬性的優先級為：
 > `marginTop` > `marginVertical` > `marginAll` > `margin` > `classList`
 
+## 在序列化類別、結構上繪製 UI
+
+- 在序列化類別、結構上繪製 UI 的邏輯與在一般腳本上無異。但由於 Unity 的限制，如果想要使用 Inspector Maid 的話，你需要使該類別繼承自 `IInspectorMaidTarget` 才可以正常運作。
+
+    ```cs
+    [Serializable]
+    public class MyClass : IInspectorMaidTarget
+    {
+        public int myInt;
+
+        [ReadOnly]
+        public int myString;
+
+        [Target]
+        public void Hello(string message = "World")
+        {
+            Debug.Log($"Hello, {message}!");
+        }
+    }
+    ```
+
+- 目前序列化類別、結構還無法透過 class 進行設計。
+
 ## 在 Inspector 上繪製屬性及函式
 
 ![draw-property-and-method](./Images/draw-property-and-method.png)
@@ -299,7 +322,7 @@ public void MyMethod()
     3. 函式：該函式調用後的回傳值，如果該函式有參數則需使用 `args` 定義參數。
 
         ```cs
-		// 如果目標是帶參數函式，使用 new object[] { ... } 來包裹參數
+        // 如果目標是帶參數函式，使用 new object[] { ... } 來包裹參數
         [HelpBox(binding: nameof(HelloTwoMessage), args: new object[] { "Hello", "world" })]
         public string message = "";
         
@@ -368,6 +391,7 @@ public void MyMethod()
     ```
 
     ![optional-variable-compare](Images/optional-variable-compare.png)
+
 ### 建立 `Widget`
 
 根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
@@ -458,6 +482,7 @@ public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 如果想要支援資料綁定，你可以在 `WidgetAttribute` 上實作 `IBindable` 介面使 `Widget` 可以使用包裝好的綁定函式，或者你也可以在 `Widget` 上直接使用 `GetValue()` 等函式來存取目標成員。
 
 `MyItemAttribute.cs`
+
 ```cs
 public class MyItemAttribute : ItemAttribute, IBindable
 {
@@ -481,12 +506,13 @@ public class MyItemAttribute : ItemAttribute, IBindable
 ```
 
 `MyItemWidget.cs`
+
 ```cs
     public class MyItemWidget : ItemWidgetOf<MyItemAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
-	        // 獲取綁定成員的值
+            // 獲取綁定成員的值
             var bindingValue = context.GetBindingValue();
             // 監聽綁定成員的值
             context.ListenBindingValue(value =>
@@ -494,12 +520,12 @@ public class MyItemAttribute : ItemAttribute, IBindable
                // Do something on value changed
             });
             
-	        // 你也可以直接指定成員名稱來存取
-		    var a = context.GetValue("memberName");
-		    context.ListenValue("memberName" ,value =>
-			{
-			    // Do something
-			});
+            // 你也可以直接指定成員名稱來存取
+            var a = context.GetValue("memberName");
+            context.ListenValue("memberName" ,value =>
+            {
+                // Do something
+            });
         }
     }
 ```

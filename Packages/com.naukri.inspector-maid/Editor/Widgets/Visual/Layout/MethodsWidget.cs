@@ -11,10 +11,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement()
-            {
-                name = "Methods"
-            };
+            var container = new Methods();
 
             BuildChildren(context, (ctx, e) =>
             {
@@ -40,5 +37,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
                 context.Attach(memberContext);
             }
         }
+
+        private class Methods : VisualElement { }
     }
 }

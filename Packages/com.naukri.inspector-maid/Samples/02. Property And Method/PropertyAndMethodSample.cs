@@ -4,6 +4,19 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples
 {
+#if UNITY_EDITOR
+
+    using Naukri.InspectorMaid.Editor.Core;
+    using UnityEditor;
+
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(PropertyAndMethodSample), true, isFallback = true)]
+    public class PropertyAndMethodSampleEditor : InspectorMaidEditor
+    {
+    }
+
+#endif
+
     [Divider("Field")]
     [Fields]
     [Divider("Property")]
