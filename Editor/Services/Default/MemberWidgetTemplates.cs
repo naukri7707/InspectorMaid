@@ -7,34 +7,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
-using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal class MemberWidgetTemplates : IMemberWidgetTemplates
     {
-        public MemberWidgetTemplates(UObject target, SerializedObject serializedObject)
+        public MemberWidgetTemplates(object target, SerializedProperty serializedProperty)
         {
             this.target = target;
-            this.serializedObject = serializedObject;
+            this.serializedProperty = serializedProperty.Copy();
 
             var type = target.GetType();
+            var current = serializedProperty.Copy();
 
             // fields
-            var iterator = serializedObject.GetIterator();
-            if (iterator.NextVisible(true))
+            if (current.NextVisible(true))
             {
                 do
                 {
                     // we need to skip unsupported serialized property like m_Script
-                    if (iterator.TryGetFieldInfo(out FieldInfo fieldInfo))
+                    if (current.TryGetFieldInfo(out FieldInfo fieldInfo))
                     {
                         // wrap all field with MemberWidget, even if it is not a widget
                         // so we can inject any target to slot as widget
-                        Regisiter(fieldInfo, iterator);
+                        Regisiter(fieldInfo, current);
                     }
                 }
-                while (iterator.NextVisible(false));
+                while (current.NextVisible(false));
             }
 
             // properties
@@ -44,7 +43,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             {
                 if (propertyInfo.HasAttribute<WidgetAttribute>())
                 {
-                    Regisiter(propertyInfo);
+                    Regisiter(propertyInfo, serializedProperty);
                 }
             }
 
@@ -55,34 +54,36 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
             {
                 if (methodInfo.HasAttribute<WidgetAttribute>())
                 {
-                    Regisiter(methodInfo);
+                    Regisiter(methodInfo, serializedProperty);
                 }
             }
         }
 
         private readonly Dictionary<string, (MemberInfo info, SerializedProperty serializedProperty)> _widgetTemplates = new();
 
-        private readonly UObject target;
+        private readonly object target;
 
-        private readonly SerializedObject serializedObject;
+        private readonly SerializedProperty serializedProperty;
+
+        public SerializedProperty GetSerializedProperty() => serializedProperty?.Copy();
 
         public MemberWidget CreateMemberWidget(string memberName)
         {
             var (info, serializedProperty) = _widgetTemplates[memberName];
-            return new MemberWidget(target, info, serializedProperty?.Copy());
+            return new MemberWidget(target, info, serializedProperty.Copy());
         }
 
         public MemberWidget[] CreateMemberWidgets(Predicate<MemberInfo> filter = null)
         {
             return _widgetTemplates.Values
                 .Where(it => filter?.Invoke(it.info) ?? true)
-                .Select(it => new MemberWidget(target, it.info, it.serializedProperty?.Copy()))
+                .Select(it => new MemberWidget(target, it.info, it.serializedProperty.Copy()))
                 .ToArray();
         }
 
-        private void Regisiter(MemberInfo info, SerializedProperty serializedProperty = null)
+        private void Regisiter(MemberInfo info, SerializedProperty serializedProperty)
         {
-            _widgetTemplates.Add(info.Name, (info, serializedProperty?.Copy()));
+            _widgetTemplates.Add(info.Name, (info, serializedProperty.Copy()));
         }
     }
 }

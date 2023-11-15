@@ -9,13 +9,12 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
-using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
     public partial class MemberWidget : ScopeWidget, IContextAttachedReceiver
     {
-        public MemberWidget(UObject target, MemberInfo info, SerializedProperty serializedProperty = null)
+        public MemberWidget(object target, MemberInfo info, SerializedProperty serializedProperty)
         {
             this.target = target;
             this.info = info;
@@ -24,13 +23,15 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             this.serializedProperty = serializedProperty?.Copy();
         }
 
-        public readonly UObject target;
+        public readonly object target;
 
         public readonly MemberInfo info;
 
-        public readonly SerializedProperty serializedProperty;
+        private readonly SerializedProperty serializedProperty;
 
         public bool IsTemplate => info.HasAttribute<TemplateAttribute>();
+
+        public SerializedProperty GetSerializedProperty() => serializedProperty.Copy();
 
         public override VisualElement Build(IBuildContext context)
         {
@@ -54,7 +55,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 attrs.Add(new TargetAttribute());
             }
 
-            InspectorMaidUtility.AttachContextOfWidgetsToTree(context, attrs);
+            InspectorMaidUtility.CreateWidgetContextsAndAttach(context, attrs);
         }
 
         private VisualElement CreateContainer()

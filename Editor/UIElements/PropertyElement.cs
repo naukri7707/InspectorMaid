@@ -3,22 +3,24 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
-using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
     public class PropertyElement : VisualElement
     {
-        public PropertyElement(UObject target, PropertyInfo info)
+        public PropertyElement(object target, PropertyInfo info, SerializedObject serializedObject)
         {
             this.target = target;
             this.info = info;
+            this.serializedObject = serializedObject;
             label = ObjectNames.NicifyVariableName(info.Name);
         }
 
         private readonly PropertyInfo info;
 
-        private readonly UObject target;
+        private readonly SerializedObject serializedObject;
+
+        private readonly object target;
 
         private string _label;
 
@@ -29,7 +31,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         internal void Build()
         {
-            propertyElement = PropertyBuilder.Build(label, target, info);
+            propertyElement = PropertyBuilder.Build(label, target, info, serializedObject);
             Add(propertyElement);
         }
     }

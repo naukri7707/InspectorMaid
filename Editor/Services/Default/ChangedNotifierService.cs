@@ -5,11 +5,11 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
 {
     internal sealed class ChangedNotifierService : IChangedNotifierService
     {
-        public ChangedNotifierService(IEditorEventService editorEventService, IFastReflectionService fastReflectionService)
+        public ChangedNotifierService(ICallbackService editorEventService, IFastReflectionService fastReflectionService)
         {
             this.editorEventService = editorEventService;
             this.fastReflectionService = fastReflectionService;
-            this.editorEventService.OnUpdate += EditorEventService_OnUpdate;
+            this.editorEventService.OnEditorUpdate += EditorEventService_OnUpdate;
         }
 
         public Dictionary<string, IListener> valueListeners = new();
@@ -17,7 +17,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
         // we can't use Dictionary because func args might be different at different binding event.
         public List<IListener> funcListeners = new();
 
-        private readonly IEditorEventService editorEventService;
+        private readonly ICallbackService editorEventService;
 
         private readonly IFastReflectionService fastReflectionService;
 

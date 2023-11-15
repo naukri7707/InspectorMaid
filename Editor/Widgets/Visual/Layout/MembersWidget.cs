@@ -1,5 +1,4 @@
 ﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
@@ -26,13 +25,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
             var templateService = IMemberWidgetTemplates.Of(context);
 
             var widgets = templateService.CreateMemberWidgets();
-
-            if (!attribute.skipScriptField)
-            {
-                var scriptFieldWidget = WidgetBuilder.Create(new ScriptFieldAttribute());
-                var scriptFieldContext = scriptFieldWidget.CreateContext();
-                context.Attach(scriptFieldContext);
-            }
 
             foreach (var widget in widgets)
             {

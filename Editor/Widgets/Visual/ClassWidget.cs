@@ -17,18 +17,32 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
     public partial class ClassWidget : ScopeWidget, IContextAttachedReceiver
     {
-        public ClassWidget(UObject target, SerializedObject serializedObject)
+        public ClassWidget(object target, SerializedProperty serializedProperty)
         {
             this.target = target;
             targetType = target.GetType();
-            this.serializedObject = serializedObject;
+            serializedObject = serializedProperty.serializedObject;
+            serializedObjectType = serializedObject.GetType();
+            serializedTarget = serializedObject.targetObject;
+            this.serializedProperty = serializedProperty;
         }
 
-        public readonly UObject target;
+        public readonly object target;
 
         public readonly Type targetType;
 
         public readonly SerializedObject serializedObject;
+
+        public readonly Type serializedObjectType;
+
+        public readonly UObject serializedTarget;
+
+        private readonly SerializedProperty serializedProperty;
+
+        public SerializedProperty GetSerializedProperty()
+        {
+            return serializedProperty?.Copy();
+        }
 
         public void OnContextAttached(Context context)
         {
@@ -39,7 +53,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 attrs.Add(new MembersAttribute());
             }
 
-            InspectorMaidUtility.AttachContextOfWidgetsToTree(context, attrs);
+            InspectorMaidUtility.CreateWidgetContextsAndAttach(context, attrs);
         }
 
         public override VisualElement Build(IBuildContext context)

@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Editor.Services;
+using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
@@ -7,7 +8,17 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var button = new Button(context.InvokeBindingAction)
+            var classWidget = ClassWidget.Of(context);
+            var serializedTarget = classWidget.serializedTarget;
+
+            void buttonAction()
+            {
+                Undo.RecordObject(serializedTarget, "Set Value");
+                context.InvokeBindingAction();
+                EditorUtility.SetDirty(serializedTarget);
+            }
+
+            var button = new Button(buttonAction)
             {
                 text = attribute.text
             };

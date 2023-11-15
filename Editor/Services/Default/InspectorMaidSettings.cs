@@ -101,7 +101,7 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
         {
             var target = Instance;
             var serializedObject = new SerializedObject(target);
-            IEditorEventService editorEventService = null;
+            ICallbackService editorEventService = null;
             var title = "Inspector Maid";
             var provider = new SettingsProvider($"Project/{title}", SettingsScope.Project)
             {
@@ -109,13 +109,15 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
                 keywords = SettingsProvider.GetSearchKeywordsFromSerializedObject(serializedObject),
                 activateHandler = (searchContext, rootElement) =>
                 {
-                    var classContext = InspectorMaidEditor.CreateContextTree(target);
+                    isDrawingSettingsProvider = true;
+                    var classContext = InspectorMaidUtility.CreateClassContext(target, serializedObject.GetIterator());
                     var classElement = classContext.Build();
-                    isDrawingSettingsProvider = false;
 
-                    editorEventService = IEditorEventService.Of(classContext);
-                    EditorApplication.update += editorEventService.InvokeUpdate;
+                    // Register callbacks
+                    editorEventService = ICallbackService.Of(classContext);
+                    editorEventService.RegisterCallback(classElement);
 
+                    // Wrap classElement with ProjectSettingPage and add it to rootElement
                     var page = new ProjectSettingPage(title, classElement);
                     rootElement.Add(page);
 
@@ -124,15 +126,9 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
                 },
                 deactivateHandler = () =>
                 {
-                    if (editorEventService != null)
-                    {
-                        EditorApplication.update -= editorEventService.InvokeUpdate;
-                        editorEventService.InvokeDestroy();
-                    }
-                },
-                inspectorUpdateHandler = () =>
-                {
-                    editorEventService?.InvokeSceneGUI();
+                    // We need to set isDrawingSettingsProvider to false after we remove classElement from rootElement,
+                    // otherwise the script field will show up at Project Settings.
+                    isDrawingSettingsProvider = false;
                 }
             };
 
