@@ -9,11 +9,11 @@ using UnityEngine.UIElements;
 namespace Naukri.InspectorMaid.Editor.Widgets.Core
 {
     public abstract class IfScopeWidgetOf<TAttribute> : ScopeWidgetOf<TAttribute>
-         where TAttribute : IfScopeAttribute
+        where TAttribute : IfScopeAttribute
     {
         public sealed override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement().Compose(c =>
+            var container = CreateContainer().Compose(c =>
             {
                 c.children = BuildChildren(context);
             });
@@ -32,12 +32,14 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
             return container;
         }
 
-        protected abstract void OnUpdateElement(VisualElement visualElement, bool condition);
+        protected abstract VisualElement CreateContainer();
 
-        private void UpdateElement(VisualElement visualElement, object bindingValue)
+        protected abstract void OnUpdateElement(VisualElement container, bool condition);
+
+        private void UpdateElement(VisualElement container, object bindingValue)
         {
             var condition = Condition(bindingValue);
-            OnUpdateElement(visualElement, condition);
+            OnUpdateElement(container, condition);
         }
 
         private bool Condition(object bindingValue)
