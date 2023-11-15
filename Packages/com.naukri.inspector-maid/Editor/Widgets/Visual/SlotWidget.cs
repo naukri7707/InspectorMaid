@@ -10,11 +10,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement()
+            var container = new Slot().Compose(c =>
             {
-                name = "Slot"
-            }.Compose(c =>
-            {
+                c.name = $"slot:{attribute.templateName}";
                 c.children = BuildChildren(context);
             });
 
@@ -43,5 +41,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             context.Attach(templateContext);
         }
+
+        private class Slot : VisualElement { }
     }
 }

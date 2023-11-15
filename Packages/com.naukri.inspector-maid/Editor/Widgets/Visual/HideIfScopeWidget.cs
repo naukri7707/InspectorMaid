@@ -5,18 +5,22 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
     public class HideIfScopeWidget : IfScopeWidgetOf<HideIfScopeAttribute>
     {
-        protected override void OnUpdateElement(VisualElement visualElement, bool condition)
+        protected override VisualElement CreateContainer() => new HideIf();
+
+        protected override void OnUpdateElement(VisualElement container, bool condition)
         {
             if (condition)
             {
-                visualElement.style.display = DisplayStyle.None;
-                visualElement.style.visibility = Visibility.Hidden;
+                container.style.display = DisplayStyle.None;
+                container.style.visibility = Visibility.Hidden;
             }
             else
             {
-                visualElement.style.display = DisplayStyle.Flex;
-                visualElement.style.visibility = Visibility.Visible;
+                container.style.display = DisplayStyle.Flex;
+                container.style.visibility = Visibility.Visible;
             }
         }
+
+        private class HideIf : VisualElement { }
     }
 }

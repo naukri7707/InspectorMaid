@@ -34,10 +34,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new VisualElement()
-            {
-                name = info.Name
-            }.Compose(c =>
+            var container = CreateContainer().Compose(c =>
             {
                 c.children = BuildChildren(context);
             });
@@ -59,6 +56,23 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             InspectorMaidUtility.AttachContextOfWidgetsToTree(context, attrs);
         }
+
+        private VisualElement CreateContainer()
+        {
+            return info switch
+            {
+                FieldInfo => new Field() { name = $"field:{info.Name}" },
+                PropertyInfo => new Property() { name = $"property:{info.Name}" },
+                MethodInfo => new Method() { name = $"method:{info.Name}" },
+                _ => null
+            };
+        }
+
+        private class Field : VisualElement { }
+
+        private class Property : VisualElement { }
+
+        private class Method : VisualElement { }
     }
 
     partial class MemberWidget
