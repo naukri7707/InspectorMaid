@@ -2,6 +2,7 @@
 using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
@@ -41,7 +42,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public SerializedProperty GetSerializedProperty()
         {
-            return serializedProperty?.Copy();
+            return serializedProperty.Copy();
         }
 
         public void OnContextAttached(Context context)
@@ -50,6 +51,11 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             if (!attrs.Any())
             {
+                if (target is UObject uTarget && uTarget == serializedTarget)
+                {
+                    attrs.Add(new ScriptFieldAttribute());
+                }
+
                 attrs.Add(new MembersAttribute());
             }
 
