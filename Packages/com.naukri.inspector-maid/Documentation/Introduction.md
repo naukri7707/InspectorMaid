@@ -226,7 +226,7 @@ public int good;
 
 ## 在序列化類別、結構上繪製 UI
 
-- 在序列化類別、結構上繪製 UI 的邏輯與在一般腳本上無異。但由於 Unity 的限制，如果想要使用 Inspector Maid 的話，你需要使該類別繼承自 `IInspectorMaidTarget` 才可以正常運作。
+- 在序列化類別、結構上繪製 UI 的邏輯與在一般腳本上無異。但由於 Unity 的限制，如果想要使用 Inspector Maid 的話，你需要實作空介面 `IInspectorMaidTarget` 才可以正常運作。
 
     ```cs
     [Serializable]
@@ -244,8 +244,6 @@ public int good;
         }
     }
     ```
-
-- 目前序列化類別、結構還無法透過 class 進行設計。
 
 ## 在 Inspector 上繪製屬性及函式
 
