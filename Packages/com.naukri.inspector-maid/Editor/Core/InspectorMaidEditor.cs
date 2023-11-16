@@ -16,10 +16,6 @@ namespace Naukri.InspectorMaid.Editor.Core
             // Build class element
             var classElement = classContext.Build();
 
-            // Add script field
-            var scriptField = new ScriptField(serializedObject);
-            classElement.Insert(0, scriptField);
-
             // Register callbacks
             editorEventService = ICallbackService.Of(classContext);
             editorEventService.RegisterCallback(classElement);
