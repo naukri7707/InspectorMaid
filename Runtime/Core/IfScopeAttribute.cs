@@ -1,18 +1,15 @@
 ﻿namespace Naukri.InspectorMaid.Core
 {
-    public class IfScopeAttribute : ScopeAttribute, IBindingDataProvider
+    public abstract class IfScopeAttribute : ScopeAttribute, IBindingDataProvider
     {
-        public IfScopeAttribute(
-            string binding,
-            object[] args = null
-            ) : this(binding, new object[0], ConditionLogic.Value, args) { }
-
         public IfScopeAttribute(
             string binding,
             object value,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
-            ) : this(binding, new object[] { value }, conditionLogic, args) { }
+            ) : this(binding, new object[] { value }, conditionLogic, args)
+        {
+        }
 
         public IfScopeAttribute(
             string binding,
@@ -20,7 +17,9 @@
             object value2,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
-            ) : this(binding, new object[] { value1, value2 }, conditionLogic, args) { }
+            ) : this(binding, new object[] { value1, value2 }, conditionLogic, args)
+        {
+        }
 
         public IfScopeAttribute(
             string binding,
@@ -29,7 +28,9 @@
             object value3,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
-            ) : this(binding, new object[] { value1, value2, value3 }, conditionLogic, args) { }
+            ) : this(binding, new object[] { value1, value2, value3 }, conditionLogic, args)
+        {
+        }
 
         public IfScopeAttribute(
             string binding,
@@ -39,17 +40,19 @@
             object value4,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
-            ) : this(binding, new object[] { value1, value2, value3, value4 }, conditionLogic, args) { }
+            ) : this(binding, new object[] { value1, value2, value3, value4 }, conditionLogic, args)
+        {
+        }
 
         public IfScopeAttribute(
             string binding,
-            object[] values,
+            object[] values = null,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
             )
         {
             this.binding = binding;
-            this.values = values;
+            this.values = values ?? new object[0];
             this.conditionLogic = conditionLogic;
             this.args = args;
         }
