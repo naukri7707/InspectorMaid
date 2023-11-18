@@ -84,7 +84,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
                 res = attribute.values.Length switch
                 {
                     // return true if value isn't default.
-                    0 => IsEqual(bindingValue, bindingMemberDefaultValue),
+                    0 => !IsEqual(bindingValue, bindingMemberDefaultValue),
                     _ => attribute.values.Any(it => IsEqual(bindingValue, it)),
                 };
             }
