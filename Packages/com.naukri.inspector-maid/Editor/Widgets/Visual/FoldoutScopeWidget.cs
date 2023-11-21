@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class FoldoutScopeWidget : ScopeWidgetOf<FoldoutScopeAttribute>
+    public class FoldoutScopeWidget : VisualWidgetOf<FoldoutScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

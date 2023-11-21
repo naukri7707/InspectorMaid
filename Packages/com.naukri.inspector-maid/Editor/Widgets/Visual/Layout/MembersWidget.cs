@@ -1,12 +1,11 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
 {
-    public class MembersWidget : ItemWidgetOf<MembersAttribute>, IContextAttachedReceiver
+    public class MembersWidget : VisualWidgetOf<MembersAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {

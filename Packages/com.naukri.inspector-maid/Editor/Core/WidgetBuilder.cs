@@ -1,5 +1,4 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Core
     {
         private static Dictionary<Type, IWidgetProvider> _templates;
 
-        public static IWidget Create(WidgetAttribute attribute)
+        public static Widget Create(WidgetAttribute attribute)
         {
             var template = GetTemplate(attribute.GetType());
             var inst = template.CloneWith(attribute);
@@ -21,7 +20,10 @@ namespace Naukri.InspectorMaid.Editor.Core
         private static IWidgetProvider GetTemplate(Type type)
         {
             if (_templates == null)
+            {
                 InitDict();
+            }
+
             return _templates[type];
         }
 

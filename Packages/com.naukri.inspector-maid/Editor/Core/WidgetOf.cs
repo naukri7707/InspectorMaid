@@ -1,12 +1,11 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Naukri.InspectorMaid.Editor
+namespace Naukri.InspectorMaid.Editor.Core
 {
-    public abstract class LogicWidgetOf<TAttribute> : LogicWidget, IWidgetProvider
-        where TAttribute : LogicAttribute
+    public abstract class WidgetOf<TAttribute> : Widget, IWidgetProvider
+        where TAttribute : WidgetAttribute
     {
         private TAttribute _attribute;
 
@@ -17,9 +16,9 @@ namespace Naukri.InspectorMaid.Editor
 
         Type IWidgetProvider.RegisterType => typeof(TAttribute);
 
-        IWidget IWidgetProvider.CloneWith(WidgetAttribute attribute)
+        Widget IWidgetProvider.CloneWith(WidgetAttribute attribute)
         {
-            var cloned = (LogicWidgetOf<TAttribute>)MemberwiseClone();
+            var cloned = (WidgetOf<TAttribute>)MemberwiseClone();
 
             cloned._attribute = attribute switch
             {

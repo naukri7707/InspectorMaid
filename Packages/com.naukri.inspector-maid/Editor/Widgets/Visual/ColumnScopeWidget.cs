@@ -4,7 +4,7 @@ using Column = Naukri.InspectorMaid.Editor.UIElements.Column;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ColumnScopeWidget : ScopeWidgetOf<ColumnScopeAttribute>
+    public class ColumnScopeWidget : VisualWidgetOf<ColumnScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

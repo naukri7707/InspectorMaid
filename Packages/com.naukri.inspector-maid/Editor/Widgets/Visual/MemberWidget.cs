@@ -1,9 +1,8 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Contexts.Core;
+using Naukri.InspectorMaid.Editor.Contexts;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +11,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public partial class MemberWidget : ScopeWidget, IContextAttachedReceiver
+    public partial class MemberWidget : Widget, IContextAttachedReceiver
     {
         public MemberWidget(object target, MemberInfo info, SerializedProperty serializedProperty)
         {
@@ -32,6 +31,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public bool IsTemplate => info.HasAttribute<TemplateAttribute>();
 
         public SerializedProperty GetSerializedProperty() => serializedProperty.Copy();
+
+        public override Context CreateContext() => new MultiChildContext(this);
 
         public override VisualElement Build(IBuildContext context)
         {

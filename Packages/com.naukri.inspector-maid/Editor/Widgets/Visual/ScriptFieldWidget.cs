@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ScriptFieldWidget : ItemWidgetOf<ScriptFieldAttribute>
+    public class ScriptFieldWidget : VisualWidgetOf<ScriptFieldAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

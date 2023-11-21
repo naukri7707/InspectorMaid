@@ -1,5 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {

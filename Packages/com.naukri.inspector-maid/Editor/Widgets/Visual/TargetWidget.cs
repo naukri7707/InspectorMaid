@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class TargetWidget : ItemWidgetOf<TargetAttribute>
+    public class TargetWidget : VisualWidgetOf<TargetAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

@@ -1,19 +1,28 @@
 ﻿using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System;
+using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Editor.Contexts.Core
+namespace Naukri.InspectorMaid.Editor
 {
     public abstract class Context : IBuildContext
     {
+        protected Context(Widget widget)
+        {
+            _widget = widget;
+        }
+
+        public VisualElement renderedElement;
+
+        private readonly Widget _widget;
+
         private Context _parent;
 
         public Context Parent => _parent;
 
-        public abstract IWidget Widget { get; }
+        public Widget Widget => _widget;
 
-        public T GetAncestorWidget<T>() where T : IWidget
+        public T GetAncestorWidget<T>() where T : Widget
         {
             T res = default;
 
@@ -31,7 +40,7 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
             return res;
         }
 
-        public Context GetContextOfAncestorWidget<T>() where T : IWidget
+        public Context GetContextOfAncestorWidget<T>() where T : Widget
         {
             Context res = null;
 
@@ -73,6 +82,18 @@ namespace Naukri.InspectorMaid.Editor.Contexts.Core
             OnChildAttached(child);
 
             child.VisitReceiver<IContextAttachedReceiver>((ctx, r) => r.OnContextAttached(ctx));
+        }
+
+        internal VisualElement Build()
+        {
+            renderedElement = _widget.Build(this);
+
+            this.VisitChildReceivers<IParentBuiltReceiver>((ctx, r) =>
+            {
+                r.OnParentBuilt(ctx, renderedElement);
+            });
+
+            return renderedElement;
         }
 
         internal T GetAncestorContext<T>() where T : Context
