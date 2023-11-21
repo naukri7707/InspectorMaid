@@ -394,18 +394,18 @@ public void MyMethod()
 
 根據 `WidgetAttribute` 的不同，我們需要繼承的類別也有所不同
 
-- `ItemAttribute` : `ItemWidgetOf<T>`
-- `ScopeAttribute` : `ScopeWidgetOf<T>`
+- `ItemAttribute` 、`ScopeAttribute` : `VisualWidgetOf<T>`
 - `StylerAttribute` : `StylerWidgetOf<T>`
 
-> 由於 Widget 在實作中可能會使用到 UnityEditor 中的函式。所以建議新增在 Editor 資料夾中，使 unity 不在建置時編譯該腳本。否則專案將無法建置。
+> 由於 `Widget` 在實作中可能會使用到 `UnityEditor` 中的函式。所以建議新增在 Editor 資料夾中，使 unity 不在建置時編譯該腳本。否則專案有可能會無法建置。
 
 #### `VisualWidget` : 實作 `Build()`
 
 當你的目標是 `ItemWidget` 或是 `ScopeWidget` 時，你需要實作 `Build()` 函式來描述 `Widget` 的 UI。
+你也可以回傳 `null`，在這種情況下該 `Widget` 會被視為 `LogicWidget` 此時將不渲染任何元素但執行 `Build()` 中的邏輯。
 
 ```cs
-public class MyScopeWidget : ScopeWidgetOf<MyScopeAttribute>
+public class MyScopeWidget : VisualWidgetOf<MyScopeAttribute>
 {
     public override VisualElement Build(IBuildContext context)
     {
@@ -440,13 +440,13 @@ public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 {
     // OnStyling 會在 stylingElement 被 Build() 後呼叫
     // stylingElement 會是該 Styler 之前最接近的 VisualWidget 所產生的 VisualElement
-    public override void OnStyling(IBuildContext context, VisualElement stylingElement)
+    public override void OnStyling(IBuildContext context, VisualElement element)
     {
         // 這裡可以對 stylingElement 做任何事情，例如將其禁用
-        stylingElement.SetEnabled(false);
+        element.SetEnabled(false);
 
         // 或是設定他的 style
-        stylingElement.style.backgroundColor = Color.red;
+        element.style.backgroundColor = Color.red;
     }
 }
 ```
