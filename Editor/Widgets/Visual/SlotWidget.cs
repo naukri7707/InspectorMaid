@@ -1,12 +1,11 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class SlotWidget : ItemWidgetOf<SlotAttribute>, IContextAttachedReceiver
+    public class SlotWidget : VisualWidgetOf<SlotAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {

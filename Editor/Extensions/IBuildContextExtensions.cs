@@ -1,10 +1,11 @@
 ﻿using Naukri.InspectorMaid.Core;
+using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Helpers;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Logic;
 using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
 using System.Reflection;
+using UnityEditor;
 
 namespace Naukri.InspectorMaid.Editor.Extensions
 {
@@ -49,9 +50,18 @@ namespace Naukri.InspectorMaid.Editor.Extensions
 
         public static MemberInfo GetInfo(this IBuildContext context, string memberName)
         {
-            var classWidget = ClassWidget.Of(context);
+            var classWidget = ClassWidget.Of(context) ?? throw new Exception($"[{nameof(ClassWidget)}] not found in context.");
             var targetType = classWidget.target.GetType();
             return targetType.GetMemberToBase(InspectorMaidUtility.kBaseType, memberName);
+        }
+
+        public static void RecordAndSetDirty(this IBuildContext context, string changeEventName)
+        {
+            var classWidget = ClassWidget.Of(context) ?? throw new Exception($"[{nameof(ClassWidget)}] not found in context.");
+            var serializedTarget = classWidget.serializedTarget;
+
+            Undo.RecordObject(serializedTarget, changeEventName);
+            EditorUtility.SetDirty(serializedTarget);
         }
 
         internal static bool TryGetAttribute<T>(this IBuildContext context, out T attribute)

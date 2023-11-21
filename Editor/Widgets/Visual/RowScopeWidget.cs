@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class RowScopeWidget : ScopeWidgetOf<RowScopeAttribute>
+    public class RowScopeWidget : VisualWidgetOf<RowScopeAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

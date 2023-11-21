@@ -1,10 +1,11 @@
-﻿using Naukri.InspectorMaid.Editor.Widgets.Core;
+﻿using Naukri.InspectorMaid.Editor.Contexts;
 using System;
 using System.ComponentModel.Design;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Logic
 {
-    public partial class ServiceWidget : SingleChildWidget, IServiceContainer, IServiceProvider
+    public partial class ServiceWidget : Widget, IServiceContainer, IServiceProvider
     {
         public ServiceWidget()
         {
@@ -12,6 +13,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Logic
         }
 
         private readonly ServiceContainer services;
+
+        public override Context CreateContext() => new SingleChildContext(this);
+
+        public override VisualElement Build(IBuildContext context) => null;
 
         public void AddService(Type serviceType, ServiceCreatorCallback callback) => services.AddService(serviceType, callback);
 

@@ -1,46 +1,28 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
-using System;
+﻿using System;
 
 namespace Naukri.InspectorMaid.Editor.Contexts
 {
     public sealed partial class SingleChildContext : Context
     {
-        public SingleChildContext(IWidget widget)
+        public SingleChildContext(Widget widget) : base(widget)
         {
-            Widget = widget;
         }
 
         private Context child;
 
-        public override IWidget Widget { get; }
-
         public override void VisitChildContexts(Action<Context> visitor)
         {
-            VisitChildContexts(ref child, visitor);
+            visitor(child);
         }
 
         protected override void OnChildAttached(Context child)
         {
-            OnChildAttached(ref this.child, child);
-        }
-    }
-
-    partial class SingleChildContext
-    {
-        internal static void VisitChildContexts(ref Context childRef, Action<Context> visitor)
-        {
-            visitor(childRef);
-        }
-
-        internal static void OnChildAttached(ref Context childRef, Context child)
-        {
-            if (childRef != null)
+            if (this.child != null)
             {
-                throw new Exception($"{nameof(SingleChildContext)} can only have one child");
+                throw new Exception($"{nameof(SingleChildContext)} must have only one child.");
             }
 
-            childRef = child;
+            this.child = child;
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class SpacerWidget : ItemWidgetOf<SpacerAttribute>
+    public class SpacerWidget : VisualWidgetOf<SpacerAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

@@ -2,8 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox(
-@"[Target] is a special attribute used to mark the location where the field, property or method widget should be drawn.
+    [HelpBox(@"[Target] is a special attribute used to mark the location where the field, property or method widget should be drawn.
 This is particularly useful when defining the target location or setting the target style.", HelpBoxMessageType.Info)]
     [Divider("01. Target")]
     [CardSlot(nameof(withoutTarget))]

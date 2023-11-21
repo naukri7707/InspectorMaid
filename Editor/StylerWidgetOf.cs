@@ -1,34 +1,23 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
-using Naukri.InspectorMaid.Editor.Widgets.Stylers;
-using System;
-using System.Diagnostics.CodeAnalysis;
+using Naukri.InspectorMaid.Editor.Contexts;
+using Naukri.InspectorMaid.Editor.Core;
+using Naukri.InspectorMaid.Editor.Widgets.Receivers;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor
 {
-    public abstract class StylerWidgetOf<TAttribute> : StylerWidget, IWidgetProvider
+    public abstract class StylerWidgetOf<TAttribute> : WidgetOf<TAttribute>, IWidgetProvider, IParentBuiltReceiver
         where TAttribute : StylerAttribute
     {
-        private TAttribute _attribute;
+        public sealed override Context CreateContext() => new NoneChildContext(this);
 
-        [SuppressMessage("Style", "IDE1006")]
-        public TAttribute attribute => _attribute;
+        public override VisualElement Build(IBuildContext context) => null;
 
-        object IAttributeProvider.Attribute => attribute;
+        public abstract void OnStyling(IBuildContext context, VisualElement element);
 
-        Type IWidgetProvider.RegisterType => typeof(TAttribute);
-
-        IWidget IWidgetProvider.CloneWith(WidgetAttribute attribute)
+        void IParentBuiltReceiver.OnParentBuilt(IBuildContext context, VisualElement parentElement)
         {
-            var cloned = (StylerWidgetOf<TAttribute>)MemberwiseClone();
-
-            cloned._attribute = attribute switch
-            {
-                TAttribute tAttribute => tAttribute,
-                _ => throw new Exception($"{nameof(StylerWidgetOf<TAttribute>.attribute)} type mismatch."),
-            };
-
-            return cloned;
+            OnStyling(context, parentElement);
         }
     }
 }

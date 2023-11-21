@@ -1,5 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Contexts.Core;
-using Naukri.InspectorMaid.Editor.Services;
+﻿using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
 using System.Reflection;
@@ -7,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
 {
-    public class MethodsWidget : ItemWidgetOf<MethodsAttribute>, IContextAttachedReceiver
+    public class MethodsWidget : VisualWidgetOf<MethodsAttribute>, IContextAttachedReceiver
     {
         public override VisualElement Build(IBuildContext context)
         {

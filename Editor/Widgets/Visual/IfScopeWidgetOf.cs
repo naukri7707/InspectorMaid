@@ -1,15 +1,15 @@
 ﻿using Naukri.InspectorMaid.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
-using UObject = UnityEngine.Object;
 
-namespace Naukri.InspectorMaid.Editor.Widgets.Core
+namespace Naukri.InspectorMaid.Editor.Widgets
 {
-    public abstract class IfScopeWidgetOf<TAttribute> : ScopeWidgetOf<TAttribute>
+    public abstract class IfScopeWidgetOf<TAttribute> : VisualWidgetOf<TAttribute>
         where TAttribute : IfScopeAttribute
     {
         private object bindingMemberDefaultValue;
@@ -53,28 +53,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
             OnUpdateElement(container, condition);
         }
 
-        private bool IsEqual(object lhs, object rhs)
-        {
-            // Because Unity override '==' operator for UObject.
-            // So if any of them is UObject, compare them by '==' operator.
-            if (lhs is UObject || rhs is UObject)
-            {
-                var uLhs = lhs as UObject;
-                var uRhs = rhs as UObject;
-                return uLhs == uRhs;
-            }
-            // Compare them in other case.
-            else
-            {
-                // Cause of the boxing, we can't use '==' operator, otherwise it will compare them by reference.
-                // e.g.
-                // object a = 1;
-                // object b = 1;
-                // bool c = a == b; // c is false
-                return Equals(lhs, rhs);
-            }
-        }
-
         private bool Condition(object bindingValue)
         {
             var res = false;
@@ -84,8 +62,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Core
                 res = attribute.values.Length switch
                 {
                     // return true if value isn't default.
-                    0 => !IsEqual(bindingValue, bindingMemberDefaultValue),
-                    _ => attribute.values.Any(it => IsEqual(bindingValue, it)),
+                    0 => !InspectorMaidUtility.IsBoxedValueEqual(bindingValue, bindingMemberDefaultValue),
+                    _ => attribute.values.Any(it => InspectorMaidUtility.IsBoxedValueEqual(bindingValue, it)),
                 };
             }
             else if (attribute.conditionLogic == ConditionLogic.Flag)

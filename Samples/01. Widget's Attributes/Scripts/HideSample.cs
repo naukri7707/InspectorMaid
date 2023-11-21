@@ -26,7 +26,7 @@ So if you don't have any other widget, and only want to hide the [Target], you c
         public int bad;
 
         [Button("Click me!", binding: nameof(HelloWorld))]
-        [Target, ReadOnly]
+        [Target, Hide]
         public int good;
 
         // Sample 3

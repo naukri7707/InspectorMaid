@@ -1,12 +1,12 @@
 ﻿using Naukri.InspectorMaid.Core;
 using System;
 
-namespace Naukri.InspectorMaid.Editor.Widgets.Core
+namespace Naukri.InspectorMaid.Editor.Core
 {
     internal interface IWidgetProvider : IAttributeProvider
     {
         public Type RegisterType { get; }
 
-        public IWidget CloneWith(WidgetAttribute attribute);
+        public Widget CloneWith(WidgetAttribute attribute);
     }
 }
