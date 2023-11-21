@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class HelpBoxWidget : ItemWidgetOf<HelpBoxAttribute>
+    public class HelpBoxWidget : VisualWidgetOf<HelpBoxAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {

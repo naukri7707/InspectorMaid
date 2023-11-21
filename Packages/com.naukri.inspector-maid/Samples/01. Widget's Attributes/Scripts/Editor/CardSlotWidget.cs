@@ -1,6 +1,5 @@
 ﻿using Naukri.InspectorMaid.Converters;
 using Naukri.InspectorMaid.Editor;
-using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.UIElements;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
@@ -8,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.Editor
 {
-    public class CardSlotWidget : ItemWidgetOf<CardSlotAttribute>, IContextAttachedReceiver
+    public class CardSlotWidget : VisualWidgetOf<CardSlotAttribute>, IContextAttachedReceiver
     {
         private static StyleColor? _defaultBGColor;
 

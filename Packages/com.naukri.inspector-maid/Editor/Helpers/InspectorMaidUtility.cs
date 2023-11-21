@@ -1,10 +1,8 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Contexts.Core;
 using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Services;
 using Naukri.InspectorMaid.Editor.Services.Default;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Logic;
 using Naukri.InspectorMaid.Editor.Widgets.Visual;
 using System;
@@ -12,6 +10,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Helpers
 {
@@ -24,7 +23,29 @@ namespace Naukri.InspectorMaid.Editor.Helpers
         // this should be same as InspectorMaidEditor's CustomEditor attribute
         public static readonly Type kBaseType = typeof(MonoBehaviour);
 
-        public static VisualContext CreateClassContext(object target, SerializedProperty serializedProperty)
+        public static bool IsBoxedValueEqual(object lhs, object rhs)
+        {
+            // Because Unity override '==' operator for UObject.
+            // So if any of them is UObject, compare them by '==' operator.
+            if (lhs is UObject || rhs is UObject)
+            {
+                var uLhs = lhs as UObject;
+                var uRhs = rhs as UObject;
+                return uLhs == uRhs;
+            }
+            // Compare them in other case.
+            else
+            {
+                // Cause of the boxing, we can't use '==' operator, otherwise it will compare them by reference.
+                // e.g.
+                // object a = 1;
+                // object b = 1;
+                // bool c = a == b; // c is false
+                return Equals(lhs, rhs);
+            }
+        }
+
+        public static Context CreateClassContext(object target, SerializedProperty serializedProperty)
         {
             var serviceWidget = new ServiceWidget();
             var serviceContext = serviceWidget.CreateContext();
@@ -55,7 +76,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
             var lastVisualContext = parentContext;
 
-            void BuildContextTree(Context parent)
+            void BuildContextTree(Context parentContext)
             {
                 while (iteractor.MoveNext())
                 {
@@ -65,19 +86,30 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                     {
                         var childWidget = WidgetBuilder.Create(widgetAttr);
                         var childContext = childWidget.CreateContext();
-                        parent.Attach(childContext);
 
+                        parentContext.Attach(childContext);
                         lastVisualContext = childContext;
 
-                        if (childWidget is ItemWidget)
+                        if (widgetAttr is ItemAttribute)
                         {
                             // Do nothing
                         }
-                        else if (childWidget is ScopeWidget)
+                        else if (widgetAttr is ScopeAttribute)
                         {
                             BuildContextTree(childContext);
                         }
                     }
+                    else if (widgetAttr is StylerAttribute)
+                    {
+                        var stylerWidget = WidgetBuilder.Create(widgetAttr);
+                        var stylerContext = stylerWidget.CreateContext();
+
+                        // Attach styler to lastVisualContext.
+                        // Not attach to parentContext is because
+                        // we need to let [ItemWidget] can use Styler too.
+                        lastVisualContext.Attach(stylerContext);
+                    }
+                    // Special processing of LogicAttribute
                     else if (widgetAttr is LogicAttribute)
                     {
                         // Terminate the loop at the EndScopeAttribute
@@ -86,20 +118,24 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                         {
                             break;
                         }
-
-                        // Create and attach the styler widget to last VisualContext.
-                        if (widgetAttr is StylerAttribute)
-                        {
-                            var stylerWidget = WidgetBuilder.Create(widgetAttr);
-
-                            var stylerContext = stylerWidget.CreateContext();
-                            lastVisualContext.Attach(stylerContext);
-                        }
                     }
                 }
             }
 
             BuildContextTree(parentContext);
+
+            if (iteractor.MoveNext())
+            {
+                var attr = iteractor.Current;
+                var name = attr.GetType().Name;
+                if (name.EndsWith("Attribute"))
+                {
+                    name = name.Remove(name.Length - 9);
+                }
+                Debug.LogWarning($"The ContextTree has been built, but [{name}] has not been added yet. Please check if there are any surplus [EndScope] before it.");
+                //
+                // eng:
+            }
         }
     }
 }

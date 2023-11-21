@@ -1,4 +1,4 @@
-﻿namespace Naukri.InspectorMaid.Editor.Widgets.Core
+﻿namespace Naukri.InspectorMaid.Editor.Core
 {
     internal interface IAttributeProvider
     {

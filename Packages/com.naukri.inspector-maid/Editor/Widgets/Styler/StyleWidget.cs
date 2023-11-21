@@ -4,16 +4,16 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
     public class StyleWidget : StylerWidgetOf<StyleAttribute>
     {
-        public override void OnStyling(IBuildContext context, VisualElement stylingElement)
+        public override void OnStyling(IBuildContext context, VisualElement element)
         {
             // add class
             foreach (var className in attribute.classList)
             {
-                stylingElement.AddToClassList(className);
+                element.AddToClassList(className);
             }
 
             // inline style
-            var style = stylingElement.style;
+            var style = element.style;
             style.alignContent = attribute.alignContent ?? style.alignContent;
             style.alignItems = attribute.alignItems ?? style.alignItems;
             style.alignSelf = attribute.alignSelf ?? style.alignSelf;

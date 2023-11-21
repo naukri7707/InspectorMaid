@@ -4,10 +4,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
     public class HideWidget : StylerWidgetOf<HideAttribute>
     {
-        public override void OnStyling(IBuildContext context, VisualElement stylingElement)
+        public override void OnStyling(IBuildContext context, VisualElement element)
         {
-            stylingElement.style.display = DisplayStyle.None;
-            stylingElement.style.visibility = Visibility.Hidden;
+            element.style.display = DisplayStyle.None;
+            element.style.visibility = Visibility.Hidden;
         }
     }
 }

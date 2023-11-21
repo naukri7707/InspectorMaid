@@ -1,10 +1,8 @@
 ﻿using Naukri.InspectorMaid.Core;
-using Naukri.InspectorMaid.Editor.Contexts.Core;
+using Naukri.InspectorMaid.Editor.Contexts;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.UIElements;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
-using Naukri.InspectorMaid.Editor.Widgets.Core;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
 using System;
@@ -16,7 +14,7 @@ using UObject = UnityEngine.Object;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public partial class ClassWidget : ScopeWidget, IContextAttachedReceiver
+    public partial class ClassWidget : Widget, IContextAttachedReceiver
     {
         public ClassWidget(object target, SerializedProperty serializedProperty)
         {
@@ -40,6 +38,27 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         private readonly SerializedProperty serializedProperty;
 
+        public override Context CreateContext() => new MultiChildContext(this);
+
+        public override VisualElement Build(IBuildContext context)
+        {
+            var container = new Class().Compose(c =>
+            {
+                c.name = $"class:{targetType.Name}";
+                c.children = BuildChildren(context);
+            });
+
+            var settings = IInspectorMaidSettings.Of(context);
+            var styleSheets = settings.ImportStyleSheets;
+
+            foreach (var sheet in styleSheets)
+            {
+                container.styleSheets.Add(sheet);
+            }
+
+            return container;
+        }
+
         public SerializedProperty GetSerializedProperty()
         {
             return serializedProperty.Copy();
@@ -60,25 +79,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             }
 
             InspectorMaidUtility.CreateWidgetContextsAndAttach(context, attrs);
-        }
-
-        public override VisualElement Build(IBuildContext context)
-        {
-            var container = new Class().Compose(c =>
-            {
-                c.name = $"class:{targetType.Name}";
-                c.children = BuildChildren(context);
-            });
-
-            var settings = IInspectorMaidSettings.Of(context);
-            var styleSheets = settings.ImportStyleSheets;
-
-            foreach (var sheet in styleSheets)
-            {
-                container.styleSheets.Add(sheet);
-            }
-
-            return container;
         }
 
         private class Class : VisualElement { }

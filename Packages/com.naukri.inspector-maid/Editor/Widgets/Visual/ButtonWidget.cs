@@ -1,10 +1,10 @@
-﻿using Naukri.InspectorMaid.Editor.Services;
-using UnityEditor;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using Naukri.InspectorMaid.Editor.Services;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
-    public class ButtonWidget : ItemWidgetOf<ButtonAttribute>
+    public class ButtonWidget : VisualWidgetOf<ButtonAttribute>
     {
         public override VisualElement Build(IBuildContext context)
         {
@@ -13,9 +13,11 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
             void buttonAction()
             {
-                Undo.RecordObject(serializedTarget, "Set Value");
+                if (attribute.setDirty)
+                {
+                    context.RecordAndSetDirty("Button Pressed");
+                }
                 context.InvokeBindingAction();
-                EditorUtility.SetDirty(serializedTarget);
             }
 
             var button = new Button(buttonAction)
