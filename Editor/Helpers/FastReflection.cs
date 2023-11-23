@@ -120,7 +120,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             public static FRGetter<TObject, TValue> CreateGetter<TObject, TValue>(FieldInfo fieldInfo, Type instanceType)
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                    ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                    : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : instanceExpr, fieldInfo);
                 var convertedFieldExpr = Expression.Convert(fieldExpr, typeof(TValue));
 
@@ -133,7 +135,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             public static FRSetter<TObject, TValue> CreateSetter<TObject, TValue>(FieldInfo fieldInfo, Type instanceType)
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                     ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                     : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var fieldExpr = Expression.Field(fieldInfo.IsStatic ? null : instanceExpr, fieldInfo);
                 var valueExpr = Expression.Parameter(typeof(TValue));
                 var convertedValueExpr = Expression.Convert(valueExpr, fieldInfo.FieldType);
@@ -149,7 +153,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             public static FRGetter<TObject, TValue> CreateGetter<TObject, TValue>(PropertyInfo propertyInfo, Type instanceType)
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                    ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                    : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : instanceExpr, propertyInfo);
                 var convertPropertyExpr = Expression.Convert(propertyExpr, typeof(TValue));
 
@@ -162,7 +168,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             public static FRSetter<TObject, TValue> CreateSetter<TObject, TValue>(PropertyInfo propertyInfo, Type instanceType)
             {
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                     ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                     : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var propertyExpr = Expression.Property(propertyInfo.IsStatic() ? null : instanceExpr, propertyInfo);
                 var valueExpr = Expression.Parameter(typeof(TValue));
                 var convertedValueExpr = Expression.Convert(valueExpr, propertyInfo.PropertyType);
@@ -180,7 +188,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                 var parameters = methodInfo.GetParameters();
 
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                    ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                    : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var argsExpr = Expression.Parameter(typeof(object[]));
 
                 var convertedArgExprs = parameters.Select((p, i) =>
@@ -203,7 +213,9 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                 var parameters = methodInfo.GetParameters();
 
                 var objectExpr = Expression.Parameter(typeof(TObject));
-                var instanceExpr = Expression.TypeAs(objectExpr, instanceType);
+                var instanceExpr = instanceType.IsClass
+                    ? Expression.TypeAs(objectExpr, instanceType)   // class polymorphism
+                    : Expression.Convert(objectExpr, instanceType); // struct boxing
                 var argsExpr = Expression.Parameter(typeof(object[]));
 
                 var convertedArgExprs = parameters.Select((p, i) =>
