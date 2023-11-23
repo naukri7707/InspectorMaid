@@ -51,13 +51,14 @@ namespace Naukri.InspectorMaid.Editor.Helpers
             var serviceContext = serviceWidget.CreateContext();
 
             var settings = InspectorMaidSettings.Instance;
-            var editorEventService = new CallbackService();
+            var callbackService = new CallbackService();
+
             var fastReflectionService = new FastReflectionService(target);
             var memberWidgetTemplateService = new MemberWidgetTemplates(target, serializedProperty.Copy());
-            var valueChangedListenerService = new ChangedNotifierService(editorEventService, fastReflectionService);
+            var valueChangedListenerService = new ChangedNotifierService(callbackService, fastReflectionService);
 
             serviceWidget.AddService<IInspectorMaidSettings>(settings);
-            serviceWidget.AddService<ICallbackService>(editorEventService);
+            serviceWidget.AddService<ICallbackService>(callbackService);
             serviceWidget.AddService<IFastReflectionService>(fastReflectionService);
             serviceWidget.AddService<IMemberWidgetTemplates>(memberWidgetTemplateService);
             serviceWidget.AddService<IChangedNotifierService>(valueChangedListenerService);
