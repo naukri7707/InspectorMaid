@@ -1,7 +1,10 @@
 ﻿using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using System;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
+using static Naukri.InspectorMaid.Editor.IBuildContext;
+using static PlasticGui.LaunchDiffParameters;
 
 namespace Naukri.InspectorMaid.Editor
 {
@@ -21,6 +24,26 @@ namespace Naukri.InspectorMaid.Editor
         public Context Parent => _parent;
 
         public Widget Widget => _widget;
+
+        public VisualElement[] BuildChildren(ChildBuiltCallback callback = null)
+        {
+            var children = new List<VisualElement>();
+            VisitChildContexts(child =>
+            {
+                if (child is Context visualContext)
+                {
+                    var childElement = visualContext.Build();
+
+                    if (childElement != null)
+                    {
+                        callback?.Invoke(child, childElement);
+                        children.Add(childElement);
+                    }
+                }
+            });
+
+            return children.ToArray();
+        }
 
         public T GetAncestorWidget<T>() where T : Widget
         {

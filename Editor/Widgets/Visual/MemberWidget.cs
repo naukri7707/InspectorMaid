@@ -38,7 +38,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         {
             var container = CreateContainer().Compose(c =>
             {
-                c.children = BuildChildren(context);
+                c.children = context.BuildChildren();
             });
 
             return container;

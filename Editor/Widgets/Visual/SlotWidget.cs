@@ -12,7 +12,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             var container = new Slot().Compose(c =>
             {
                 c.name = $"slot:{attribute.templateName}";
-                c.children = BuildChildren(context);
+                c.children = context.BuildChildren();
             });
 
             return container;

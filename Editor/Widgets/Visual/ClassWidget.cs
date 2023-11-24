@@ -45,7 +45,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             var container = new Class().Compose(c =>
             {
                 c.name = $"class:{targetType.Name}";
-                c.children = BuildChildren(context);
+                c.children = context.BuildChildren();
             });
 
             var settings = IInspectorMaidSettings.Of(context);

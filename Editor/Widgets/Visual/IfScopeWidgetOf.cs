@@ -26,7 +26,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets
 
             var container = CreateContainer().Compose(c =>
             {
-                c.children = BuildChildren(context);
+                c.children = context.BuildChildren();
             });
 
             var bindingValue = context.GetBindingValue();
