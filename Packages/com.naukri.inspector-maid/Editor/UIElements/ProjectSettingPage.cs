@@ -9,23 +9,23 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         public ProjectSettingPage(string titleText, VisualElement context)
         {
             // page container
-            var column = new Column().Compose(c =>
+            var column = new Column().Compose(ve =>
             {
-                c.padding = EdgeInsets.Only(left: 5, right: 8);
-                c.children = new[]
+                ve.padding = EdgeInsets.Only(left: 5, right: 8);
+                ve.children = new[]
                 {
                     // title container
-                    new Row() { name = "titleContainer" }.Compose(c =>
+                    new Row() { name = "titleContainer" }.Compose(ve =>
                     {
-                        c.children = new[]
+                        ve.children = new[]
                         {
                             // title
-                            new Label(titleText).Compose(c =>
+                            new Label(titleText).Compose(ve =>
                             {
-                                c.margin = EdgeInsets.Symmetric(vertical: 2, horizontal: 4);
-                                c.padding = EdgeInsets.Only(top: 0, right: 2, bottom: 2, left: 2);
-                                c.fontSize = 19;
-                                c.unityFontStyleAndWeight = FontStyle.Bold;
+                                ve.margin = EdgeInsets.Symmetric(vertical: 2, horizontal: 4);
+                                ve.padding = EdgeInsets.Only(top: 0, right: 2, bottom: 2, left: 2);
+                                ve.fontSize = 19;
+                                ve.unityFontStyleAndWeight = FontStyle.Bold;
                             })
                         };
                     }),

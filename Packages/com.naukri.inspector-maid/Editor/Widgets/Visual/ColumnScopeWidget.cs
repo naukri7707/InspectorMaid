@@ -8,9 +8,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var column = new Column().Compose(c =>
+            var column = new Column().Compose(ve =>
             {
-                c.children = BuildChildren(context);
+                ve.children = context.BuildChildren();
             });
 
             return column;

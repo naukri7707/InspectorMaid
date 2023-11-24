@@ -11,9 +11,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
             {
                 text = attribute.text,
                 value = attribute.expend
-            }.Compose(c =>
+            }.Compose(ve =>
             {
-                c.children = BuildChildren(context);
+                ve.children = context.BuildChildren();
             });
 
             return container;

@@ -6,6 +6,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 {
     public class Divider : VisualElement
     {
+        public Divider() : this(null)
+        {
+        }
+
         public Divider(string text)
         {
             this.text = text;

@@ -9,10 +9,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Slot().Compose(c =>
+            var container = new Slot().Compose(ve =>
             {
-                c.name = $"slot:{attribute.templateName}";
-                c.children = BuildChildren(context);
+                ve.name = $"slot:{attribute.templateName}";
+                ve.children = context.BuildChildren();
             });
 
             return container;

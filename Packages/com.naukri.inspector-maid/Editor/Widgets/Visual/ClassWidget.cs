@@ -42,10 +42,10 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Class().Compose(c =>
+            var container = new Class().Compose(ve =>
             {
-                c.name = $"class:{targetType.Name}";
-                c.children = BuildChildren(context);
+                ve.name = $"class:{targetType.Name}";
+                ve.children = context.BuildChildren();
             });
 
             var settings = IInspectorMaidSettings.Of(context);

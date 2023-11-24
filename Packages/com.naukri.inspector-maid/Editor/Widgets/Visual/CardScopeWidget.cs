@@ -16,9 +16,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                 false => new Card(),
             };
 
-            card.Compose(c =>
+            card.Compose(ve =>
             {
-                c.children = BuildChildren(context);
+                ve.children = context.BuildChildren();
             });
 
             return card;

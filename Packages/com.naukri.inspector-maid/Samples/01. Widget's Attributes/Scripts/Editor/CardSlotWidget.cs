@@ -2,6 +2,7 @@
 using Naukri.InspectorMaid.Editor;
 using Naukri.InspectorMaid.Editor.Core;
 using Naukri.InspectorMaid.Editor.UIElements;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using UnityEngine.UIElements;
 
@@ -25,11 +26,10 @@ namespace Naukri.InspectorMaid.Samples.Editor
 
         public override VisualElement Build(IBuildContext context)
         {
-            var card = new Card();
-            card.style.backgroundColor = DefaultBGColor.Value;
-            BuildChildren(context, (ctx, e) =>
+            var card = new Card().Compose(ve =>
             {
-                card.Add(e);
+                ve.backgroundColor = DefaultBGColor.Value;
+                ve.children = context.BuildChildren();
             });
 
             return card;
