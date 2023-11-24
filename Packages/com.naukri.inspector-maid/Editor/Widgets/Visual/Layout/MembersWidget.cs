@@ -1,4 +1,5 @@
 ﻿using Naukri.InspectorMaid.Editor.Services;
+using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using Naukri.InspectorMaid.Editor.Widgets.Receivers;
 using Naukri.InspectorMaid.Layout;
 using UnityEngine.UIElements;
@@ -9,11 +10,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Members();
-
-            BuildChildren(context, (ctx, e) =>
+            var container = new Members().Compose(c =>
             {
-                container.Add(e);
+                c.children = context.BuildChildren();
             });
 
             return container;

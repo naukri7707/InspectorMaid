@@ -10,7 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         {
             var row = new Row().Compose(c =>
             {
-                c.children = BuildChildren(context);
+                c.children = context.BuildChildren();
             });
 
             return row;
