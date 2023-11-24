@@ -11,9 +11,9 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         {
             var m_ScriptProperty = serializedObject.FindProperty("m_Script");
 
-            var scriptField = new PropertyField(m_ScriptProperty).Compose(c =>
+            var scriptField = new PropertyField(m_ScriptProperty).Compose(ve =>
             {
-                c.enabled = false;
+                ve.enabled = false;
             });
 
             Add(scriptField);
