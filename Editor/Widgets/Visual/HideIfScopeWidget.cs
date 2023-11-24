@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 {
@@ -8,16 +9,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         protected override void OnUpdateElement(VisualElement container, bool condition)
         {
-            if (condition)
-            {
-                container.style.display = DisplayStyle.None;
-                container.style.visibility = Visibility.Hidden;
-            }
-            else
-            {
-                container.style.display = DisplayStyle.Flex;
-                container.style.visibility = Visibility.Visible;
-            }
+            container.SetDisplay(!condition);
         }
 
         private class HideIf : VisualElement { }

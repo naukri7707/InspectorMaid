@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using Naukri.InspectorMaid.Editor.Extensions;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
@@ -6,8 +7,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
     {
         public override void OnStyling(IBuildContext context, VisualElement element)
         {
-            element.style.display = DisplayStyle.None;
-            element.style.visibility = Visibility.Hidden;
+            element.SetDisplay(false);
         }
     }
 }
