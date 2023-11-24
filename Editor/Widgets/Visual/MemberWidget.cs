@@ -36,9 +36,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = CreateContainer().Compose(c =>
+            var container = CreateContainer().Compose(ve =>
             {
-                c.children = context.BuildChildren();
+                ve.children = context.BuildChildren();
             });
 
             return container;

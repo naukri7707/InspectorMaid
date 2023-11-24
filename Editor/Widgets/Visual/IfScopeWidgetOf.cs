@@ -24,9 +24,9 @@ namespace Naukri.InspectorMaid.Editor.Widgets
                 false => null,
             };
 
-            var container = CreateContainer().Compose(c =>
+            var container = CreateContainer().Compose(ve =>
             {
-                c.children = context.BuildChildren();
+                ve.children = context.BuildChildren();
             });
 
             var bindingValue = context.GetBindingValue();

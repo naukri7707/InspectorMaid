@@ -31,9 +31,9 @@ namespace Naukri.InspectorMaid.Editor.Core
                 var foldout = new Foldout()
                 {
                     text = property.displayName
-                }.Compose(c =>
+                }.Compose(ve =>
                 {
-                    c.children = new[]
+                    ve.children = new[]
                     {
                         classElement
                     };
