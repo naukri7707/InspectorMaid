@@ -2,12 +2,12 @@
 
 ## 透過 `WidgetAttribute` 描述 `WidgetTree` 來繪製 UI
 
-Inspector Maid 繪製的 UI 主要透過利用由以下 3 種 `WidgetAttribute` 描述對應的功能，並互相協作組合而成。
+Inspector Maid 繪製的 UI 主要透過利用由以下 4 種 `WidgetAttribute` 描述對應的功能，並互相協作組合而成。
 
-1. `Item` : 沒有子元素的小部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`。
-2. `Scope` : 可以容納有子元素的小部件，例如 `Container` 和 `Foldout`。
-3. `Styler` : 用於設計小部件風格，例如 `Style` 、 `ReadOnly` 及 `Label`。
-4. `Logic` : 用於標註特殊行為，例如 `EndScope` 及 `Template`。
+1. `Item` : 產生一個沒有子元素的小部件，例如 `Button`、`HelpBox` 或是欄位本身 `Target`。
+2. `Scope` : 產生一個可以容納有子元素的小部件，例如 `Column`、`Row` 和 `Foldout`。
+3. `Styler` : 調整上一個小部件 (`Item` 或 `Scope`) 的風格，例如 `Style`、`ReadOnly` 及 `Label`。
+4. `Logic` : 不直接參與設計，但用於標註一些特殊行為，例如 `EndScope` 及 `Template`。
 
 Inspector Maid 會為每一個目標建立一棵 `WidgetTree`，並根據不同的 `WidgetAttribute` 產生對應的 `Widget` 進行組合。最終組成類似於下圖的結構：
 
@@ -410,34 +410,41 @@ public class MyScopeWidget : VisualWidgetOf<MyScopeAttribute>
     public override VisualElement Build(IBuildContext context)
     {
         // 建立一個容器來存放要產生的 UI
-        var container = new VisualElement();
+        var myScope = new MyScope();
 
         // 假設我們想要一個 Label
         var label = new Label("Hello World!");
-        container.Add(label);
+        myScope.Add(label);
 
         // 如果是 Scope，我們還需要使用 BuildChildren 
         // 來建立子 Widget 並將其加入到 container 之中
-        BuildChildren(context, (ctx, e) =>
+        context.BuildChildren((ctx, e) =>
         {
             // ctx 是子 Widget 的 Context
             // e 是子 Widget 在 Build() 之後產生的 VisualElement
             // 我們將產生的 VisualElement 簡單的加入到 container 之中
-            container.Add(e);
+            myScope.Add(e);
         });
 
-        return container;
+        return myScope;
     }
+
+	// 雖然沒有必要，但我們建議針對不同的 Widget 建立一個對應的 VisualElement，
+	// 這能讓日後設計 UI 時偵錯更輕鬆。
+	private class MyScope : VisualElement { }
 }
 ```
 
-#### `StylerWidget` : 實作 `OnStyling()`
+#### `StylerWidget` : 實作 `OnStyling()` 及 `ClassName`
 
 當你的目標是 `StylerWidget` 時，你需要實作 `OnStyling()` 函式來描述如何調整目標 `VisualElement` 的風格。
+為了方便日後設計時偵錯， `StylerWidget` 還會要求你定義一個附加給目標元素的 `ClassName` 作為標籤。 
 
 ```cs
 public class MyStylerWidget : StylerWidgetOf<MyStylerAttribute>
 {
+	public override string ClassName => "my-styler";
+
     // OnStyling 會在 stylingElement 被 Build() 後呼叫
     // stylingElement 會是該 Styler 之前最接近的 VisualWidget 所產生的 VisualElement
     public override void OnStyling(IBuildContext context, VisualElement element)
