@@ -4,6 +4,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
     public class StyleWidget : StylerWidgetOf<StyleAttribute>
     {
+        public override string ClassName => "style-styler";
+
         public override void OnStyling(IBuildContext context, VisualElement element)
         {
             // add class
