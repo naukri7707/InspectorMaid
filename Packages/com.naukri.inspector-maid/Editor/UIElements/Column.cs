@@ -4,7 +4,11 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 {
     public sealed class Column : VisualElement
     {
-        public Column(bool reverse = false)
+        public Column() : this(false)
+        {
+        }
+
+        public Column(bool reverse)
         {
             style.flexDirection = reverse switch
             {

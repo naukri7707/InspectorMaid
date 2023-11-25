@@ -1,4 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
+﻿using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,48 +13,51 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         public Divider(string text)
         {
             this.text = text;
+            var textElement = new Label(text);
 
-            if (string.IsNullOrEmpty(text))
+            new ComposerOf(this)
             {
-                style.SetMarginSymmetric(vertical: 5);
-                style.flexDirection = FlexDirection.Row;
-                style.height = 17;
-
-                var box = new Box();
-                box.style.alignSelf = Align.Center;
-                box.style.flexGrow = 0.99F;
-                box.style.backgroundColor = LineDefaultColor;
-                box.style.height = 2;
-                Add(box);
-            }
-            else
-            {
-                style.SetMarginSymmetric(vertical: 5);
-                style.flexDirection = FlexDirection.Row;
-
-                var boxStart = new Box();
-                boxStart.style.alignSelf = Align.Center;
-                boxStart.style.width = 50;
-                boxStart.style.backgroundColor = LineDefaultColor;
-                boxStart.style.height = 2;
-
-                var label = new Label(text);
-                label.style.color = LineDefaultColor;
-                label.style.flexGrow = 0.01F;
-                label.style.fontSize = 14;
-                label.style.unityTextAlign = TextAnchor.MiddleCenter;
-                label.style.unityFontStyleAndWeight = FontStyle.Bold;
-
-                var boxEnd = new Box();
-                boxEnd.style.alignSelf = Align.Center;
-                boxEnd.style.flexGrow = 0.99F;
-                boxEnd.style.backgroundColor = LineDefaultColor;
-                boxEnd.style.height = 2;
-
-                Add(boxStart);
-                Add(label);
-                Add(boxEnd);
-            }
+                margin = EdgeInsets.Symmetric(vertical: 5),
+                flexDirection = FlexDirection.Row,
+                children = string.IsNullOrEmpty(text) switch
+                {
+                    true => new VisualElement[]
+                    {
+                        new ComposerOf(new Box())
+                        {
+                            alignSelf = Align.Center,
+                            flexGrow = 0.99F,
+                            backgroundColor = LineDefaultColor,
+                            height = 2,
+                        }
+                    },
+                    false => new VisualElement[]
+                    {
+                        new ComposerOf(new Box())
+                        {
+                            alignSelf = Align.Center,
+                            width = 50,
+                            backgroundColor = LineDefaultColor,
+                            height = 2,
+                        },
+                        new ComposerOf(textElement)
+                        {
+                            color = LineDefaultColor,
+                            flexGrow = 0.01F,
+                            fontSize = 14,
+                            unityTextAlign = TextAnchor.MiddleCenter,
+                            unityFontStyleAndWeight = FontStyle.Bold,
+                        },
+                        new ComposerOf(new Box())
+                        {
+                            alignSelf = Align.Center,
+                            flexGrow = 0.99F,
+                            backgroundColor = LineDefaultColor,
+                            height = 2,
+                        },
+                    }
+                }
+            };
         }
 
         public string text;

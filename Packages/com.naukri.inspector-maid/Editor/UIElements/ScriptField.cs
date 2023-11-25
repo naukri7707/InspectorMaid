@@ -11,12 +11,16 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         {
             var m_ScriptProperty = serializedObject.FindProperty("m_Script");
 
-            var scriptField = new PropertyField(m_ScriptProperty).Compose(ve =>
+            new ComposerOf(this)
             {
-                ve.enabled = false;
-            });
-
-            Add(scriptField);
+                children = new VisualElement[]
+                {
+                    new ComposerOf(new PropertyField(m_ScriptProperty))
+                    {
+                        enabled = false,
+                    }
+                },
+            };
         }
     }
 }
