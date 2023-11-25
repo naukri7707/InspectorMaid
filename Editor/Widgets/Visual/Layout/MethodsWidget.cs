@@ -11,12 +11,12 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Methods().Compose(ve =>
+            var methods = new ComposerOf(new Methods())
             {
-                ve.children = context.BuildChildren();
-            });
+                children = context.BuildChildren()
+            };
 
-            return container;
+            return methods;
         }
 
         public void OnContextAttached(Context context)

@@ -28,16 +28,18 @@ namespace Naukri.InspectorMaid.Editor.Core
                 editorEventService.RegisterCallback(classElement);
 
                 // Wrap class element with foldout
-                var foldout = new Foldout()
+                var foldout = new Foldout
                 {
                     text = property.displayName
-                }.Compose(ve =>
+                };
+
+                new ComposerOf(classElement)
                 {
-                    ve.children = new[]
+                    children = new VisualElement[]
                     {
-                        classElement
-                    };
-                });
+                        foldout
+                    }
+                };
 
                 return foldout;
             }

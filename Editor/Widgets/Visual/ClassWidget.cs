@@ -42,21 +42,23 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Class().Compose(ve =>
+            var classElement = new Class();
+
+            new ComposerOf(classElement)
             {
-                ve.name = $"class:{targetType.Name}";
-                ve.children = context.BuildChildren();
-            });
+                name = $"class:{targetType.Name}",
+                children = context.BuildChildren(),
+            };
 
             var settings = IInspectorMaidSettings.Of(context);
             var styleSheets = settings.ImportStyleSheets;
 
             foreach (var sheet in styleSheets)
             {
-                container.styleSheets.Add(sheet);
+                classElement.styleSheets.Add(sheet);
             }
 
-            return container;
+            return classElement;
         }
 
         public SerializedProperty GetSerializedProperty()

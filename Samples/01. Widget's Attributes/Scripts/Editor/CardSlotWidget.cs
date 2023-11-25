@@ -26,11 +26,11 @@ namespace Naukri.InspectorMaid.Samples.Editor
 
         public override VisualElement Build(IBuildContext context)
         {
-            var card = new Card().Compose(ve =>
+            var card = new ComposerOf(new Card())
             {
-                ve.backgroundColor = DefaultBGColor.Value;
-                ve.children = context.BuildChildren();
-            });
+                backgroundColor = DefaultBGColor.Value,
+                children = context.BuildChildren()
+            };
 
             return card;
         }

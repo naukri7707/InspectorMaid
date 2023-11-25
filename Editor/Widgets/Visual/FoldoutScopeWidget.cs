@@ -7,16 +7,18 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Foldout
+            var foldout = new Foldout
             {
                 text = attribute.text,
                 value = attribute.expend
-            }.Compose(ve =>
-            {
-                ve.children = context.BuildChildren();
-            });
+            };
 
-            return container;
+            new ComposerOf(foldout)
+            {
+                children = context.BuildChildren(),
+            };
+
+            return foldout;
         }
     }
 }

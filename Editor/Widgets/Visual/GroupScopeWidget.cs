@@ -1,6 +1,4 @@
-﻿using Naukri.InspectorMaid.Editor.Extensions;
-using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.UIElements;
+﻿using Naukri.InspectorMaid.Editor.UIElements;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using UnityEngine.UIElements;
 
@@ -10,12 +8,15 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var group = new Group(attribute.text).Compose(ve =>
+            var group = new Group(attribute.text)
             {
-                ve.children = context.BuildChildren();
-            });
+                Expend = attribute.expend
+            };
 
-            group.Expend = attribute.expend;
+            new ComposerOf(group)
+            {
+                children = context.BuildChildren()
+            };
 
             return group;
         }

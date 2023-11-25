@@ -9,13 +9,13 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var container = new Slot().Compose(ve =>
+            var slot = new ComposerOf(new Slot())
             {
-                ve.name = $"slot:{attribute.templateName}";
-                ve.children = context.BuildChildren();
-            });
+                name = $"slot:{attribute.templateName}",
+                children = context.BuildChildren(),
+            };
 
-            return container;
+            return slot;
         }
 
         public void OnContextAttached(Context context)

@@ -8,32 +8,36 @@ namespace Naukri.InspectorMaid.Editor.UIElements
     {
         public ProjectSettingPage(string titleText, VisualElement context)
         {
-            // page container
-            var column = new Column().Compose(ve =>
+            new ComposerOf(this)
             {
-                ve.padding = EdgeInsets.Only(left: 5, right: 8);
-                ve.children = new[]
+                children = new VisualElement[]
                 {
-                    // title container
-                    new Row() { name = "titleContainer" }.Compose(ve =>
+                    new ComposerOf(new Column())
                     {
-                        ve.children = new[]
+                        padding = EdgeInsets.Only(left: 5, right: 8),
+                        children = new VisualElement[]
                         {
-                            // title
-                            new Label(titleText).Compose(ve =>
+                            // title container
+                            new ComposerOf(new Row())
                             {
-                                ve.margin = EdgeInsets.Symmetric(vertical: 2, horizontal: 4);
-                                ve.padding = EdgeInsets.Only(top: 0, right: 2, bottom: 2, left: 2);
-                                ve.fontSize = 19;
-                                ve.unityFontStyleAndWeight = FontStyle.Bold;
-                            })
-                        };
-                    }),
-                    context,
-                };
-            });
-
-            Add(column);
+                                name = "titleContainer",
+                                children = new VisualElement[]
+                                {
+                                    // title
+                                    new ComposerOf(new Label(titleText))
+                                    {
+                                        margin = EdgeInsets.Symmetric(vertical: 2, horizontal: 4),
+                                        padding = EdgeInsets.Only(top: 0, right: 2, bottom: 2, left: 2),
+                                        fontSize = 19,
+                                        unityFontStyleAndWeight = FontStyle.Bold,
+                                    }
+                                }
+                            },
+                            new ComposerOf(context),
+                        },
+                    }
+                }
+            };
         }
     }
 }
