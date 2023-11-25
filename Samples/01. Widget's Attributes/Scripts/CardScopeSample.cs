@@ -2,12 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox(
-@"[CardScope] will create a card style widget to wrap the content,
-this is useful for highlighting some content.", HelpBoxMessageType.Info)]
-    [Divider("01. CardScope")]
-    [CardSlot(nameof(cardScope))]
-    public class CardScopeSample : AttributeSampleBehaviour
+    public partial class CardScopeSample : AttributeSampleBehaviour
     {
         // Sample 1
         [CardScope]
@@ -15,4 +10,13 @@ this is useful for highlighting some content.", HelpBoxMessageType.Info)]
         [EndScope]
         public int cardScope;
     }
+
+    [HelpBox(
+    @"[CardScope] will create a card style widget to wrap the content,
+this is useful for highlighting some content.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. CardScope", true)]
+    [CardSlot(nameof(cardScope))]
+    [EndScope]
+    partial class CardScopeSample { }
 }

@@ -3,16 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[Button] can invoke binded method on user click.", HelpBoxMessageType.Info)]
-    [Divider("01. Button in any direction")]
-    [CardSlot(nameof(buttonBeforeTarget))]
-    [CardSlot(nameof(buttonAfterTarget))]
-    [CardSlot(nameof(buttonBeforeTargetInRow))]
-    [CardSlot(nameof(buttonAfterTargetInRow))]
-    [Divider("02. Binding with parameters")]
-    [HelpBox("[Button] can also invoke method with parameters.", HelpBoxMessageType.Info)]
-    [CardSlot(nameof(buttonWithArgs))]
-    public class ButtonSample : AttributeSampleBehaviour
+    public partial class ButtonSample : AttributeSampleBehaviour
     {
         // Sample 1
         [Button("Click", binding: nameof(MyMethod))]
@@ -55,4 +46,19 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
             Debug.Log($"{message}, {anotherMessage}");
         }
     }
+
+    [HelpBox("[Button] can invoke binded method on user click.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. Button in any direction", true)]
+    [CardSlot(nameof(buttonBeforeTarget))]
+    [CardSlot(nameof(buttonAfterTarget))]
+    [CardSlot(nameof(buttonBeforeTargetInRow))]
+    [CardSlot(nameof(buttonAfterTargetInRow))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. Binding with parameters", true)]
+    [HelpBox("[Button] can also invoke method with parameters.", HelpBoxMessageType.Info)]
+    [CardSlot(nameof(buttonWithArgs))]
+    [EndScope]
+    partial class ButtonSample { }
 }
