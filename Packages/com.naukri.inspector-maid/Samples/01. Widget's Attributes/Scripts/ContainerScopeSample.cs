@@ -2,12 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[ColumnScope] and [RowScope] can help you to wrapping your UI vertically or horizontally.", HelpBoxMessageType.Info)]
-    [Divider("01. Column")]
-    [CardSlot(nameof(column))]
-    [Divider("02. Row")]
-    [CardSlot(nameof(row))]
-    public class ContainerScopeSample : AttributeSampleBehaviour
+    public partial class ContainerScopeSample : AttributeSampleBehaviour
     {
         // Sample 1
         [Target]
@@ -25,4 +20,15 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         [HelpBox("My UI3", HelpBoxMessageType.Error), Style(flexGrow: "1")]
         public int row;
     }
+
+    [HelpBox("[ColumnScope] and [RowScope] can help you to wrapping your UI vertically or horizontally.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. Column", true)]
+    [CardSlot(nameof(column))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. Row", true)]
+    [CardSlot(nameof(row))]
+    [EndScope]
+    partial class ContainerScopeSample { }
 }

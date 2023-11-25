@@ -3,20 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[Hide] will hide lastest widget.", HelpBoxMessageType.Info)]
-    [Divider("01. Hide any widget")]
-    [CardSlot(nameof(hideWidget))]
-    [Divider("02. Hide [Target]")]
-    [HelpBox(@"Because [Hide] is a styler, so we need add [Target] before it, otherwise it will hide lastest widget: [Button].", HelpBoxMessageType.Warning)]
-    [CardSlot(nameof(bad))]
-    [CardSlot(nameof(good))]
-    [Divider("03. Hide multiple widgets")]
-    [CardSlot(nameof(hideMultipleWidgets))]
-    [Divider("04. Simpify trick")]
-    [HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets in this member).
-So if you don't have any other widget, and only want to hide the [Target], you can simply add [Hide] to the member.", HelpBoxMessageType.Info)]
-    [Slot(nameof(hideMember))]
-    public class HideSample : AttributeSampleBehaviour
+    public partial class HideSample : AttributeSampleBehaviour
     {
         // Sample 1
         [Button("Click me!", binding: nameof(HelloWorld)), Hide]
@@ -48,4 +35,27 @@ So if you don't have any other widget, and only want to hide the [Target], you c
             Debug.Log("Hello world!");
         }
     }
+
+    [HelpBox("[Hide] will hide lastest widget.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. Hide any widget")]
+    [CardSlot(nameof(hideWidget))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. Hide [Target]")]
+    [HelpBox(@"Because [Hide] is a styler, so we need add [Target] before it, otherwise it will hide lastest widget: [Button].", HelpBoxMessageType.Warning)]
+    [CardSlot(nameof(bad))]
+    [CardSlot(nameof(good))]
+    [EndScope]
+    // Sample 3
+    [GroupScope("03. Hide multiple widgets")]
+    [CardSlot(nameof(hideMultipleWidgets))]
+    [EndScope]
+    // Sample 4
+    [GroupScope("04. Simpify trick")]
+    [HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets in this member).
+So if you don't have any other widget, and only want to hide the [Target], you can simply add [Hide] to the member.", HelpBoxMessageType.Info)]
+    [Slot(nameof(hideMember))]
+    [EndScope]
+    partial class HideSample { }
 }

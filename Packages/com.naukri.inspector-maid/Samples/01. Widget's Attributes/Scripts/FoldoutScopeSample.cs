@@ -2,13 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[FoldoutScope] allows you to create a scope that can be toggled visible by clicking the header.", HelpBoxMessageType.Info)]
-    [Divider("01. Foldout")]
-    [CardSlot(nameof(sample1))]
-    [Divider("02. Expend by default")]
-    [HelpBox("You can also change the default expand if you want.", HelpBoxMessageType.Info)]
-    [CardSlot(nameof(sample2))]
-    public class FoldoutScopeSample : AttributeSampleBehaviour
+    public partial class FoldoutScopeSample : AttributeSampleBehaviour
     {
         // Sample 1
         [FoldoutScope("Help Infos")]
@@ -28,4 +22,16 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         [Target]
         public int sample2;
     }
+
+    [HelpBox("[FoldoutScope] allows you to create a scope that can be toggled visible by clicking the header.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. Foldout", true)]
+    [CardSlot(nameof(sample1))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. Expend by default", true)]
+    [HelpBox("You can also change the default expand if you want.", HelpBoxMessageType.Info)]
+    [CardSlot(nameof(sample2))]
+    [EndScope]
+    partial class FoldoutScopeSample { }
 }
