@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
 {
-    public class Divider : VisualElement
+    public partial class Divider : VisualElement
     {
         public Divider() : this(null)
         {
@@ -23,7 +23,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 var box = new Box();
                 box.style.alignSelf = Align.Center;
                 box.style.flexGrow = 0.99F;
-                box.style.backgroundColor = kColor;
+                box.style.backgroundColor = LineDefaultColor;
                 box.style.height = 2;
                 Add(box);
             }
@@ -35,11 +35,11 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 var boxStart = new Box();
                 boxStart.style.alignSelf = Align.Center;
                 boxStart.style.width = 50;
-                boxStart.style.backgroundColor = kColor;
+                boxStart.style.backgroundColor = LineDefaultColor;
                 boxStart.style.height = 2;
 
                 var label = new Label(text);
-                label.style.color = kColor;
+                label.style.color = LineDefaultColor;
                 label.style.flexGrow = 0.01F;
                 label.style.fontSize = 14;
                 label.style.unityTextAlign = TextAnchor.MiddleCenter;
@@ -48,7 +48,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                 var boxEnd = new Box();
                 boxEnd.style.alignSelf = Align.Center;
                 boxEnd.style.flexGrow = 0.99F;
-                boxEnd.style.backgroundColor = kColor;
+                boxEnd.style.backgroundColor = LineDefaultColor;
                 boxEnd.style.height = 2;
 
                 Add(boxStart);
@@ -57,8 +57,11 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             }
         }
 
-        public readonly StyleColor kColor = new(new Color32(128, 128, 128, 255));
-
         public string text;
+    }
+
+    partial class Divider
+    {
+        public static StyleColor LineDefaultColor => new(new Color32(128, 128, 128, 255));
     }
 }
