@@ -2,9 +2,9 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class ShowIfScopeAttribute : IfScopeAttribute
+    public class ShowIfAttribute : IfStylerAttribute
     {
-        public ShowIfScopeAttribute(
+        public ShowIfAttribute(
             string binding,
             object value,
             ConditionLogic conditionLogic = ConditionLogic.Value,
@@ -13,7 +13,7 @@ namespace Naukri.InspectorMaid
         {
         }
 
-        public ShowIfScopeAttribute(
+        public ShowIfAttribute(
             string binding,
             object value1,
             object value2,
@@ -23,7 +23,7 @@ namespace Naukri.InspectorMaid
         {
         }
 
-        public ShowIfScopeAttribute(
+        public ShowIfAttribute(
             string binding,
             object value1,
             object value2,
@@ -34,7 +34,7 @@ namespace Naukri.InspectorMaid
         {
         }
 
-        public ShowIfScopeAttribute(
+        public ShowIfAttribute(
             string binding,
             object value1,
             object value2,
@@ -46,7 +46,7 @@ namespace Naukri.InspectorMaid
         {
         }
 
-        public ShowIfScopeAttribute(
+        public ShowIfAttribute(
             string binding,
             object[] values = null,
             ConditionLogic conditionLogic = ConditionLogic.Value,

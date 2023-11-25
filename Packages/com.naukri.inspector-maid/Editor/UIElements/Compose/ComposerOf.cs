@@ -1,19 +1,24 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.UIElements.Compose
 {
     [SuppressMessage("Style", "IDE1006")]
-    public readonly struct ComposerOf<T> where T : VisualElement
+    public readonly partial struct ComposerOf
     {
-        public ComposerOf(T visualElement)
+        public ComposerOf(VisualElement visualElement)
         {
             element = visualElement;
         }
 
-        public readonly T element;
+        private readonly VisualElement element;
+
+        public VisualElement Element => element;
+
+        private IStyle style => element.style;
+
+        #region -- Element --
 
         public string name
         {
@@ -46,7 +51,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements.Compose
 
         public VisualElement[] children
         {
-            get => element.Children().ToArray();
             set
             {
                 element.Clear();
@@ -56,6 +60,21 @@ namespace Naukri.InspectorMaid.Editor.UIElements.Compose
                 }
             }
         }
+
+        public Callback[] callbacks
+        {
+            set
+            {
+                foreach (var callback in value)
+                {
+                    callback.RegisterTo(element);
+                }
+            }
+        }
+
+        #endregion -- Element --
+
+        #region -- Shorthand Style --
 
         public Border border
         {
@@ -167,12 +186,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements.Compose
             }
         }
 
-        private IStyle style => element.style;
-
-        public void On<TEventType>(EventCallback<TEventType> callback, TrickleDown useTrickleDown = TrickleDown.NoTrickleDown) where TEventType : EventBase<TEventType>, new()
-        {
-            element.RegisterCallback(callback, useTrickleDown);
-        }
+        #endregion -- Shorthand Style --
 
         #region -- Direct Style --
 
@@ -293,14 +307,11 @@ namespace Naukri.InspectorMaid.Editor.UIElements.Compose
         #endregion -- Direct Style --
     }
 
-    public static class ExtensionForComposer
+    partial struct ComposerOf
     {
-        public static T Compose<T>(this T visualElement, ComposeAction<T> action) where T : VisualElement
+        public static implicit operator VisualElement(ComposerOf composer)
         {
-            action(new ComposerOf<T>(visualElement));
-            return visualElement;
+            return composer.element;
         }
-
-        public delegate void ComposeAction<T>(ComposerOf<T> composer) where T : VisualElement;
     }
 }

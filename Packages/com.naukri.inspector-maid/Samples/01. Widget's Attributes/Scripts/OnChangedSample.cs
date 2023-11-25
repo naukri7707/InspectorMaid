@@ -2,16 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[OnChanged] can help you listen to the target member and invokes the target method when changes occur.", HelpBoxMessageType.Info)]
-    [Divider("01. OnChanged")]
-    [CardSlot(nameof(myInt))]
-    [Divider("02. OnChanged and modify field")]
-    [HelpBox("Notice that Inspector-Maid only work in Unity's editor, so [OnChanged] won't be invoked during runtime.", HelpBoxMessageType.Warning)]
-    [CardScope(color: CardSlotAttribute.kDefaultBGColor)]
-    [Slot(nameof(myInt2))]
-    [Slot(nameof(checkedIfMyInt2Is100))]
-    [EndScope]
-    public class OnChangedSample : AttributeSampleBehaviour
+    public partial class OnChangedSample : AttributeSampleBehaviour
     {
         // Sample 1
         [OnChanged(nameof(LogChanged))]
@@ -34,4 +25,18 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
             checkedIfMyInt2Is100 = myInt2 == 100;
         }
     }
+
+    [HelpBox("[OnChanged] can help you listen to the target member and invokes the target method when changes occur.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. OnChanged", true)]
+    [CardSlot(nameof(myInt))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. OnChanged and modify field", true)]
+    [HelpBox("Notice that Inspector-Maid only work in Unity's editor, so [OnChanged] won't be invoked during runtime.", HelpBoxMessageType.Warning)]
+    [CardScope(color: CardSlotAttribute.kDefaultBGColor)]
+    [Slot(nameof(myInt2))]
+    [Slot(nameof(checkedIfMyInt2Is100))]
+    [EndScope]
+    partial class OnChangedSample { }
 }

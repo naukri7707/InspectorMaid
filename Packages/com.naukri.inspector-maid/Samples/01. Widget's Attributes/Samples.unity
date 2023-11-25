@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 231075560}
   - component: {fileID: 231075561}
   m_Layer: 0
-  m_Name: Divider (Scope)
+  m_Name: Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,8 +366,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   disable: 0
-  disableTarget: 0
-  disableUI: 0
+  disableIfTrue: 0
+  value: 0
+  disableIfValueIs10Or20: 0
+  enumValue: 0
+  disableIfHasFlagAOrB: 0
+  text: 
+  disableIfTextLengthGreaterThan5: 0
+  disableIfTextContainsA: 0
 --- !u!4 &370511739
 Transform:
   m_ObjectHideFlags: 0
@@ -381,7 +387,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1841334721}
+  m_Father: {fileID: 974059910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &375380287
 GameObject:
@@ -413,8 +419,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   show: 0
-  hideTarget: 0
-  hideUI: 0
+  showIfTrue: 0
+  value: 0
+  showIfValueIs10Or20: 0
+  enumValue: 0
+  showIfHasFlagAOrB: 0
+  text: 
+  showIfTextLengthGreaterThan5: 0
+  showIfTextContainsA: 0
 --- !u!4 &375380289
 Transform:
   m_ObjectHideFlags: 0
@@ -428,7 +440,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1841334721}
+  m_Father: {fileID: 974059910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &405290176
 GameObject:
@@ -695,6 +707,10 @@ Transform:
   m_Children:
   - {fileID: 1169365246}
   - {fileID: 1655322640}
+  - {fileID: 370511739}
+  - {fileID: 1848947605}
+  - {fileID: 1526132155}
+  - {fileID: 375380289}
   - {fileID: 320707574}
   - {fileID: 405290178}
   m_Father: {fileID: 0}
@@ -917,6 +933,7 @@ MonoBehaviour:
   readonlyWidget: 0
   bad: 0
   good: 0
+  readOnlyMultipleWidgets: 0
   readOnlyMember: 0
 --- !u!4 &1169365246
 Transform:
@@ -963,8 +980,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hide: 0
-  hideTarget: 0
-  hideUI: 0
+  hideIfTrue: 0
+  value: 0
+  hideIfValueIs10Or20: 0
+  enumValue: 0
+  hideIfHasFlagAOrB: 0
+  text: 
+  hideIfTextLengthGreaterThan5: 0
+  hideIfTextContainsA: 0
 --- !u!4 &1526132155
 Transform:
   m_ObjectHideFlags: 0
@@ -978,7 +1001,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1841334721}
+  m_Father: {fileID: 974059910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591633823
 GameObject:
@@ -1104,6 +1127,7 @@ MonoBehaviour:
   hideWidget: 0
   bad: 0
   good: 0
+  hideMultipleWidgets: 0
   hideMember: 0
 --- !u!4 &1655322640
 Transform:
@@ -1151,10 +1175,6 @@ Transform:
   m_Children:
   - {fileID: 756865177}
   - {fileID: 1591633825}
-  - {fileID: 370511739}
-  - {fileID: 1848947605}
-  - {fileID: 1526132155}
-  - {fileID: 375380289}
   - {fileID: 1046575979}
   - {fileID: 601389282}
   - {fileID: 231075560}
@@ -1190,8 +1210,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enable: 0
-  disableTarget: 0
-  disableUI: 0
+  enableIfTrue: 0
+  value: 0
+  enableIfValueIs10Or20: 0
+  enumValue: 0
+  enableIfHasFlagAOrB: 0
+  text: 
+  enableIfTextLengthGreaterThan5: 0
+  enableIfTextContainsA: 0
 --- !u!4 &1848947605
 Transform:
   m_ObjectHideFlags: 0
@@ -1205,7 +1231,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1841334721}
+  m_Father: {fileID: 974059910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1949409778
 GameObject:

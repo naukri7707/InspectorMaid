@@ -2,12 +2,7 @@
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    [HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info)]
-    [Divider("01. Divider")]
-    [CardSlot(nameof(simpleDivider))]
-    [Divider("02. Divider with text")]
-    [CardSlot(nameof(textDivider))]
-    public class DividerSample : AttributeSampleBehaviour
+    public partial class DividerSample : AttributeSampleBehaviour
     {
         // Sample 1
         [Target]
@@ -21,4 +16,15 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         [HelpBox("My UI", HelpBoxMessageType.Info)]
         public int textDivider;
     }
+
+    [HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info)]
+    // Sample 1
+    [GroupScope("01. Divider", true)]
+    [CardSlot(nameof(simpleDivider))]
+    [EndScope]
+    // Sample 2
+    [GroupScope("02. Divider with text", true)]
+    [CardSlot(nameof(textDivider))]
+    [EndScope]
+    partial class DividerSample { }
 }

@@ -7,6 +7,8 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
     public class LabelWidget : StylerWidgetOf<LabelAttribute>
     {
+        public override string ClassName => "label-styler";
+
         public override void OnStyling(IBuildContext context, VisualElement element)
         {
             element.RegisterCallback<AttachToPanelEvent>(evt =>

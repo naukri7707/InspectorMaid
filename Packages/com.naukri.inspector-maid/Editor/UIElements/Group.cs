@@ -8,51 +8,52 @@ namespace Naukri.InspectorMaid.Editor.UIElements
     {
         public Group(string text)
         {
+            var divider = new Divider(text);
             var contentContainer = new VisualElement();
 
-            this.Compose(group =>
+            new ComposerOf(this)
             {
-                group.children = new VisualElement[]
+                children = new VisualElement[]
                 {
-                    new Divider(text).Compose(ve =>
+                    new ComposerOf(divider)
                     {
-                        ve.On<ClickEvent>(evt =>
+                        callbacks = new[]
                         {
-                            group.element.Expend = !group.element.Expend;
-                        });
-                    }),
-                    new Row().Compose(row =>
+                            Callback.BubbleUp<ClickEvent>(evt =>
+                            {
+                                Expend = !Expend;
+                            }),
+                        }
+                    },
+                    new ComposerOf(new Row())
                     {
-                        row.margin = EdgeInsets.Only(bottom: 5F);
-                        row.children = new[]
+                        margin = EdgeInsets.Only(bottom: 5F),
+                        children = new VisualElement[]
                         {
-                            new Divider().Compose(vDiv =>
+                            new ComposerOf(new Box())
                             {
-                                vDiv.position = Position.Absolute;
-                                vDiv.flexDirection = FlexDirection.Column;
-                                vDiv.height = vDiv.height.value.value + 9F;
-                                vDiv.distanceFromBox = EdgeInsets.Only(top: -18F);
-                                row.On<GeometryChangedEvent>(evt =>
-                                {
-                                    vDiv.height = evt.newRect.height + 5F;
-                                });
-                            }),
-                            new Divider().Compose(hDiv =>
+                                backgroundColor = Divider.LineDefaultColor,
+                                flexDirection = FlexDirection.Column,
+                                distanceFromBox = EdgeInsets.Only(top: -18F),
+                                margin = EdgeInsets.Only(top: 4),
+                            },
+                            new ComposerOf(new Box())
                             {
-                                hDiv.position = Position.Absolute;
-                                hDiv.flexDirection = FlexDirection.Row;
-                                hDiv.width = 10F;
-                                hDiv.distanceFromBox = EdgeInsets.Only(bottom: -5);
-                            }),
-                            contentContainer.Compose(ve =>
+                                position = Position.Absolute,
+                                backgroundColor = Divider.LineDefaultColor,
+                                flexDirection = FlexDirection.Row,
+                                width = 10F,
+                                distanceFromBox = EdgeInsets.Only(bottom: 18),
+                            },
+                            new ComposerOf(contentContainer)
                             {
-                                ve.margin = EdgeInsets.Only(left: 15F);
-                                ve.flexGrow = 1F;
-                            }),
-                        };
-                    }),
-                };
-            });
+                                margin = EdgeInsets.Only(left: 15F),
+                                flexGrow = 1F,
+                            },
+                        }
+                    },
+                }
+            };
 
             // set contentContainer after adding decorator element,
             // otherwise it will throw an exception.
