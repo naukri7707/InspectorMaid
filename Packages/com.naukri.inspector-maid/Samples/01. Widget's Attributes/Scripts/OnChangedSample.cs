@@ -26,17 +26,20 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         }
     }
 
-    [HelpBox("[OnChanged] can help you listen to the target member and invokes the target method when changes occur.", HelpBoxMessageType.Info)]
+    [
+    HelpBox("[OnChanged] can help you listen to the target member and invokes the target method when changes occur.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. OnChanged", true)]
-    [CardSlot(nameof(myInt))]
-    [EndScope]
+    GroupScope("01. OnChanged", true),
+        CardSlot(nameof(myInt)),
+    EndScope,
     // Sample 2
-    [GroupScope("02. OnChanged and modify field", true)]
-    [HelpBox("Notice that Inspector-Maid only work in Unity's editor, so [OnChanged] won't be invoked during runtime.", HelpBoxMessageType.Warning)]
-    [CardScope(color: CardSlotAttribute.kDefaultBGColor)]
-    [Slot(nameof(myInt2))]
-    [Slot(nameof(checkedIfMyInt2Is100))]
-    [EndScope]
+    GroupScope("02. OnChanged and modify field", true),
+        HelpBox("Notice that Inspector-Maid only work in Unity's editor, so [OnChanged] won't be invoked during runtime.", HelpBoxMessageType.Warning),
+        CardScope(color: CardSlotAttribute.kDefaultBGColor),
+            Slot(nameof(myInt2)),
+            Slot(nameof(checkedIfMyInt2Is100)),
+        EndScope,
+    EndScope
+    ]
     partial class OnChangedSample { }
 }

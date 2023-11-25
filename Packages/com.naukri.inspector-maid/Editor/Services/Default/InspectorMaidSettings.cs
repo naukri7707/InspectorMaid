@@ -46,21 +46,29 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
     }
 
     // UI
+    [
     // Hide script field at Project Setting Page, but keep it at Inspector.
-    [ScriptField, HideIf(nameof(isDrawingSettingsProvider))]
+    ScriptField,
+        HideIf(nameof(isDrawingSettingsProvider)),
     // Add support for custom type
-    [Divider("Working On")]
-    [RowScope]
-    [Button("MonoBehaviour", binding: nameof(AddSupport), args: new object[] { typeof(MonoBehaviour) }), Style(height: "24")]
-    [DisableIf(nameof(IsSupported), args: new object[] { typeof(MonoBehaviour) })]
-    [Button("ScriptableObject", binding: nameof(AddSupport), args: new object[] { typeof(ScriptableObject) }), Style(height: "24")]
-    [DisableIf(nameof(IsSupported), args: new object[] { typeof(ScriptableObject) })]
-    [Spacer, Style(flexGrow: "1")]
-    [Button("Custom Type", binding: nameof(AddSupportOfCustomType)), Style(height: "24")]
-    [EndScope]
+    Divider("Working On"),
+    RowScope,
+        Button("MonoBehaviour", binding: nameof(AddSupport), args: new object[] { typeof(MonoBehaviour) }),
+            Style(height: "24"),
+            DisableIf(nameof(IsSupported), args: new object[] { typeof(MonoBehaviour) }),
+        Button("ScriptableObject", binding: nameof(AddSupport), args: new object[] { typeof(ScriptableObject) }),
+            Style(height: "24"),
+            DisableIf(nameof(IsSupported), args: new object[] { typeof(ScriptableObject) }),
+        Spacer,
+            Style(flexGrow: "1"),
+        Button("Custom Type", binding: nameof(AddSupportOfCustomType)),
+            Style(height: "24"),
+    EndScope,
     // Add pre-defined style sheet
-    [Divider("Style"), Style(marginTop: "10")]
-    [Slot(nameof(importStyleSheets))]
+    Divider("Style"),
+       Style(marginTop: "10"),
+    Slot(nameof(importStyleSheets))
+    ]
     partial class InspectorMaidSettings
     {
         // to tell inspector maid that we are drawing settings provider,

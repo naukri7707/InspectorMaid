@@ -30,27 +30,38 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int sample3;
     }
 
-    [HelpBox(@"[Slot] can treat any member as a template and display its content in the Slot.
-This is useful for wrapping multiple target together or displaying the same target in different places.", HelpBoxMessageType.Info)]
+    [
+    HelpBox(@"[Slot] can treat any member as a template and display its content in the Slot.
+This is useful for wrapping multiple target together or displaying the same target in different places.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. Slot", true)]
-    [CardScope, Style(backgroundColor: CardSlotAttribute.kDefaultBGColor)]
-    [Slot(nameof(myField))]
-    [Slot(nameof(sample1))]
-    [EndScope, EndScope]
+    GroupScope("01. Slot", true),
+        CardScope,
+            Style(backgroundColor: CardSlotAttribute.kDefaultBGColor),
+            // content
+            Slot(nameof(myField)),
+            Slot(nameof(sample1)),
+        EndScope,
+    EndScope,
     // Sample 2
-    [GroupScope("02. Nested Slot", true)]
-    [HelpBox("[Slot] supports nested structure, the nested Slot will be rendered together.", HelpBoxMessageType.Info)]
-    [CardScope, Style(backgroundColor: CardSlotAttribute.kDefaultBGColor)]
-    [Slot(nameof(sample2))]
-    [EndScope, EndScope]
+    GroupScope("02. Nested Slot", true),
+        HelpBox("[Slot] supports nested structure, the nested Slot will be rendered together.", HelpBoxMessageType.Info),
+        CardScope,
+            Style(backgroundColor: CardSlotAttribute.kDefaultBGColor),
+            // content
+            Slot(nameof(sample2)),
+        EndScope,
+    EndScope,
     // Sample 3
-    [GroupScope("03. Template", true)]
-    [HelpBox(@"[Template] is a logic widget, if you use [Template], the member will be treated as a template, so it won't be render unless you use [Slot].", HelpBoxMessageType.Info)]
-    [CardScope, Style(backgroundColor: CardSlotAttribute.kDefaultBGColor)]
-    // We don't need to render templatedField here, because membersWidget won't render widget with [Template] actually.
-    // [Slot(nameof(templatedField))]
-    [Slot(nameof(sample3))]
-    [EndScope, EndScope]
+    GroupScope("03. Template", true),
+        HelpBox(@"[Template] is a logic widget, if you use [Template], the member will be treated as a template, so it won't be render unless you use [Slot].", HelpBoxMessageType.Info),
+        CardScope,
+            Style(backgroundColor: CardSlotAttribute.kDefaultBGColor),
+            // content
+            // We don't need to render templatedField here, because membersWidget won't render widget with [Template] actually,
+            // Slot(nameof(templatedField)),
+            Slot(nameof(sample3)),
+        EndScope,
+    EndScope,
+    ]
     partial class SlotSample { }
 }
