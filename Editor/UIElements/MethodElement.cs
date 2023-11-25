@@ -28,10 +28,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
         private object[] args;
 
+        public event Action OnInvoke = () => { };
+
         [SuppressMessage("Style", "IDE1006")]
         public string label { get => _label; set => _label = value; }
-
-        public event Action OnInvoke = () => { };
 
         public void Build()
         {
