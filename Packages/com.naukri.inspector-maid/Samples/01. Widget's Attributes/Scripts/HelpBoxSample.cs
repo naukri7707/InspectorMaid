@@ -23,18 +23,20 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public string bindingMessage = "change me!";
     }
 
-    [HelpBox(@"[HelpBox] will draw a Box with text and icon,
-This is helpful when you want to show some information on the inspector like error message or notice.", HelpBoxMessageType.Info)]
+    [
+    HelpBox(@"[HelpBox] will draw a Box with text and icon,
+This is helpful when you want to show some information on the inspector like error message or notice.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. HelpBoxs", true)]
-    [CardSlot(nameof(normal))]
-    [CardSlot(nameof(info))]
-    [CardSlot(nameof(warning))]
-    [CardSlot(nameof(error))]
-    [EndScope]
-    [GroupScope("02. Binding message", true)]
-    [HelpBox("You can also change the content of HelpBox dynamically by binding.", HelpBoxMessageType.Info)]
-    [CardSlot(nameof(bindingMessage))]
-    [EndScope]
+    GroupScope("01. HelpBoxs", true),
+        CardSlot(nameof(normal)),
+        CardSlot(nameof(info)),
+        CardSlot(nameof(warning)),
+        CardSlot(nameof(error)),
+    EndScope,
+    GroupScope("02. Binding message", true),
+        HelpBox("You can also change the content of HelpBox dynamically by binding.", HelpBoxMessageType.Info),
+        CardSlot(nameof(bindingMessage)),
+    EndScope,
+    ]
     partial class HelpBoxSample { }
 }
