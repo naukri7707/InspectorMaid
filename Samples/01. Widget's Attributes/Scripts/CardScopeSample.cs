@@ -11,12 +11,13 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int cardScope;
     }
 
-    [HelpBox(
-    @"[CardScope] will create a card style widget to wrap the content,
-this is useful for highlighting some content.", HelpBoxMessageType.Info)]
+    [
+    HelpBox(@"[CardScope] will create a card style widget to wrap the content,
+this is useful for highlighting some content.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. CardScope", true)]
-    [CardSlot(nameof(cardScope))]
-    [EndScope]
+    GroupScope("01. CardScope", true),
+        CardSlot(nameof(cardScope)),
+    EndScope,
+    ]
     partial class CardScopeSample { }
 }

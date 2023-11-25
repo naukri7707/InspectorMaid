@@ -21,14 +21,16 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int row;
     }
 
-    [HelpBox("[ColumnScope] and [RowScope] can help you to wrapping your UI vertically or horizontally.", HelpBoxMessageType.Info)]
+    [
+    HelpBox("ColumnScope, and RowScope, can help you to wrapping your UI vertically or horizontally.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. Column", true)]
-    [CardSlot(nameof(column))]
-    [EndScope]
+    GroupScope("01. Column", true),
+        CardSlot(nameof(column)),
+    EndScope,
     // Sample 2
-    [GroupScope("02. Row", true)]
-    [CardSlot(nameof(row))]
-    [EndScope]
+    GroupScope("02. Row", true),
+        CardSlot(nameof(row)),
+    EndScope,
+    ]
     partial class ContainerScopeSample { }
 }

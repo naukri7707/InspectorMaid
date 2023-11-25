@@ -7,7 +7,7 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
     {
         // Sample 1
         [Button("Click me!", binding: nameof(HelloWorld)), ReadOnly]
-        public int readonlyWidget;
+        public int readOnlyWidget;
 
         // Sample 2
         [Button("Click me!", binding: nameof(HelloWorld))]
@@ -36,26 +36,28 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         }
     }
 
-    [HelpBox("[ReadOnly] will disable lastest widget.", HelpBoxMessageType.Info)]
+    [
+    HelpBox("[ReadOnly] will disable lastest widget.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. Disable any widget")]
-    [CardSlot(nameof(readonlyWidget))]
-    [EndScope]
+    GroupScope("01. Disable any widget"),
+        CardSlot(nameof(readOnlyWidget)),
+    EndScope,
     // Sample 2
-    [GroupScope("02. Disable [Target]")]
-    [HelpBox(@"Because [ReadOnly] is a styler, so we need add [Target] before it, otherwise it will disable lastest widget: [Button].", HelpBoxMessageType.Warning)]
-    [CardSlot(nameof(bad))]
-    [CardSlot(nameof(good))]
-    [EndScope]
+    GroupScope("02. Disable [Target]"),
+        HelpBox(@"Because [ReadOnly] is a styler, so we need add [Target] before it, otherwise it will disable lastest widget: [Button].", HelpBoxMessageType.Warning),
+        CardSlot(nameof(bad)),
+        CardSlot(nameof(good)),
+    EndScope,
     // Sample 3
-    [GroupScope("03. Disable multiple widgets")]
-    [CardSlot(nameof(readOnlyMultipleWidgets))]
-    [EndScope]
+    GroupScope("03. Disable multiple widgets"),
+        CardSlot(nameof(readOnlyMultipleWidgets)),
+    EndScope,
     // Sample 4
-    [GroupScope("04. Simpify trick")]
-    [HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets in this member).
-So if you don't have any other widget, and only want to disable [Target], you can simply add [ReadOnly] to the member.", HelpBoxMessageType.Info)]
-    [Slot(nameof(readOnlyMember))]
-    [EndScope]
+    GroupScope("04. Simpify trick"),
+        HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets in this member).
+So if you don't have any other widget, and only want to disable [Target], you can simply add [ReadOnly] to the member.", HelpBoxMessageType.Info),
+        Slot(nameof(readOnlyMember)),
+    EndScope,
+    ]
     partial class ReadOnlySample { }
 }

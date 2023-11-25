@@ -17,14 +17,16 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int textDivider;
     }
 
-    [HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info)]
+    [
+    HelpBox("[Divider] can help you to separate your UI.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. Divider", true)]
-    [CardSlot(nameof(simpleDivider))]
-    [EndScope]
+    GroupScope("01. Divider", true),
+        CardSlot(nameof(simpleDivider)),
+    EndScope,
     // Sample 2
-    [GroupScope("02. Divider with text", true)]
-    [CardSlot(nameof(textDivider))]
-    [EndScope]
+    GroupScope("02. Divider with text", true),
+        CardSlot(nameof(textDivider)),
+    EndScope,
+    ]
     partial class DividerSample { }
 }

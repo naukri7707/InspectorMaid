@@ -47,18 +47,20 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         }
     }
 
-    [HelpBox("[Button] can invoke binded method on user click.", HelpBoxMessageType.Info)]
+    [
+    HelpBox("[Button] can invoke binded method on user click.", HelpBoxMessageType.Info),
     // Sample 1
-    [GroupScope("01. Button in any direction", true)]
-    [CardSlot(nameof(buttonBeforeTarget))]
-    [CardSlot(nameof(buttonAfterTarget))]
-    [CardSlot(nameof(buttonBeforeTargetInRow))]
-    [CardSlot(nameof(buttonAfterTargetInRow))]
-    [EndScope]
+    GroupScope("01. Button in any direction", true),
+        CardSlot(nameof(buttonBeforeTarget)),
+        CardSlot(nameof(buttonAfterTarget)),
+        CardSlot(nameof(buttonBeforeTargetInRow)),
+        CardSlot(nameof(buttonAfterTargetInRow)),
+    EndScope,
     // Sample 2
-    [GroupScope("02. Binding with parameters", true)]
-    [HelpBox("[Button] can also invoke method with parameters.", HelpBoxMessageType.Info)]
-    [CardSlot(nameof(buttonWithArgs))]
-    [EndScope]
+    GroupScope("02. Binding with parameters", true),
+        HelpBox("[Button] can also invoke method with parameters.", HelpBoxMessageType.Info),
+        CardSlot(nameof(buttonWithArgs)),
+    EndScope,
+    ]
     partial class ButtonSample { }
 }
