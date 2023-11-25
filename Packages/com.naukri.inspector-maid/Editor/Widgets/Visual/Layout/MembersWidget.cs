@@ -10,7 +10,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual.Layout
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var members = new ComposerOf()
+            var members = new ComposerOf(new Members())
             {
                 children = context.BuildChildren(),
             };
