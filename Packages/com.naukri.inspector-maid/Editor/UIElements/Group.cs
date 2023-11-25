@@ -14,9 +14,9 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             {
                 group.children = new VisualElement[]
                 {
-                    new Divider(text).Compose(ve =>
+                    new Divider(text).Compose(divider =>
                     {
-                        ve.On<ClickEvent>(evt =>
+                        divider.On<ClickEvent>(evt =>
                         {
                             group.element.Expend = !group.element.Expend;
                         });
@@ -26,23 +26,20 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                         row.margin = EdgeInsets.Only(bottom: 5F);
                         row.children = new[]
                         {
-                            new Divider().Compose(vDiv =>
+                            new Box().Compose(vDiv =>
                             {
-                                vDiv.position = Position.Absolute;
+                                vDiv.backgroundColor = Divider.LineDefaultColor;
                                 vDiv.flexDirection = FlexDirection.Column;
-                                vDiv.height = vDiv.height.value.value + 9F;
                                 vDiv.distanceFromBox = EdgeInsets.Only(top: -18F);
-                                row.On<GeometryChangedEvent>(evt =>
-                                {
-                                    vDiv.height = evt.newRect.height + 5F;
-                                });
+                                vDiv.margin = EdgeInsets.Only(top: 4);
                             }),
-                            new Divider().Compose(hDiv =>
+                            new Box().Compose(hDiv =>
                             {
                                 hDiv.position = Position.Absolute;
+                                hDiv.backgroundColor = Divider.LineDefaultColor;
                                 hDiv.flexDirection = FlexDirection.Row;
                                 hDiv.width = 10F;
-                                hDiv.distanceFromBox = EdgeInsets.Only(bottom: -5);
+                                hDiv.distanceFromBox = EdgeInsets.Only(bottom: 18);
                             }),
                             contentContainer.Compose(ve =>
                             {
