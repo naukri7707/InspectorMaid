@@ -16,11 +16,13 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         public int endScope;
     }
 
-    [HelpBox("[EndScope] will close the lastest open scope, this can allow you to add widgets to another scope.", HelpBoxMessageType.Info)]
-    [HelpBox("Notice that [EndScope] is a logic widget, so it won't render anything.", HelpBoxMessageType.Warning)]
+    [
+    HelpBox("[EndScope] will close the lastest open scope, this can allow you to add widgets to another scope.", HelpBoxMessageType.Info),
+    HelpBox("Notice that [EndScope] is a logic widget, so it won't render anything.", HelpBoxMessageType.Warning),
     // Sample 1
-    [GroupScope("01. EndScope", true)]
-    [CardSlot(nameof(endScope))]
-    [EndScope]
+    GroupScope("01. EndScope", true),
+        CardSlot(nameof(endScope)),
+    EndScope,
+    ]
     partial class EndScopeSample { }
 }
