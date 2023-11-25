@@ -2,19 +2,18 @@
 using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.Helpers;
 using Naukri.InspectorMaid.Editor.Services;
-using Naukri.InspectorMaid.Editor.UIElements.Compose;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
 
-namespace Naukri.InspectorMaid.Editor.Widgets
+namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
-    public abstract class IfScopeWidgetOf<TAttribute> : VisualWidgetOf<TAttribute>
-        where TAttribute : IfScopeAttribute
+    public abstract class IfStylerWidgetOf<TAttribute> : StylerWidgetOf<TAttribute>
+        where TAttribute : IfStylerAttribute
     {
         private object bindingMemberDefaultValue;
 
-        public sealed override VisualElement Build(IBuildContext context)
+        public override void OnStyling(IBuildContext context, VisualElement element)
         {
             // Cache the default value for the performance.
             var bindingValueType = context.GetBindingValueType();
@@ -24,33 +23,26 @@ namespace Naukri.InspectorMaid.Editor.Widgets
                 false => null,
             };
 
-            var container = CreateContainer().Compose(ve =>
-            {
-                ve.children = context.BuildChildren();
-            });
-
             var bindingValue = context.GetBindingValue();
-            UpdateElement(container, bindingValue);
+            UpdateElement(element, bindingValue);
 
             if (attribute.IsBinding())
             {
                 context.ListenBindingValue(v =>
                 {
-                    UpdateElement(container, v);
+                    UpdateElement(element, v);
                 });
             }
-
-            return container;
         }
 
         protected abstract VisualElement CreateContainer();
 
-        protected abstract void OnUpdateElement(VisualElement container, bool condition);
+        protected abstract void OnUpdateElement(VisualElement element, bool condition);
 
-        private void UpdateElement(VisualElement container, object bindingValue)
+        private void UpdateElement(VisualElement element, object bindingValue)
         {
             var condition = Condition(bindingValue);
-            OnUpdateElement(container, condition);
+            OnUpdateElement(element, condition);
         }
 
         private bool Condition(object bindingValue)

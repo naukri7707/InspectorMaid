@@ -9,14 +9,17 @@ namespace Naukri.InspectorMaid.Editor
     public abstract class StylerWidgetOf<TAttribute> : WidgetOf<TAttribute>, IWidgetProvider, IParentBuiltReceiver
         where TAttribute : StylerAttribute
     {
+        public abstract string ClassName { get; }
+
         public sealed override Context CreateContext() => new NoneChildContext(this);
 
-        public override VisualElement Build(IBuildContext context) => null;
+        public sealed override VisualElement Build(IBuildContext context) => null;
 
         public abstract void OnStyling(IBuildContext context, VisualElement element);
 
         void IParentBuiltReceiver.OnParentBuilt(IBuildContext context, VisualElement parentElement)
         {
+            parentElement.AddToClassList(ClassName);
             OnStyling(context, parentElement);
         }
     }

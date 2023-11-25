@@ -12,23 +12,6 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Services.Default
 {
-    // Hide script field at Project Setting Page, but keep it at Inspector.
-    [HideIfScope(nameof(isDrawingSettingsProvider)), ScriptField, EndScope]
-    // Add support for custom type
-    [Divider("Working On")]
-    [RowScope]
-    [DisableIfScope(nameof(IsSupported), args: new object[] { typeof(MonoBehaviour) })]
-    [Button("MonoBehaviour", binding: nameof(AddSupport), args: new object[] { typeof(MonoBehaviour) }), Style(height: "24")]
-    [EndScope]
-    [DisableIfScope(nameof(IsSupported), args: new object[] { typeof(ScriptableObject) })]
-    [Button("ScriptableObject", binding: nameof(AddSupport), args: new object[] { typeof(ScriptableObject) }), Style(height: "24")]
-    [EndScope]
-    [Spacer, Style(flexGrow: "1")]
-    [Button("Custom Type", binding: nameof(AddSupportOfCustomType)), Style(height: "24")]
-    [EndScope]
-    // Add pre-defined style sheet
-    [Divider("Style"), Style(marginTop: "10")]
-    [Slot(nameof(importStyleSheets))]
     internal partial class InspectorMaidSettings : ScriptableObject, IInspectorMaidSettings
     {
         [SerializeField]
@@ -63,6 +46,21 @@ namespace Naukri.InspectorMaid.Editor.Services.Default
     }
 
     // UI
+    // Hide script field at Project Setting Page, but keep it at Inspector.
+    [ScriptField, HideIf(nameof(isDrawingSettingsProvider))]
+    // Add support for custom type
+    [Divider("Working On")]
+    [RowScope]
+    [Button("MonoBehaviour", binding: nameof(AddSupport), args: new object[] { typeof(MonoBehaviour) }), Style(height: "24")]
+    [DisableIf(nameof(IsSupported), args: new object[] { typeof(MonoBehaviour) })]
+    [Button("ScriptableObject", binding: nameof(AddSupport), args: new object[] { typeof(ScriptableObject) }), Style(height: "24")]
+    [DisableIf(nameof(IsSupported), args: new object[] { typeof(ScriptableObject) })]
+    [Spacer, Style(flexGrow: "1")]
+    [Button("Custom Type", binding: nameof(AddSupportOfCustomType)), Style(height: "24")]
+    [EndScope]
+    // Add pre-defined style sheet
+    [Divider("Style"), Style(marginTop: "10")]
+    [Slot(nameof(importStyleSheets))]
     partial class InspectorMaidSettings
     {
         // to tell inspector maid that we are drawing settings provider,

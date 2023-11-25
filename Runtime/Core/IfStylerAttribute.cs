@@ -1,8 +1,8 @@
 ﻿namespace Naukri.InspectorMaid.Core
 {
-    public abstract class IfScopeAttribute : ScopeAttribute, IBindingDataProvider
+    public abstract class IfStylerAttribute : StylerAttribute, IBindingDataProvider
     {
-        public IfScopeAttribute(
+        public IfStylerAttribute(
             string binding,
             object value,
             ConditionLogic conditionLogic = ConditionLogic.Value,
@@ -11,7 +11,7 @@
         {
         }
 
-        public IfScopeAttribute(
+        public IfStylerAttribute(
             string binding,
             object value1,
             object value2,
@@ -21,7 +21,7 @@
         {
         }
 
-        public IfScopeAttribute(
+        public IfStylerAttribute(
             string binding,
             object value1,
             object value2,
@@ -32,7 +32,7 @@
         {
         }
 
-        public IfScopeAttribute(
+        public IfStylerAttribute(
             string binding,
             object value1,
             object value2,
@@ -44,7 +44,7 @@
         {
         }
 
-        public IfScopeAttribute(
+        public IfStylerAttribute(
             string binding,
             object[] values = null,
             ConditionLogic conditionLogic = ConditionLogic.Value,
