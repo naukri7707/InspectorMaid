@@ -33,11 +33,11 @@ namespace Naukri.InspectorMaid.Editor.Core
                     text = property.displayName
                 };
 
-                new ComposerOf(classElement)
+                new ComposerOf(foldout)
                 {
                     children = new VisualElement[]
                     {
-                        foldout
+                        classElement
                     }
                 };
 
