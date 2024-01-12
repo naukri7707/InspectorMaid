@@ -1,5 +1,7 @@
 ﻿using Naukri.InspectorMaid.Editor.Extensions;
 using Naukri.InspectorMaid.Editor.UIElements.Compose;
+using System;
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.UIElements
@@ -10,6 +12,15 @@ namespace Naukri.InspectorMaid.Editor.UIElements
         {
             var divider = new Divider(text);
             var contentContainer = new VisualElement();
+            var verticalLine = new Box();
+            var endElementTail = new Box();
+
+            OnExpendChanged += expend =>
+            {
+                contentContainer.SetDisplay(expend);
+                verticalLine.SetDisplay(expend);
+                endElementTail.SetDisplay(expend);
+            };
 
             new ComposerOf(this)
             {
@@ -23,31 +34,48 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                             {
                                 Expend = !Expend;
                             }),
+                            Callback.BubbleUp<GeometryChangedEvent>(evt =>
+                            {
+                                var height = evt.newRect.height;
+                                var marginBottom = divider.style.marginBottom.value.value;
+                                verticalLine.style.marginTop = -(height / 2 + marginBottom);
+                            }),
                         }
                     },
                     new ComposerOf(new Row())
                     {
-                        margin = EdgeInsets.Only(bottom: 5F),
                         children = new VisualElement[]
                         {
-                            new ComposerOf(new Box())
+                            new ComposerOf(verticalLine)
                             {
-                                backgroundColor = Divider.LineDefaultColor,
+                                backgroundColor = Divider.DefaultColor,
                                 flexDirection = FlexDirection.Column,
-                                distanceFromBox = EdgeInsets.Only(top: -18F),
-                                margin = EdgeInsets.Only(top: 4),
+                                display = DisplayStyle.None,
                             },
-                            new ComposerOf(new Box())
+                            new ComposerOf(endElementTail)
                             {
                                 position = Position.Absolute,
-                                backgroundColor = Divider.LineDefaultColor,
+                                backgroundColor = Divider.DefaultColor,
                                 flexDirection = FlexDirection.Row,
                                 width = 10F,
-                                distanceFromBox = EdgeInsets.Only(bottom: 18),
+                                display = DisplayStyle.None,
                             },
                             new ComposerOf(contentContainer)
                             {
-                                margin = EdgeInsets.Only(left: 15F),
+                                callbacks = new[]
+                                {
+                                    Callback.BubbleUp<GeometryChangedEvent>(evt =>
+                                    {
+                                        var lastElement = contentContainer.Children().Last();
+                                        var height = lastElement.worldBound.height;
+                                        var marginBottom = lastElement.style.marginBottom.value.value;
+                                        var endElementTailBottom = height / 2 + marginBottom;
+                                        endElementTail.style.bottom = endElementTailBottom;
+                                        endElementTail.style.height = 2;
+                                        verticalLine.style.marginBottom = endElementTailBottom;
+                                    })
+                                },
+                                margin = EdgeInsets.Only(left: 18F),
                                 flexGrow = 1F,
                             },
                         }
@@ -71,9 +99,11 @@ namespace Naukri.InspectorMaid.Editor.UIElements
             get => expend;
             set
             {
-                _contentContainer.SetDisplay(value);
                 expend = value;
+                OnExpendChanged?.Invoke(value);
             }
         }
+
+        public event Action<bool> OnExpendChanged;
     }
 }
