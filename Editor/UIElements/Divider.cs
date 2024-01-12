@@ -27,7 +27,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                         {
                             alignSelf = Align.Center,
                             flexGrow = 0.99F,
-                            backgroundColor = LineDefaultColor,
+                            backgroundColor = DefaultColor,
                             height = 2,
                         }
                     },
@@ -37,12 +37,12 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                         {
                             alignSelf = Align.Center,
                             width = 50,
-                            backgroundColor = LineDefaultColor,
+                            backgroundColor = DefaultColor,
                             height = 2,
                         },
                         new ComposerOf(textElement)
                         {
-                            color = LineDefaultColor,
+                            color = DefaultColor,
                             flexGrow = 0.01F,
                             fontSize = 14,
                             unityTextAlign = TextAnchor.MiddleCenter,
@@ -52,7 +52,7 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                         {
                             alignSelf = Align.Center,
                             flexGrow = 0.99F,
-                            backgroundColor = LineDefaultColor,
+                            backgroundColor = DefaultColor,
                             height = 2,
                         },
                     }
@@ -65,6 +65,6 @@ namespace Naukri.InspectorMaid.Editor.UIElements
 
     partial class Divider
     {
-        public static StyleColor LineDefaultColor => new(new Color32(128, 128, 128, 255));
+        public static StyleColor DefaultColor => new(new Color32(128, 128, 128, 255));
     }
 }
