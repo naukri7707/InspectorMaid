@@ -4,14 +4,11 @@ using System;
 namespace Naukri.InspectorMaid.Layout
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class FieldsAttribute : ItemAttribute, IDeclaredTypeProvider
+    public sealed class BaseAttribute : ItemAttribute, IDeclaredTypeProvider
     {
-        public FieldsAttribute(bool skipTemplate = true)
+        public BaseAttribute()
         {
-            this.skipTemplate = skipTemplate;
         }
-
-        public readonly bool skipTemplate;
 
         Type IDeclaredTypeProvider.DeclaredType { get; set; }
     }

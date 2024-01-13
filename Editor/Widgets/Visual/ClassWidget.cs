@@ -68,7 +68,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
 
         public void OnContextAttached(Context context)
         {
-            var attrs = target.GetType().GetCustomAttributes<WidgetAttribute>().ToList();
+            var attrs = targetType.GetCustomAttributes<WidgetAttribute>(false).ToList();
 
             if (!attrs.Any())
             {
@@ -77,7 +77,16 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
                     attrs.Add(new ScriptFieldAttribute());
                 }
 
+                attrs.Add(new BaseAttribute());
                 attrs.Add(new MembersAttribute());
+            }
+
+            foreach (var attr in attrs)
+            {
+                if (attr is IDeclaredTypeProvider declaredTypeProvider)
+                {
+                    declaredTypeProvider.DeclaredType = targetType;
+                }
             }
 
             InspectorMaidUtility.CreateWidgetContextsAndAttach(context, attrs);

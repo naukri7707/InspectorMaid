@@ -4,7 +4,7 @@ using System;
 namespace Naukri.InspectorMaid.Layout
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public sealed class MembersAttribute : ItemAttribute
+    public sealed class MembersAttribute : ItemAttribute, IDeclaredTypeProvider
     {
         public MembersAttribute(bool skipTemplate = true)
         {
@@ -12,5 +12,7 @@ namespace Naukri.InspectorMaid.Layout
         }
 
         public readonly bool skipTemplate;
+
+        Type IDeclaredTypeProvider.DeclaredType { get; set; }
     }
 }
