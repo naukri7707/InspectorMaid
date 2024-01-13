@@ -125,6 +125,7 @@ namespace Naukri.InspectorMaid.Editor.Helpers
 
             BuildContextTree(parentContext);
 
+            // Check if there are any surplus WidgetAttribute.
             if (iteractor.MoveNext())
             {
                 var attr = iteractor.Current;
@@ -134,8 +135,6 @@ namespace Naukri.InspectorMaid.Editor.Helpers
                     name = name.Remove(name.Length - 9);
                 }
                 Debug.LogWarning($"The ContextTree has been built, but [{name}] has not been added yet. Please check if there are any surplus [EndScope] before it.");
-                //
-                // eng:
             }
         }
     }
