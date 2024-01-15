@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
@@ -18,6 +19,11 @@ namespace Naukri.InspectorMaid.Samples.WidgetAttributes
         // Sample 3
         [Label("Simply rename", useNicifyName: true)]
         public int renameTarget;
+
+        // Sample 3
+        [Label("Min", replaceText: "X", minWidth: 30)]
+        [Label("Max", replaceText: "Y", minWidth: 30)]
+        public Vector2 renameBySubString;
     }
 
     [
@@ -38,6 +44,10 @@ This is useful when we want to rename the target's prefix label.", HelpBoxMessag
         HelpBox(@"If there is no widget before the styler, the styler will modify the [MemberWidget] (a simple container of all widgets in this member).
 So if you don't have any other widget, and only want to change the prefix label of [Target], you can simply add [Label] to the member.", HelpBoxMessageType.Info),
         CardSlot(nameof(renameTarget)),
+    EndScope,
+    GroupScope("04. Rename By Sub String"),
+        HelpBox(@"If the Label you want to rename is not the first label, you can use 'replaceText' to define the string to replace. In this mode, any string in a label that contains the specified substring will be replaced.", HelpBoxMessageType.Info),
+        CardSlot(nameof(renameBySubString)),
     EndScope,
     ]
     partial class LabelSample { }
