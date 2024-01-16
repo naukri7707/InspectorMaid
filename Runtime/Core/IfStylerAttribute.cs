@@ -2,57 +2,22 @@
 {
     public abstract class IfStylerAttribute : StylerAttribute, IBindingDataProvider
     {
-        public IfStylerAttribute(
+        // We avoid using object[] to set values because its precedence is higher than object.
+        // This could lead to misinterpretation when using null as a value, as it would be treated as an object[].
+        // For instance,
+        // ShowIf("field", null): We expect the field to be displayed when it is null.
+        // However, due to the mentioned reason, it is treated as an empty object[], equivalent to ShowIf("field"),
+        // so the field won't be displayed, but this is obviously a logical error.
+        // Therefore, we refrain from using object[] to define values and instead use multiple value parameters to define values, preventing this issue.
+        protected IfStylerAttribute(
             string binding,
-            object value,
-            ConditionLogic conditionLogic = ConditionLogic.Value,
-            object[] args = null
-            ) : this(binding, new object[] { value }, conditionLogic, args)
-        {
-        }
-
-        public IfStylerAttribute(
-            string binding,
-            object value1,
-            object value2,
-            ConditionLogic conditionLogic = ConditionLogic.Value,
-            object[] args = null
-            ) : this(binding, new object[] { value1, value2 }, conditionLogic, args)
-        {
-        }
-
-        public IfStylerAttribute(
-            string binding,
-            object value1,
-            object value2,
-            object value3,
-            ConditionLogic conditionLogic = ConditionLogic.Value,
-            object[] args = null
-            ) : this(binding, new object[] { value1, value2, value3 }, conditionLogic, args)
-        {
-        }
-
-        public IfStylerAttribute(
-            string binding,
-            object value1,
-            object value2,
-            object value3,
-            object value4,
-            ConditionLogic conditionLogic = ConditionLogic.Value,
-            object[] args = null
-            ) : this(binding, new object[] { value1, value2, value3, value4 }, conditionLogic, args)
-        {
-        }
-
-        public IfStylerAttribute(
-            string binding,
-            object[] values = null,
+            object[] values,
             ConditionLogic conditionLogic = ConditionLogic.Value,
             object[] args = null
             )
         {
             this.binding = binding;
-            this.values = values ?? new object[0];
+            this.values = values;
             this.conditionLogic = conditionLogic;
             this.args = args;
         }

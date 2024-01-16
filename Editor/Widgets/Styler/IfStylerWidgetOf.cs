@@ -55,6 +55,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
                 {
                     // return true if value isn't default.
                     0 => !InspectorMaidUtility.IsBoxedValueEqual(bindingValue, bindingMemberDefaultValue),
+                    // return true if value is equal to any value in target values.
                     _ => attribute.values.Any(it => InspectorMaidUtility.IsBoxedValueEqual(bindingValue, it)),
                 };
             }
