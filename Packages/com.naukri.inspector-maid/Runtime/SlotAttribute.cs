@@ -5,10 +5,16 @@ namespace Naukri.InspectorMaid
     public class SlotAttribute : ItemAttribute
     {
         public SlotAttribute(string templateName)
+            : this(
+                  new[] { templateName }
+                  )
+        { }
+
+        public SlotAttribute(params string[] templateNames)
         {
-            this.templateName = templateName;
+            this.templateNames = templateNames;
         }
 
-        public readonly string templateName;
+        public readonly string[] templateNames;
     }
 }
