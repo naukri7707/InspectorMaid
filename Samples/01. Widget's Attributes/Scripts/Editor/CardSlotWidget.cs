@@ -37,7 +37,7 @@ namespace Naukri.InspectorMaid.Samples.Editor
 
         public void OnContextAttached(Context context)
         {
-            var slotAttribute = new SlotAttribute(attribute.templateName);
+            var slotAttribute = new SlotAttribute(attribute.templateNames);
 
             var slotWidget = WidgetBuilder.Create(slotAttribute);
             var slotContext = slotWidget.CreateContext();
