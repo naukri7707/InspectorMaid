@@ -67,12 +67,10 @@ namespace Naukri.InspectorMaid.Editor.UIElements
                                     Callback.BubbleUp<GeometryChangedEvent>(evt =>
                                     {
                                         var lastElement = contentContainer.Children().Last();
-                                        var height = lastElement.worldBound.height;
                                         var marginBottom = lastElement.style.marginBottom.value.value;
-                                        var endElementTailBottom = height / 2 + marginBottom;
-                                        endElementTail.style.bottom = endElementTailBottom;
+                                        endElementTail.style.bottom = marginBottom;
                                         endElementTail.style.height = 2;
-                                        verticalLine.style.marginBottom = endElementTailBottom;
+                                        verticalLine.style.marginBottom = marginBottom;
                                     })
                                 },
                                 margin = EdgeInsets.Only(left: 18F),
