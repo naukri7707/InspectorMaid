@@ -11,7 +11,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         {
             var slot = new ComposerOf(new Slot())
             {
-                name = $"slot:{attribute.templateName}",
+                name = $"slot:{attribute.templateNames}",
                 children = context.BuildChildren(),
             };
 
@@ -21,24 +21,28 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
         public void OnContextAttached(Context context)
         {
             var templateService = IMemberWidgetTemplates.Of(context);
-            var templateWidget = templateService.CreateMemberWidget(attribute.templateName);
 
-            // Prevent endless recursion
-            context.VisitAncestorContexts(ance =>
+            foreach (var templateName in attribute.templateNames)
             {
-                if (ance.Widget is MemberWidget anceWidget)
+                var templateWidget = templateService.CreateMemberWidget(templateName);
+
+                // Prevent endless recursion
+                context.VisitAncestorContexts(ancestor =>
                 {
-                    if (anceWidget.info == templateWidget.info)
+                    if (ancestor.Widget is MemberWidget ancestorWidget)
                     {
-                        throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{templateWidget.info.Name}'.");
+                        if (ancestorWidget.info == templateWidget.info)
+                        {
+                            throw new System.Exception($"Endless slot recursion detected at {nameof(MemberWidget)} '{templateWidget.info.Name}'.");
+                        }
                     }
-                }
-                return false;
-            });
+                    return false;
+                });
 
-            var templateContext = templateWidget.CreateContext();
+                var templateContext = templateWidget.CreateContext();
 
-            context.Attach(templateContext);
+                context.Attach(templateContext);
+            }
         }
 
         private class Slot : VisualElement { }
