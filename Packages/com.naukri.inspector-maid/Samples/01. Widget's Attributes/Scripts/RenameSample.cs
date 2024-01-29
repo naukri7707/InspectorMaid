@@ -3,31 +3,31 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Samples.WidgetAttributes
 {
-    public partial class LabelSample : AttributeSampleBehaviour
+    public partial class RenameSample : AttributeSampleBehaviour
     {
         // Sample 1
-        [Target, Label("newLabel")]
+        [Target, Rename("newLabel")]
         public int useLabel;
 
-        [Target, Label("newLabelWithNicifyName", useNicifyName: true)]
+        [Target, Rename("newLabelWithNicifyName", useNicifyName: true)]
         public int useLabelWithNicifyName;
 
         // Sample 2
-        [Target, Label(binding: nameof(bindingMessage))]
+        [Target, Rename(binding: nameof(bindingMessage))]
         public string bindingMessage = "change me!";
 
         // Sample 3
-        [Label("Simply rename", useNicifyName: true)]
+        [Rename("Simply rename", useNicifyName: true)]
         public int renameTarget;
 
         // Sample 3
-        [Label("Min", replaceText: "X", minWidth: 30)]
-        [Label("Max", replaceText: "Y", minWidth: 30)]
+        [Rename("Min", replaceText: "X", minWidth: 30)]
+        [Rename("Max", replaceText: "Y", minWidth: 30)]
         public Vector2 renameBySubString;
     }
 
     [
-    HelpBox(@"[Label] will change lastest widget's first descendant label.
+    HelpBox(@"[Rename] will change lastest widget's first descendant label.
 This is useful when we want to rename the target's prefix label.", HelpBoxMessageType.Info),
     // Sample 1
     GroupScope("01. Label"),
@@ -35,7 +35,7 @@ This is useful when we want to rename the target's prefix label.", HelpBoxMessag
         CardSlot(nameof(useLabelWithNicifyName)),
     EndScope,
     // Sample 2
-    GroupScope("02. Label with binding"),
+    GroupScope("02. Rename with binding"),
         HelpBox("You can also change target's label dynamically by binding.", HelpBoxMessageType.Info),
         CardSlot(nameof(bindingMessage)),
     EndScope,
@@ -50,5 +50,5 @@ So if you don't have any other widget, and only want to change the prefix label 
         CardSlot(nameof(renameBySubString)),
     EndScope,
     ]
-    partial class LabelSample { }
+    partial class RenameSample { }
 }

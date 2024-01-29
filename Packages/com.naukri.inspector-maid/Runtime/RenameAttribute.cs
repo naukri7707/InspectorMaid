@@ -2,10 +2,10 @@
 
 namespace Naukri.InspectorMaid
 {
-    public class LabelAttribute : StylerAttribute, IBindingDataProvider
+    public class RenameAttribute : StylerAttribute, IBindingDataProvider
     {
-        public LabelAttribute(
-            string label = "",
+        public RenameAttribute(
+            string text = "",
             string replaceText = null,
             float minWidth = float.NaN,
             bool useNicifyName = false,
@@ -13,7 +13,7 @@ namespace Naukri.InspectorMaid
             object[] args = null
             )
         {
-            this.label = label;
+            this.text = text;
             this.replaceText = replaceText;
             this.minWidth = minWidth;
             this.useNicifyName = useNicifyName;
@@ -21,7 +21,7 @@ namespace Naukri.InspectorMaid
             this.args = args;
         }
 
-        public readonly string label;
+        public readonly string text;
 
         public readonly string replaceText;
 

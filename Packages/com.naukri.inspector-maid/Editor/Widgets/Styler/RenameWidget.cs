@@ -6,9 +6,9 @@ using UnityEngine.UIElements;
 
 namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 {
-    public class LabelWidget : StylerWidgetOf<LabelAttribute>
+    public class RenameWidget : StylerWidgetOf<RenameAttribute>
     {
-        public override string ClassName => "label-styler";
+        public override string ClassName => "rename-styler";
 
         public override void OnStyling(IBuildContext context, VisualElement element)
         {
@@ -26,7 +26,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
                     {
                         foreach (var labelElement in labelElements)
                         {
-                            var labelText = labelElement.text.Replace(attribute.replaceText, attribute.label);
+                            var labelText = labelElement.text.Replace(attribute.replaceText, attribute.text);
                             labelElement.text = ActualLabel(labelText);
                             if (attribute.minWidth != float.NaN)
                             {
@@ -58,7 +58,7 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Stylers
 
                     if (labelElement != null)
                     {
-                        var labelText = attribute.label;
+                        var labelText = attribute.text;
 
                         labelElement.text = ActualLabel(labelText);
 
