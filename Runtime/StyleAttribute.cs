@@ -24,6 +24,10 @@ namespace Naukri.InspectorMaid
             string borderWidthAll = null,
             string borderWidthVertical = null,
             string borderWidthHorizontal = null,
+            // - BorderColor
+            string borderColorAll = null,
+            string borderColorVertical = null,
+            string borderColorHorizontal = null,
             // - Margin
             string margin = null,
             string marginAll = null,
@@ -212,7 +216,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderWidthHorizontal != null)
             {
-                var borderWidthHorizontalValue = StyleStringConverter.ToStyleFloat(borderWidthVertical);
+                var borderWidthHorizontalValue = StyleStringConverter.ToStyleFloat(borderWidthHorizontal);
                 if (borderWidthHorizontalValue != null)
                 {
                     this.borderLeftWidth = borderWidthHorizontalValue;
@@ -221,6 +225,37 @@ namespace Naukri.InspectorMaid
             }
 
             #endregion -- BorderWidth --
+
+            #region -- BorderColor --
+
+            if (borderColorAll != null)
+            {
+                var borderColorAllValue = StyleStringConverter.ToStyleColor(borderColorAll);
+                this.borderTopColor = borderColorAllValue;
+                this.borderRightColor = borderColorAllValue;
+                this.borderBottomColor = borderColorAllValue;
+                this.borderLeftColor = borderColorAllValue;
+            }
+            if (borderColorVertical != null)
+            {
+                var borderColorVerticalValue = StyleStringConverter.ToStyleColor(borderColorVertical);
+                if (borderColorVerticalValue != null)
+                {
+                    this.borderTopColor = borderColorVerticalValue;
+                    this.borderBottomColor = borderColorVerticalValue;
+                }
+            }
+            if (borderColorHorizontal != null)
+            {
+                var borderColorHorizontalValue = StyleStringConverter.ToStyleColor(borderColorHorizontal);
+                if (borderColorHorizontalValue != null)
+                {
+                    this.borderLeftColor = borderColorHorizontalValue;
+                    this.borderRightColor = borderColorHorizontalValue;
+                }
+            }
+
+            #endregion -- BorderColor --
 
             #region -- Margin --
 
@@ -254,7 +289,7 @@ namespace Naukri.InspectorMaid
             }
             if (marginHorizontal != null)
             {
-                var marginHorizontalValue = StyleStringConverter.ToStyleLength(marginVertical);
+                var marginHorizontalValue = StyleStringConverter.ToStyleLength(marginHorizontal);
                 if (marginHorizontalValue != null)
                 {
                     this.marginLeft = marginHorizontalValue;
@@ -296,7 +331,7 @@ namespace Naukri.InspectorMaid
             }
             if (paddingHorizontal != null)
             {
-                var paddingHorizontalValue = StyleStringConverter.ToStyleLength(paddingVertical);
+                var paddingHorizontalValue = StyleStringConverter.ToStyleLength(paddingHorizontal);
                 if (paddingHorizontalValue != null)
                 {
                     this.paddingLeft = paddingHorizontalValue;
