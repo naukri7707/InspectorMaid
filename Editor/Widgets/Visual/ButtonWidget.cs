@@ -8,9 +8,6 @@ namespace Naukri.InspectorMaid.Editor.Widgets.Visual
     {
         public override VisualElement Build(IBuildContext context)
         {
-            var classWidget = ClassWidget.Of(context);
-            var serializedTarget = classWidget.serializedTarget;
-
             void buttonAction()
             {
                 if (attribute.setDirty)
