@@ -1,13 +1,31 @@
 # Changelog
 
+## [2.12.0] - 2024-01-29
+
+### 新增
+
+- `Style` 新增 `BorderColorAll`、`borderColorVertical`、`borderColorHorizontal` 三種快捷屬性。
+- 新增 `Label` 用以在 Inspector 上顯示文字。
+
+
+### 更新
+
+- `Label` 更名為 `Rename` 避免與 `Label` 元素產生混淆。
+
+### 修正
+
+- 修正 `Style` 部分 Horizontal 快捷屬性使用到 Vertical 值錯誤。
+
+
 ## [2.11.0] - 2024-01-23
 
 ### 新增
-- Slot 現在可以同時插入多個成員。
+
+- `Slot` 現在可以同時插入多個成員。
 
 ### 重構
 
-- 調整 Group 風格，現在會固定在末元素的底部。
+- 調整 `Group` 風格，現在會固定在末元素的底部。
 
 ## [2.10.1] - 2024-01-16
 
