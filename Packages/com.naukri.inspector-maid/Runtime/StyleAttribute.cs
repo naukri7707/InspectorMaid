@@ -139,7 +139,7 @@ namespace Naukri.InspectorMaid
             }
             if (borderRadiusAll != null)
             {
-                var borderRadiusAllValue = StyleStringConverter.ToStyleLength(borderRadiusTop);
+                var borderRadiusAllValue = StyleStringConverter.ToStyleLength(borderRadiusAll);
                 this.borderTopLeftRadius = borderRadiusAllValue;
                 this.borderTopRightRadius = borderRadiusAllValue;
                 this.borderBottomLeftRadius = borderRadiusAllValue;
