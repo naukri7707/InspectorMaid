@@ -17,7 +17,5 @@
       "path": "Samples~/02. Property And Method"
     }
   ],
-  "dependencies": {
-    "com.unity.modules.uielements": ""
-  }
+  "dependencies": {}
 }
